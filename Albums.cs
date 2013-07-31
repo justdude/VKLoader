@@ -37,7 +37,7 @@ namespace VK
                     foreach (var obj in albumsList)
                         if (obj.title == item)
                         {
-                            XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, obj.id)["responce"].ChildNodes;
+                            XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, obj.id)["response"].ChildNodes;
                             System.IO.Directory.CreateDirectory(@"D:\VK_PHOTOS\" + item);
                             foreach (XmlNode node in xml)
                                 web.DownloadFile(node["src_big"].InnerText, @"D:\VK_PHOTOS\" + item + @"\" + node["aid"].InnerText);
