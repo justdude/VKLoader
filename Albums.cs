@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using System.Net;
+using System.Threading;
 
 namespace VK
 {
@@ -37,9 +38,7 @@ namespace VK
         {
             if (loaded)
             {
-                System.Net.WebClient web = new System.Net.WebClient();
-                web.DownloadProgressChanged += new System.Net.DownloadProgressChangedEventHandler(OnDownloading);
-                web.DownloadFileCompleted += new AsyncCompletedEventHandler(OnCompleted);
+                
                 button1.Hide();
 
                 List<int> ids = new List<int>();
@@ -53,13 +52,15 @@ namespace VK
                             {
                                 string path = @"D:\VK_PHOTOS\" + item + @"\" + ParseName(node["src"].InnerText);
 
-                                if (node["src_xxbig"] != null) Download(web, path, node["src_xxbig"].InnerText);
-                                else if (node["src_xbig"] != null) Download(web, path, node["src_xbig"].InnerText);
-                                else if (node["src_big"] != null)  Download(web, path, node["src_big"].InnerText);
-                                else if (node["src"] != null) Download(web, path, node["src_small"].InnerText);
-                                else if (node["src_small"] != null) Download(web, path, node["src"].InnerText);
-  
+                                string name="";
 
+                                if (node["src_xxbig"] != null) name = node["src_xxbig"].InnerText;
+                                else if (node["src_xbig"] != null) name = node["src_xbig"].InnerText;
+                                else if (node["src_big"] != null) name = node["src_big"].InnerText;
+                                else if (node["src"] != null) name = node["src_small"].InnerText;
+                                else if (node["src_small"] != null) name = node["src"].InnerText;
+
+                                Download(path, name);
                                 /* StreamWriter wr = new StreamWriter(@"D:\VK_PHOTOS\" + item + @"\file.txt");
                                  wr.WriteLine(xml.InnerXml);
                                  wr.Close();
@@ -69,9 +70,11 @@ namespace VK
             }
         }
 
-        void Download(WebClient web, string path, string value)
+        void Download( string path, string value)
         {
-
+            System.Net.WebClient web = new System.Net.WebClient();
+            web.DownloadProgressChanged += new System.Net.DownloadProgressChangedEventHandler(OnDownloading);
+            web.DownloadFileCompleted += new AsyncCompletedEventHandler(OnCompleted);
             web.DownloadFile(new Uri(value), path);
         }
 
