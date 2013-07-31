@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using System.IO;
 using System.Xml;
+using System.Net;
 
 namespace VK
 {
@@ -26,12 +27,21 @@ namespace VK
             if (main != null) main.Show();
         }
 
+        string ParseName(string adress)
+        {
+            int i = adress.LastIndexOf('/');
+            return adress.Substring(i);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (loaded)
             {
                 System.Net.WebClient web = new System.Net.WebClient();
-                
+                web.DownloadProgressChanged += new System.Net.DownloadProgressChangedEventHandler(OnDownloading);
+                web.DownloadFileCompleted += new AsyncCompletedEventHandler(OnCompleted);
+                button1.Hide();
+
                 List<int> ids = new List<int>();
                 foreach (string item in checkedListBox1.CheckedItems)
                     foreach (var obj in albumsList)
@@ -40,17 +50,44 @@ namespace VK
                             XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, obj.id)["response"].ChildNodes;
                             System.IO.Directory.CreateDirectory(@"D:\VK_PHOTOS\" + item);
                             foreach (XmlNode node in xml)
-                                web.DownloadFile(node["src_big"].InnerText, @"D:\VK_PHOTOS\" + item + @"\" + node["aid"].InnerText);
+                            {
+                                string path = @"D:\VK_PHOTOS\" + item + @"\" + ParseName(node["src"].InnerText);
 
-                           /* StreamWriter wr = new StreamWriter(@"D:\VK_PHOTOS\" + item + @"\file.txt");
-                            wr.WriteLine(xml.InnerXml);
-                            wr.Close();
-                            */
+                                if (node["src_xxbig"] != null) Download(web, path, node["src_xxbig"].InnerText);
+                                else if (node["src_xbig"] != null) Download(web, path, node["src_xbig"].InnerText);
+                                else if (node["src_big"] != null)  Download(web, path, node["src_big"].InnerText);
+                                else if (node["src"] != null) Download(web, path, node["src_small"].InnerText);
+                                else if (node["src_small"] != null) Download(web, path, node["src"].InnerText);
+  
+
+                                /* StreamWriter wr = new StreamWriter(@"D:\VK_PHOTOS\" + item + @"\file.txt");
+                                 wr.WriteLine(xml.InnerXml);
+                                 wr.Close();
+                                 */
+                            }
                         }
             }
         }
 
-        List<VKontakte1.VKApi.Album> albumsList=new List<VKontakte1.VKApi.Album>();
+        void Download(WebClient web, string path, string value)
+        {
+
+            web.DownloadFile(new Uri(value), path);
+        }
+
+        void OnDownloading(object sender, DownloadProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+
+        void OnCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            progressBar1.Hide();
+            button1.Show();
+
+        }
+
+        List<VKontakte1.VKApi.Album> albumsList = new List<VKontakte1.VKApi.Album>();
         bool loaded = false;
         private void Albums_Load(object sender, EventArgs e)
         {
@@ -77,6 +114,6 @@ namespace VK
             }
             loaded = true;
         }
-        
+
     }
 }
