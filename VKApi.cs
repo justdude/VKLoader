@@ -25,6 +25,13 @@ namespace VKontakte1
             public Object likes { get; set; }
             public Object reposts { get; set; }
         }
+        public class Album
+        {
+            public int id { get; set; }
+            public string title { get; set; }
+            public string comment { get; set; }
+            public string picture { get; set; }
+        }
 
         public VKApi(string accessToken)
         {
@@ -46,7 +53,7 @@ namespace VKontakte1
         private XmlDocument ExecuteCommand(string name, NameValueCollection qs)
         {
             XmlDocument result = new XmlDocument();
-            System.Windows.Forms.MessageBox.Show("" + String.Join("&", from item in qs.AllKeys select item + "=" + qs[item]));
+          //  System.Windows.Forms.MessageBox.Show("" + String.Join("&", from item in qs.AllKeys select item + "=" + qs[item]));
             result.Load(String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}", name, AccessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item])));
             return result;
         }
@@ -82,15 +89,21 @@ namespace VKontakte1
             return ExecuteCommand("photos.getAlbums", qs);
         }
 
-        public void DowloadPhotosFromAlbum(int uid, int album, string path) 
+        public XmlDocument GetPhotosFromPage(int uid)
+        {
+            NameValueCollection qs = new NameValueCollection();
+            qs["uid"] = uid.ToString();
+            qs["fileds"] = "uid,extended";
+            return ExecuteCommand("photos.getProfile", qs);
+        }
+
+        public XmlDocument GetPhotosFromAlbum(int uid, int album) 
         {
             NameValueCollection qs = new NameValueCollection();
             qs["owner_id"] = uid.ToString();
-            qs["albun"] = album.ToString();
+            qs["aid"] = album.ToString();
             qs["fields"] = "uid,aid";
-            ExecuteCommand("photos.get", qs);
-            XmlDocument doc = new XmlDocument();
-
+            return ExecuteCommand("photos.get", qs);
         }
 
     }
