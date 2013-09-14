@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 using System.IO;
@@ -34,12 +34,22 @@ namespace VK
             return adress.Substring(i);
         }
 
+        string FindPhotoSize(XmlNode node) {
+            if (node["src_xxbig"] != null) return node["src_xxbig"].InnerText;
+            else if (node["src_xbig"] != null) return  node["src_xbig"].InnerText;
+            else if (node["src_big"] != null) return node["src_big"].InnerText;
+            else if (node["src"] != null) return node["src_small"].InnerText;
+            else if (node["src_small"] != null) return node["src"].InnerText;
+            return null;
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (loaded)
             {
                 
-                button1.Hide();
+              //  button1.Hide();
 
                 List<int> ids = new List<int>();
                 foreach (string item in checkedListBox1.CheckedItems)
@@ -47,19 +57,11 @@ namespace VK
                         if (obj.title == item)
                         {
                             XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, obj.id)["response"].ChildNodes;
-                            System.IO.Directory.CreateDirectory(@"D:\VK_PHOTOS\" + item);
+                            System.IO.Directory.CreateDirectory(@"VK_PHOTOS\" + item);
                             foreach (XmlNode node in xml)
                             {
-                                string path = @"D:\VK_PHOTOS\" + item + @"\" + ParseName(node["src"].InnerText);
-
-                                string name="";
-
-                                if (node["src_xxbig"] != null) name = node["src_xxbig"].InnerText;
-                                else if (node["src_xbig"] != null) name = node["src_xbig"].InnerText;
-                                else if (node["src_big"] != null) name = node["src_big"].InnerText;
-                                else if (node["src"] != null) name = node["src_small"].InnerText;
-                                else if (node["src_small"] != null) name = node["src"].InnerText;
-
+                                string path = @"VK_PHOTOS\" + item + @"\" + ParseName(node["src"].InnerText);
+                                string name=FindPhotoSize(node);
                                 Download(path, name);
                                 /* StreamWriter wr = new StreamWriter(@"D:\VK_PHOTOS\" + item + @"\file.txt");
                                  wr.WriteLine(xml.InnerXml);
@@ -69,6 +71,7 @@ namespace VK
                         }
             }
         }
+
 
         void Download( string path, string value)
         {
@@ -80,13 +83,13 @@ namespace VK
 
         void OnDownloading(object sender, DownloadProgressChangedEventArgs e)
         {
-            progressBar1.Value = e.ProgressPercentage;
+           // progressBar1.Value = e.ProgressPercentage;
         }
 
         void OnCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            progressBar1.Hide();
-            button1.Show();
+          //  progressBar1.Hide();
+          //  button1.Show();
 
         }
 

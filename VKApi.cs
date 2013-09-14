@@ -53,10 +53,20 @@ namespace VKontakte1
         private XmlDocument ExecuteCommand(string name, NameValueCollection qs)
         {
             XmlDocument result = new XmlDocument();
+            
           //  System.Windows.Forms.MessageBox.Show("" + String.Join("&", from item in qs.AllKeys select item + "=" + qs[item]));
-            result.Load(String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}", name, AccessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item])));
+            result.Load(String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}", name, AccessToken, String.Join("&", SelectItem(qs))));
             return result;
         }
+
+        string[] SelectItem(NameValueCollection qs) { 
+        //from item in qs.AllKeys select item + "=" + qs[item]
+           List<string> str=new List<string>();
+           foreach (string obj in qs.AllKeys)
+               str.Add(obj+"="+qs[obj]);
+               return str.ToArray();
+        }
+
         public XmlDocument GetProfile(int uid)
         {
             NameValueCollection qs = new NameValueCollection();
