@@ -39,6 +39,7 @@ namespace VKontakte1
             accessToken = AccessToken;
             int birthday = 0;
             birthday = 16;
+            birthday = 18;
         }
         public VKApi(int userId, string accessToken)
         {
