@@ -33,14 +33,10 @@ namespace VKontakte1
             public string picture { get; set; }
         }
 
-        string userName = "";
-
         public VKApi(string accessToken)
         {
             this.AccessToken = accessToken;
             accessToken = AccessToken;
-            int birthday = 0;
-            birthday = 16;
         }
         public VKApi(int userId, string accessToken)
         {
