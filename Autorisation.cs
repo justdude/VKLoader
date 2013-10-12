@@ -15,16 +15,16 @@ using Microsoft.Win32;
 
 namespace VK
 {
-    public partial class Form1 : Form
+    public partial class Autorisation : Form
     {
-        public Form1()
+        public Autorisation()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            webBrowser1.Navigate(KickAssString(Form1.tok));
+            webBrowser1.Navigate(KickAssString(Autorisation.tok));
         }
 
         String KickAssString(String str)

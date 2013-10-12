@@ -44,9 +44,12 @@ namespace VK
         private void Main_Load(object sender, EventArgs e)
         {
             if (!onStart) {
-                Program.vk = new VKontakte1.VKApi(Form1.token.id, Form1.token.accesToken);
+                Program.vk = new VKontakte1.VKApi(Autorisation.token.id, Autorisation.token.accesToken);
                 onStart = true;
             }
+            AlbumForm albumForm = new AlbumForm();
+            albumForm.Show();
+            //albumForm.Close();
 
         }
 
