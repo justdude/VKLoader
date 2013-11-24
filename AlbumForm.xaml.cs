@@ -36,8 +36,8 @@ namespace VK
                     _SelectedImage = value;
                     if (value != null)
                     {
-                        var win = new Window(); // This would be your enlarged view control, inherited from Window.
-                        win.Show();
+                        //var win = new Window(); // This would be your enlarged view control, inherited from Window.
+                       // win.Show();
                     }
                 }
             }
@@ -51,7 +51,7 @@ namespace VK
             {
                 new MyCategory { CategoryId=1, Name="Images 1", Images = new List<MyImage>
                     {
-                        new MyImage { ImageId=1, ImagePath="http://blah.com/images/image1a.png" },
+                        new MyImage { ImageId=1, ImagePath=@"Resources\header.png" },
                         new MyImage { ImageId=2, ImagePath="http://blah.com/images/image1b.png" }
                     }
                 },
@@ -67,6 +67,11 @@ namespace VK
                 }
             };
             DataContext = this;
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+
         }
 
 

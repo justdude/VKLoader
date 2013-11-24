@@ -35,8 +35,8 @@ namespace VK
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Owner.Show();
-            this.Hide();
+          /*  this.Owner.Show();
+            this.Hide();*/
         }
 
 
@@ -44,38 +44,46 @@ namespace VK
         private void Main_Load(object sender, EventArgs e)
         {
             if (!onStart) {
-                Program.vk = new VKontakte1.VKApi(Autorisation.token.id, Autorisation.token.accesToken);
+                
                 onStart = true;
             }
-            AlbumForm albumForm = new AlbumForm();
-            albumForm.Show();
-            //albumForm.Close();
+
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+             AlbumForm albumForm = new AlbumForm();
+             albumForm.Show();
             Albums albums = new Albums();
             albums.Owner = this;
             this.Hide();
             albums.Show();
         }
-
+        Logoff form1;
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
-       /*     Form1 form1 = (Form1)this.Owner;
-            //Пытаемся разлогиниться
-
-            form1.webBrowser1.Navigate("https://login.vk.com/?act=logout&hash=14466908cac58bbe4b&_origin=http://vk.com");
-            //Ждем,пока все операции завершатся
-            while (form1.webBrowser1.IsBusy == true)
-            {
-                Application.DoEvents();
-            }
-            //Переходим на страничку входа
-            form1.webBrowser1.Navigate("http://oauth.vkontakte.ru/authorize?client_id=myappid&scope=friends,groups&redirect_uri=http://oauth.vk.com/blank.html&display=page&response_type=token");
-        */
         }
 
-    }
+        private void OnLoggOff(object sender, WebBrowserDocumentCompletedEventArgs e) {
+            MessageBox.Show(e.Url.ToString());
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            AudioForm form = new AudioForm();
+            form.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            form1 = new Logoff();
+            //Пытаемся разлогиниться
+            form1.Show();
+            char strSymb = '"';
+            form1.webBrowser1.Navigate("http://vk.com/login.php?op=logout");
+            form1.webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(OnLoggOff);
+        }
+
+    }//class
 }

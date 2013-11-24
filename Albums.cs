@@ -34,7 +34,7 @@ namespace VK
             return adress.Substring(i);
         }
 
-        string FindPhotoSize(XmlNode node) {
+        string GetMaxPhotoAdress(XmlNode node) {
             if (node["src_xxbig"] != null) return node["src_xxbig"].InnerText;
             else if (node["src_xbig"] != null) return  node["src_xbig"].InnerText;
             else if (node["src_big"] != null) return node["src_big"].InnerText;
@@ -61,7 +61,7 @@ namespace VK
                             foreach (XmlNode node in xml)
                             {
                                 string path = @"VK_PHOTOS\" + item + @"\" + ParseName(node["src"].InnerText);
-                                string name=FindPhotoSize(node);
+                                string name=GetMaxPhotoAdress(node);
                                 Download(path, name);
                                 /* StreamWriter wr = new StreamWriter(@"D:\VK_PHOTOS\" + item + @"\file.txt");
                                  wr.WriteLine(xml.InnerXml);
@@ -93,7 +93,7 @@ namespace VK
 
         }
 
-        List<VKontakte1.VKApi.Album> albumsList = new List<VKontakte1.VKApi.Album>();
+        List<Album> albumsList = new List<Album>();
         bool loaded = false;
         private void Albums_Load(object sender, EventArgs e)
         {
@@ -106,11 +106,12 @@ namespace VK
             checkedListBox1.Items.Clear();
             System.Xml.XmlNodeList albums = Program.vk.GetAllAlbums(Program.vk.UserId)["response"].ChildNodes;
             albumsList.Clear();
-            VKontakte1.VKApi.Album t = new VKontakte1.VKApi.Album();
+            Album t = new Album();
 
             foreach (System.Xml.XmlNode album in albums)
             {
-                t = new VKontakte1.VKApi.Album();
+                t = new Album();
+                MessageBox.Show(album.InnerText);
                 checkedListBox1.Items.Add(album["title"].InnerText);
                 t.id = int.Parse(album["aid"].InnerText);
                 t.title = album["title"].InnerText;
