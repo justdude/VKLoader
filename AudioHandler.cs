@@ -34,7 +34,7 @@ namespace VK
         }
     }
 
-    public class PhotoContainer
+   /* public class PhotoContainer
     {
         List<Photo> photos = new List<Photo>();
 
@@ -60,5 +60,5 @@ namespace VK
         {
             return photos;
         }
-    }
+    }*/
 }
