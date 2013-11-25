@@ -56,7 +56,8 @@
     <Compile Include="Albums.Designer.cs">
       <DependentUpon>Albums.cs</DependentUpon>
     </Compile>
-    <Compile Include="AudioHandler.cs" />
+    <Compile Include="ContainerHandlers.cs" />
+    <Compile Include="Downloader.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>

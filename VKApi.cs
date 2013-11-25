@@ -73,11 +73,12 @@ namespace vkAPI
             ExecuteCommand("wall.post", collection);
         }
         #region Photos
-        public XmlDocument GetAllAlbums(int uid)
+        public XmlDocument GetAllAlbums(int uid, bool isGroup)
         {
             NameValueCollection qs = new NameValueCollection();
-            qs["uid"] = uid.ToString();
-            qs["fileds"] = "uid,need_covers";
+            qs["owner_id"] = ((isGroup) ? "-" : "") + uid.ToString();
+            qs["need_covers"] = "1";
+            qs["fileds"] = "owner_id,need_covers";
             return ExecuteCommand("photos.getAlbums", qs);
         }
 
@@ -86,15 +87,15 @@ namespace vkAPI
             NameValueCollection qs = new NameValueCollection();
             qs["uid"] = uid.ToString();
             qs["fileds"] = "uid,extended";
-            return ExecuteCommand("photos.getProfile", qs);
+            return ExecuteCommand("albums.getProfile", qs);
         }
 
-        public XmlDocument GetPhotosFromAlbum(int uid, int album) 
+        public XmlDocument GetPhotosFromAlbum(int owner_id, int album_id) 
         {
             NameValueCollection qs = new NameValueCollection();
-            qs["owner_id"] = uid.ToString();
-            qs["aid"] = album.ToString();
-            qs["fields"] = "uid,aid";
+            qs["owner_id"] = owner_id.ToString();
+            qs["album_id"] = album_id.ToString();
+            qs["fields"] = "owner_id,album_id";
             return ExecuteCommand("photos.get", qs);
         }
 

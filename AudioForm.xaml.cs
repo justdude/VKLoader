@@ -33,7 +33,7 @@ namespace VK
            if (count > 0) 
            {
                List<Sound> sounds = new List<Sound>();
-               AudioContainer container = new AudioContainer();
+               AudiosContainer container = new AudiosContainer();
                container.Bind(Program.vk.GetAudioFromUser(Program.vk.UserId, false, 0, 100));
                listbox1.DataContext = container.getSound();
            }
