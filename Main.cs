@@ -35,8 +35,13 @@ namespace VK
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+<<<<<<< HEAD
             this.Owner.Show();
             this.Hide();
+=======
+          /*  this.Owner.Show();
+            this.Hide();*/
+>>>>>>> origin/vanchik
         }
 
 
@@ -44,19 +49,33 @@ namespace VK
         private void Main_Load(object sender, EventArgs e)
         {
             if (!onStart) {
+<<<<<<< HEAD
                 Program.vk = new VKontakte1.VKApi(Form1.token.id, Form1.token.accesToken);
                 onStart = true;
             }
 
+=======
+                
+                onStart = true;
+            }
+
+
+>>>>>>> origin/vanchik
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
+=======
+             AlbumForm albumForm = new AlbumForm();
+             albumForm.Show();
+>>>>>>> origin/vanchik
             Albums albums = new Albums();
             albums.Owner = this;
             this.Hide();
             albums.Show();
         }
+<<<<<<< HEAD
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -75,4 +94,32 @@ namespace VK
         }
 
     }
+=======
+        Logoff form1;
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+        }
+
+        private void OnLoggOff(object sender, WebBrowserDocumentCompletedEventArgs e) {
+            MessageBox.Show(e.Url.ToString());
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            AudioForm form = new AudioForm();
+            form.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            form1 = new Logoff();
+            //Пытаемся разлогиниться
+            form1.Show();
+            char strSymb = '"';
+            form1.webBrowser1.Navigate("http://vk.com/login.php?op=logout");
+            form1.webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(OnLoggOff);
+        }
+
+    }//class
+>>>>>>> origin/vanchik
 }

@@ -1,6 +1,10 @@
 ﻿namespace VK
 {
+<<<<<<< HEAD:Form1.Designer.cs
     partial class Form1
+=======
+    partial class Login
+>>>>>>> origin/vanchik:Login.Designer.cs
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -28,6 +32,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+<<<<<<< HEAD:Form1.Designer.cs
+=======
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
+>>>>>>> origin/vanchik:Login.Designer.cs
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
@@ -37,6 +45,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
+<<<<<<< HEAD:Form1.Designer.cs
             this.webBrowser1.Size = new System.Drawing.Size(284, 262);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
@@ -49,6 +58,21 @@
             this.Controls.Add(this.webBrowser1);
             this.Name = "Form1";
             this.Text = "Form1";
+=======
+            this.webBrowser1.Size = new System.Drawing.Size(494, 317);
+            this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            // 
+            // Login
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(494, 317);
+            this.Controls.Add(this.webBrowser1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Login";
+            this.Text = "Авторизация";
+>>>>>>> origin/vanchik:Login.Designer.cs
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 

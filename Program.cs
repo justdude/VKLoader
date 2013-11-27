@@ -8,7 +8,11 @@ namespace VK
 {
     static class Program
     {
+<<<<<<< HEAD
         public static VKontakte1.VKApi vk = null;
+=======
+        public static vkAPI.VKApi vk = null;
+>>>>>>> origin/vanchik
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -17,7 +21,11 @@ namespace VK
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+<<<<<<< HEAD
             Application.Run(new Form1());
+=======
+            Application.Run(new Login());
+>>>>>>> origin/vanchik
         }
     }
 }
