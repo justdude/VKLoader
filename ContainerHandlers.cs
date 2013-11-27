@@ -7,6 +7,15 @@ using vkAPI;
 namespace VK
 {
 
+    public enum PhotosSize
+    {
+        xxx,
+        xx,
+        x,
+        medium,
+        small
+    }
+
     public class AudiosContainer
     {
         List<Sound> sounds = new List<Sound>();

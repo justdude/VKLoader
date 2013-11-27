@@ -26,6 +26,7 @@ namespace VK
         List<Album> albums = new List<Album>();
         Downloader downloader;
         string path = @"VK_PHOTOS\";
+
         private void Albums_Load(object sender, EventArgs e)
         {
             checkedListBox1.Items.Clear();
@@ -46,14 +47,6 @@ namespace VK
             return adress.Substring(i);
         }
 
-
-        enum PhotosSize { 
-            xxx,
-            xx,
-            x,
-            medium,
-            small
-        }
         string GetMaxPhotoAdress(XmlNode node,PhotosSize size)
         {
             if (node["src_xxbig"] != null && size == PhotosSize.xxx) return node["src_xxbig"].InnerText;
@@ -75,7 +68,6 @@ namespace VK
             return null;
         }
 
-
         private void button1_Click(object sender, EventArgs e)
         {
             foreach (string item in checkedListBox1.CheckedItems)
@@ -94,8 +86,6 @@ namespace VK
             downloader.OpenPath();
         }
 
-
-
         void OnDownloading(object sender, DownloadProgressChangedEventArgs e)
         {
 
@@ -111,7 +101,6 @@ namespace VK
             Main main = this.Owner as Main;
             if (main != null) main.Show();
         }
-
 
 
     }
