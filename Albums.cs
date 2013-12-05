@@ -12,6 +12,7 @@ using System.IO;
 using System.Xml;
 using System.Net;
 using System.Threading;
+using System.ComponentModel;
 
 namespace VK
 {
@@ -37,7 +38,7 @@ namespace VK
             foreach (var album in albums)
                 checkedListBox1.Items.Add(album.title);
 
-            downloader = new Downloader(path, this.OnDownloading, this.OnCompleted);
+            downloader = new Downloader(path);
 
         }
 
@@ -70,30 +71,39 @@ namespace VK
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (string item in checkedListBox1.CheckedItems)
-                foreach (var obj in albums)
-                    if (obj.title == item)
-                    {
-                        XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, obj.id)["response"].ChildNodes;
-                        System.IO.Directory.CreateDirectory(@"VK_PHOTOS\" + item);
-                        foreach (XmlNode node in xml)
+
+            if (albums!=null)
+            {
+                BackgroundWorker backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += this.DoWork;
+                backgroundWorker.RunWorkerCompleted += this.DoneWork;
+                backgroundWorker.RunWorkerAsync(checkedListBox1);
+            }
+        }
+ 
+
+
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            CheckedListBox checkedListBox1 = (CheckedListBox)e.Argument;
+                foreach (string item in checkedListBox1.CheckedItems)
+                    foreach (var obj in albums)
+                        if (obj.title == item)
                         {
-                            string path_ = path + item + @"\" + ParseName(node["src"].InnerText);
-                            string name = GetMaxPhotoAdress(node,PhotosSize.xxx);
-                            downloader.Download(name, path_);
+                            XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, obj.id)["response"].ChildNodes;
+                            System.IO.Directory.CreateDirectory(@"VK_PHOTOS\" + item);
+                            foreach (XmlNode node in xml)
+                            {
+                                string path_ = item + @"\" + ParseName(node["src"].InnerText);
+                                string name = GetMaxPhotoAdress(node,PhotosSize.xxx);
+                                downloader.Download(name, path_);
+                            }
                         }
-                    }
-            downloader.OpenPath();
         }
 
-        void OnDownloading(object sender, DownloadProgressChangedEventArgs e)
+        private void DoneWork(object sender, RunWorkerCompletedEventArgs e)
         {
-
-        }
-
-        void OnCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            MessageBox.Show("done");
+            IOHandler.OpenPath(path);
         }
 
         private void Albums_FormClosed(object sender, FormClosedEventArgs e)

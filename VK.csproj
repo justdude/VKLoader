@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="ContainerHandlers.cs" />
     <Compile Include="Downloader.cs" />
+    <Compile Include="IOHandler.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +91,7 @@
     <Compile Include="AudioForm.xaml.cs">
       <DependentUpon>AudioForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Uploader.cs" />
     <Compile Include="VKApi.cs" />
     <Compile Include="Wall.cs">
       <SubType>Form</SubType>

@@ -31,7 +31,10 @@
         <ListBox Grid.Row="2" Name="listbox1" ItemsSource="{Binding}" Height="auto" Width="500" HorizontalAlignment="Left"  Margin="0,0,0,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding title}"></Label>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Content="{Binding title}"></Label>
+                        <Label Content="{Binding duration}" HorizontalAlignment="Right"></Label>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
