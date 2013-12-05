@@ -34,6 +34,9 @@ using vkAPI;
         public string text{ get; set; }
         public float date{ get; set; }
         public int user_likes{ get; set; }
+
+        public string path;
+
     }
 
     public class Sound

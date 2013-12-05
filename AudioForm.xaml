@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:src="clr-namespace:VK"
         Title="Audio" Height="350" Width="525" Loaded="Window_Loaded">
-    <Window.Resources>
-        <src:ImagePathConverter x:Key="ImagePathConverter"/>
-    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" ></RowDefinition>

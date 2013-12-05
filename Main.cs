@@ -54,11 +54,13 @@ namespace VK
         private void button3_Click(object sender, EventArgs e)
         {
              AlbumForm albumForm = new AlbumForm();
+             //albumForm.Owner = (Window])this;
+             this.Hide();
              albumForm.Show();
-            Albums albums = new Albums();
+            /*Albums albums = new Albums();
             albums.Owner = this;
             this.Hide();
-            albums.Show();
+            albums.Show();*/
         }
         Logoff form1;
         private void Main_FormClosed(object sender, FormClosedEventArgs e)

@@ -30,7 +30,7 @@ namespace VK
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            int count = int.Parse(Program.vk.GetAudioCountFromUser(Program.vk.UserId, false).SelectSingleNode("response").InnerText);
+           int count = int.Parse(Program.vk.GetAudioCountFromUser(Program.vk.UserId, false).SelectSingleNode("response").InnerText);
            if (count > 0) 
            {
                sounds = new List<Sound>();

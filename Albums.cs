@@ -48,19 +48,20 @@ namespace VK
             return adress.Substring(i);
         }
 
-        string GetMaxPhotoAdress(XmlNode node,PhotosSize size)
+        public static string GetMaxPhotoAdress(XmlNode node,PhotosSize size)
         {
             if (node["src_xxbig"] != null && size == PhotosSize.xxx) return node["src_xxbig"].InnerText;
             else if (node["src_xbig"] != null && size == PhotosSize.xx) return node["src_xbig"].InnerText;
             else if (node["src_big"] != null && size == PhotosSize.x) return node["src_big"].InnerText;
             else if (node["src"] != null && size == PhotosSize.medium) return node["src_small"].InnerText;
             else if (node["src_small"] != null && size == PhotosSize.small) return node["src"].InnerText;
-            string str = GetMaxPhotoAdress(node);
+            string str = Albums.GetMaxPhotoAdress(node);
             if (null != str && str != string.Empty) return str; 
             return null;
         }
 
-        string GetMaxPhotoAdress(XmlNode node) {
+        public static string GetMaxPhotoAdress(XmlNode node)
+        {
             if (node["src_xxbig"] != null) return node["src_xxbig"].InnerText;
             else if (node["src_xbig"] != null) return  node["src_xbig"].InnerText;
             else if (node["src_big"] != null) return node["src_big"].InnerText;
@@ -80,8 +81,6 @@ namespace VK
                 backgroundWorker.RunWorkerAsync(checkedListBox1);
             }
         }
- 
-
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
