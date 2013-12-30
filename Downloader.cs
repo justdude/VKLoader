@@ -8,7 +8,7 @@ using System.Threading;
 using System.ComponentModel;
 namespace VK
 {
-    class Downloader
+    public class Downloader
     {
         string path;
 

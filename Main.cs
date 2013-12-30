@@ -65,10 +65,11 @@ namespace VK
         Logoff form1;
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
+            this.LogOff();
         }
 
         private void OnLoggOff(object sender, WebBrowserDocumentCompletedEventArgs e) {
-            MessageBox.Show(e.Url.ToString());
+            //on logg off
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -79,12 +80,17 @@ namespace VK
 
         private void button5_Click(object sender, EventArgs e)
         {
+            this.LogOff();
+        }
+
+        private void LogOff()
+        {
+            //this.Close();
             form1 = new Logoff();
-            //Пытаемся разлогиниться
-            form1.Show();
-            char strSymb = '"';
             form1.webBrowser1.Navigate("http://vk.com/login.php?op=logout");
             form1.webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(OnLoggOff);
+            form1.Close();
+            Application.Exit();
         }
 
     }//class

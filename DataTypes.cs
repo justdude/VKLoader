@@ -39,7 +39,14 @@ using vkAPI;
 
     }
 
-    public class Sound
+    public interface IData
+    {
+        string GenerateFileName();
+        string GenerateFileExtention();
+        string GetUrl();
+    }
+
+    public class Sound:IData
     { 
         public string id{ get; set; }
         public string artist{ get; set; }
@@ -48,9 +55,27 @@ using vkAPI;
         public string url{ get; set; }
         public string lyrics_id{ get; set; }
         public string genre_id { get; set; }
-        public override string ToString()
+
+        public string ToString()
         {
             return String.Format("Sound:{0} : {1}", artist, title);
+        }
+
+        public string GetUrl()
+        {
+            return url;
+        }
+
+        public string GenerateFileName()
+        {
+            string value = this.artist + " - " + this.title;
+            /*while (value.IndexOf("&amp;")>0)
+                value.Remove(value.IndexOf("&amp;"), 5);*/
+            return value;
+        }
+        public string GenerateFileExtention()
+        {
+            return ".mp3";
         }
     }
 

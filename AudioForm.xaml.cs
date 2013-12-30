@@ -30,77 +30,82 @@ namespace VK
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           int count = int.Parse(Program.vk.GetAudioCountFromUser(Program.vk.UserId, false).SelectSingleNode("response").InnerText);
-           if (count > 0) 
-           {
-               sounds = new List<Sound>();
-               AudiosContainer container = new AudiosContainer();
-               container.Bind(Program.vk.GetAudioFromUser(Program.vk.UserId, false, 0, 100));
-               listbox1.DataContext = container.getSound();
-               sounds = container.getSound();
-           }
+            //this.Init(sender, null);
+            BackgroundWorker backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += this.Init;
+            backgroundWorker.RunWorkerCompleted += this.InitDone;
+            backgroundWorker.RunWorkerAsync();
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
+        private void Init(object sender, DoWorkEventArgs e)
         {
-
+            int count = int.Parse(Program.vk.GetAudioCountFromUser(Program.vk.UserId, false).SelectSingleNode("response").InnerText);
+            if (count > 0)
+            {
+                sounds = new List<Sound>();
+                AudiosContainer container = new AudiosContainer();
+                double value = 0;
+                //Dispatcher.Invoke(,new object[]{ ProgressBar.ValueProperty, value++ });
+                container.Bind(Program.vk.GetAudioFromUser(Program.vk.UserId, false, 0, 2));
+                //listbox1.DataContext = container.getSound();
+                sounds = container.getSound();
+            }
         }
 
-        private void Next_Click(object sender, RoutedEventArgs e)
+        private void InitDone(object sender, RunWorkerCompletedEventArgs e)
         {
-
+            listbox1.DataContext = sounds;
         }
 
+        #region sync audio
         private void Sync_Click(object sender, RoutedEventArgs e)
         {
             if (sounds!=null)
             { 
                 BackgroundWorker backgroundWorker = new BackgroundWorker();
                 backgroundWorker.DoWork += this.DoWork;
+                backgroundWorker.RunWorkerCompleted += this.OnCompletedLoad;
                 backgroundWorker.RunWorkerAsync(sounds);
             }
         }
 
-        private void DoWork(object sender, DoWorkEventArgs e)
-        {
-            string directory = @"audio\";
-            List<Sound> sounds = (List<Sound>)e.Argument;
-            Downloader downloader = new Downloader(directory);
-
-            if (!System.IO.File.Exists(directory))
-                System.IO.Directory.CreateDirectory(directory);
-            else
-                IOHandler.ClearFolder(directory);
-
-            for (int i = 0; i < sounds.Count; i++){
-                downloader.Download(sounds[i].url,(sounds[i].artist+" "+sounds[i].title+".mp3"));
-            }
-        }
-        private void OnLoad()
+        private void OnCompletedLoad(object sender, RunWorkerCompletedEventArgs e)
         {
             string directory = @"audio\";
             IOHandler.OpenPath(directory);
         }
 
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<Sound> sounds = (List<Sound>)e.Argument;
+            SynhronizeAdapter adapter = new SynhronizeAdapter();
+            adapter.SyncFolderWithList<Sound>(sounds, @"audio\");
+            
+        }
+        #endregion
+
         private void PhotosFormAc_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("PhotosFormAc_Click");
         }
 
         private void ShowSetteng_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("ShowSetteng_Click");
         }
 
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        private void Audio_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("Audio_Click");
         }
 
 
-        private void Share_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
+
     }
+    /*
+    public class Comparer:IComparer
+    {
+        public bool CompareAudio(stri)
+    }*/
 }

@@ -25,17 +25,17 @@ namespace VK
 
         public static int appId = 3793209;
         public static int scope = (int)(VkontakteScopeList.audio |
-                                        VkontakteScopeList.docs | 
+                                       // VkontakteScopeList.docs | 
                                         VkontakteScopeList.friends | 
                                         VkontakteScopeList.link | 
                                         VkontakteScopeList.messages | 
-                                        VkontakteScopeList.notes | 
+                                        //VkontakteScopeList.notes | 
                                         VkontakteScopeList.notify | 
-                                        VkontakteScopeList.offers | 
-                                        VkontakteScopeList.pages | 
+                                        //VkontakteScopeList.offers | 
+                                        //VkontakteScopeList.pages | 
                                         VkontakteScopeList.photos | 
-                                        VkontakteScopeList.questions | 
-                                        VkontakteScopeList.video | 
+                                        //VkontakteScopeList.questions | 
+                                        //VkontakteScopeList.video | 
                                         VkontakteScopeList.wall);
 
         private void Form1_Load(object sender, EventArgs e)
