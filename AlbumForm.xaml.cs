@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
+using System.ComponentModel;
 namespace VK
 {
     /// <summary>
@@ -36,8 +37,8 @@ namespace VK
                     _SelectedImage = value;
                     if (value != null)
                     {
-                        //var win = new Window(); // This would be your enlarged view control, inherited from Window.
-                       // win.Show();
+                        var win = new Window(); // This would be your enlarged view control, inherited from Window.
+                        win.Show();
                     }
                 }
             }
@@ -47,26 +48,45 @@ namespace VK
         {
             InitializeComponent();
 
-            CategorisedImages = new List<MyCategory> 
-            {
+            //CategorisedImages = new List<MyCategory>
+           /* {
                 new MyCategory { CategoryId=1, Name="Images 1", Images = new List<MyImage>
                     {
-                        new MyImage { ImageId=1, ImagePath=@"Resources\header.png" },
-                        new MyImage { ImageId=2, ImagePath="http://blah.com/images/image1b.png" }
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=1 },
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=2 }
                     }
                 },
                 new MyCategory { CategoryId=2, Name="Images 2", Images = new List<MyImage>
                     {
-                        new MyImage { ImageId=3, ImagePath="http://blah.com/images/image2a.png" },
-                        new MyImage { ImageId=4, ImagePath="http://blah.com/images/image2b.png" },
-                        new MyImage { ImageId=3, ImagePath="http://blah.com/images/image2a.png" },
-                        new MyImage { ImageId=4, ImagePath="http://blah.com/images/image2b.png" },
-                        new MyImage { ImageId=3, ImagePath="http://blah.com/images/image2a.png" },
-                        new MyImage { ImageId=4, ImagePath="http://blah.com/images/image2b.png" }
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=3 },
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=4 },
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=3 },
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=4 },
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=3 },
+                        new MyImage(@"http://cs7009.vk.me/c540107/v540107872/4c7b/ZRtLhHSHKz8.jpg") { ImageId=4}
                     }
                 }
-            };
-            DataContext = this;
+            };*/
+
+             BackgroundWorker backgroundWorker = new BackgroundWorker();
+             backgroundWorker.DoWork += this.DoWork;
+             backgroundWorker.RunWorkerCompleted += this.DoneWork;
+             CategorisedImages = new List<MyCategory>();
+             this.DoWork(null, null);
+             //backgroundWorker.RunWorkerAsync(CategorisedImages);
+             DataContext = this;
+        }
+
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            PhotosAndAlbumBinder container = new PhotosAndAlbumBinder();
+            container.Bind(Program.vk.GetAllAlbums(Program.vk.UserId, false));
+            CategorisedImages = container.getAlbums();
+        }
+
+        private void DoneWork(object sender, RunWorkerCompletedEventArgs e)
+        {
+
         }
 
         private void Window_Initialized(object sender, EventArgs e)
@@ -79,15 +99,33 @@ namespace VK
 
     public class MyCategory
     {
-        public int CategoryId { get; set; }
         public string Name { get; set; }
         public List<MyImage> Images { get; set; }
     }
 
     public class MyImage
     {
-        public int ImageId { get; set; }
-        public string ImagePath { get; set; }
+        public string ImageId { get; set; }
+
+        public MyImage(string path)
+        {
+            _path = path;
+            _source = new Uri(path);
+            _image = BitmapFrame.Create(_source);
+        }
+
+        public override string ToString()
+        {
+            return _source.ToString();
+        }
+
+        private string _path;
+
+        private Uri _source;
+        public string Source { get { return _path; } }
+
+        private BitmapFrame _image;
+        public BitmapFrame Image { get { return _image; } set { _image = value; } }
     }
 
 }

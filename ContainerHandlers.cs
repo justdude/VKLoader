@@ -68,4 +68,38 @@ namespace VK
             return albums;
         }
     }
+
+    public class PhotosAndAlbumBinder:AlbumsContainer 
+    {
+        List<MyCategory> albums = new List<MyCategory>();
+
+        public void Bind(XmlDocument doc)
+        {
+            albums.Clear();
+            MyCategory t = new MyCategory();
+            XmlNodeList albumList = doc["response"].ChildNodes;
+            foreach (System.Xml.XmlNode album in albumList)
+            {
+                t = new MyCategory();
+                t.Name = album["title"].InnerText;
+                t.Images = this.GetPhotosListFromAlbum(int.Parse(album["aid"].InnerText));
+                albums.Add(t);
+            }
+        }
+
+        public List<MyImage> GetPhotosListFromAlbum(int albumID) {
+            List<MyImage> photos = new List<MyImage>();
+                XmlNodeList xml = Program.vk.GetPhotosFromAlbum(Program.vk.UserId, albumID)["response"].ChildNodes;
+                foreach (XmlNode node in xml)
+                {
+                   photos.Add(new MyImage(Albums.GetMaxPhotoAdress(node,PhotosSize.x))); 
+                }
+            return photos;
+        }
+
+        public List<MyCategory> getAlbums()
+        {
+            return albums;
+        }
+    }
 }

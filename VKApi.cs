@@ -31,13 +31,22 @@ namespace vkAPI
             else return node.InnerText;
         }
 
-        private XmlDocument ExecuteCommand(string name, NameValueCollection qs)
+        private XmlDocument ExecuteCommand(string name, NameValueCollection param)
         {
             XmlDocument result = new XmlDocument();
             result.Load(String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}",
                         name,
                         AccessToken,
-                        String.Join("&", SelectItem(qs))));
+                        String.Join("&", SelectItem(param))));
+            return result;
+        }
+
+        private XmlDocument ExecuteCommand(string name)
+        {
+            XmlDocument result = new XmlDocument();
+            result.Load(String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}",
+                        name,
+                        AccessToken));
             return result;
         }
 
@@ -144,6 +153,20 @@ namespace vkAPI
             qs.Add("fields", "uid,aid");
             return ExecuteCommand("audio.getRecommendations", qs);
         }
+
+        public XmlDocument GetAudioUpload()
+        {
+            return ExecuteCommand("audio.getUploadServer");
+        }
+
+        public XmlDocument GetPhotosUploadToWall(int uid, bool isGroup)
+        {
+            NameValueCollection qs = new NameValueCollection();
+            qs.Add("group_id", ((isGroup) ? "-" : "") + uid.ToString());
+            qs.Add("fields", "group_id");
+            return ExecuteCommand("photos.getWallUploadServer", qs);
+        }
+
         #endregion
     }
 

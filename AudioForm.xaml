@@ -2,36 +2,64 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:src="clr-namespace:VK"
-        Title="Audio" Height="350" Width="525" Loaded="Window_Loaded">
+        Title="Audio" Height="350" Width="525" Loaded="Window_Loaded"
+        Background="Gray"
+        >
     <Window.Resources>
-        <src:ImagePathConverter x:Key="ImagePathConverter"/>
+        <Style x:Key="iButton" TargetType="Button">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" ></RowDefinition>
-            <RowDefinition Height="25" ></RowDefinition>
+            <RowDefinition Height="48" ></RowDefinition>
+            <RowDefinition Height="8" ></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0"  HorizontalAlignment="Right" Height="auto" Width="auto" Orientation="Horizontal">
-            <Button x:Name="Sync" Margin="10,0" Click="Sync_Click">Синхронизация</Button>
-            <Button x:Name="Share" Margin="10,0" Click="Share_Click">Share</Button>
-            <Button x:Name="PhotosFormAc" Margin="10,0" Click="PhotosFormAc_Click">Фото</Button>
-            <Button Margin="10,0">Аудио</Button>
-            <Button x:Name="ShowSetteng" Margin="10,0" Click="ShowSetteng_Click">Настройки</Button>
-            <Button x:Name="Exit" Margin="10,0" Click="Exit_Click">Выход</Button>
+        <StackPanel Grid.Row="0" Margin="5,5,0,0" HorizontalAlignment="Right" Height="45" Width="auto" Orientation="Horizontal">
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" Click="Sync_Click" >
+                    <Image Source="Images\Recycle.png" />
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Синхронизация"/>
+            </StackPanel>
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="PhotosFormAc" Click="PhotosFormAc_Click" >
+                    <Image Source="Images\Picture.png" />
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Фото"/>
+            </StackPanel>
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="Audio" Click="Audio_Click" >
+                    <Image Source="Images\Headphones.png" />
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Аудио"/>
+            </StackPanel>
+
+            <StackPanel Width="90"  Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="ShowSetteng" Click="ShowSetteng_Click" >
+                    <Image Source="Images\Work.png" />
+                </Button>
+                <TextBlock HorizontalAlignment="Center" Text="Настройки" />
+            </StackPanel>
+
         </StackPanel>
-        <StackPanel Grid.Row="1"  HorizontalAlignment="Right" Height="auto" Width="auto" Orientation="Horizontal">
-            <!--<Image x:Name="loading" Source="Resources\icon_picture.png" Margin="0,0,0,0" Width="20" />-->
-            <TextBlock x:Name="loading" Text="Loading..." Margin="0,0,0,0" Width="60" Opacity="0.995" />
-            <Button x:Name="Back" Margin="10,0" Click="Back_Click">туда</Button>
-            <Button x:Name="Next" Margin="10,0" Click="Next_Click">сюда</Button>
-        </StackPanel>
-        
+            <ProgressBar Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" />
+
         <ListBox Grid.Row="2" Name="listbox1" ItemsSource="{Binding}" Height="auto" Width="500" HorizontalAlignment="Left"  Margin="0,0,0,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding title}"></Label>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="{Binding url}"></Image>
+                        <Label Content="{Binding title}"></Label>
+                        <Label Content="{Binding duration}" HorizontalAlignment="Right"></Label>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

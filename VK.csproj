@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="ContainerHandlers.cs" />
     <Compile Include="Downloader.cs" />
+    <Compile Include="IOHandler.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +91,7 @@
     <Compile Include="AudioForm.xaml.cs">
       <DependentUpon>AudioForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Uploader.cs" />
     <Compile Include="VKApi.cs" />
     <Compile Include="Wall.cs">
       <SubType>Form</SubType>
@@ -138,6 +140,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_picture.ico" />
+    <Resource Include="Images\Arrow.png" />
+    <Resource Include="Images\Headphones.png" />
+    <Resource Include="Images\iTunes.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Media-Player.png" />
+    <Resource Include="Images\Picture.png" />
+    <Resource Include="Images\Power.png" />
+    <Resource Include="Images\Recycle.png" />
+    <Resource Include="Images\Search.png" />
+    <Resource Include="Images\Sign-Down.png" />
+    <Resource Include="Images\Sign-up.png" />
+    <Resource Include="Images\Work.png" />
+    <Resource Include="Images\Wrench.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="AlbumForm.xaml">
@@ -153,6 +169,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

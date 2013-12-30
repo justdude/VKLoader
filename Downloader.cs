@@ -8,7 +8,7 @@ using System.Threading;
 using System.ComponentModel;
 namespace VK
 {
-    class Downloader
+    public class Downloader
     {
         string path;
 
@@ -20,31 +20,27 @@ namespace VK
         public delegate void OnDownloading(object sender, DownloadProgressChangedEventArgs e);
         public delegate void OnCompleted(object sender, AsyncCompletedEventArgs e);
         System.Net.WebClient web;
-        /*OnCompleted onDownload;
-        OnDownloading onDownloading;*/
 
-        public Downloader(string path, OnDownloading onDownloading, OnCompleted onDownload)
+        public Downloader(string path)
         {
             this.path = path;
-           /* this.onDownloading = onDownloading;
-            this.onDownload = onDownload;*/
             web = new System.Net.WebClient();
-            web.DownloadProgressChanged += new System.Net.DownloadProgressChangedEventHandler(onDownloading);
-            web.DownloadFileCompleted += new AsyncCompletedEventHandler(onDownload);
+            /*
+             * web.DownloadProgressChanged += new System.Net.DownloadProgressChangedEventHandler(onDownloading);
+            web.DownloadFileCompleted += new AsyncCompletedEventHandler(onDownload);*/
         }
 
-        public void Download(string uri)
-        {
-            web.DownloadFile(new Uri(uri), path);
-        }
 
-        public void Download(string uri,string yourPath)
+        public void Download(string uri,string filename)
         {
-            web.DownloadFile(new Uri(uri), yourPath);
-        }
-    
-        public void OpenPath(){
-            System.Diagnostics.Process.Start(path);
+            try
+            {
+                web.DownloadFile(new Uri(uri), path + filename);
+            }
+            catch (WebException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(""+ex.Message);
+            }
         }
 
 

@@ -15,8 +15,9 @@ namespace VK
             if (uri == null)
                 return null;
 
-            var result = new BitmapImage( new Uri(uri.ImagePath));
-            return result;
+           // var result = new BitmapImage( new Uri(uri.ImagePath));
+           // return result;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -24,9 +24,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <ListBox Grid.Row="0" ItemsSource="{Binding ElementName=lstCategories, Path=SelectedItem.Images}" Grid.Column="1" SelectedItem="{Binding SelectedImage}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" >
-                <ListBox.Resources>
-                    <src:ImagePathConverter x:Key="imageConverter"></src:ImagePathConverter>
-                </ListBox.Resources>
+
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True"/>
@@ -35,7 +33,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="1" BorderBrush="Black" Background="AliceBlue" Width="100" Height="100" Margin="10,10,10,10">
-                            <Image Source="{Binding ImagePath, Converter={StaticResource imageConverter}}"/>
+                            <Image Source="{Binding Image}"/>
                             <!--<TextBlock Text="{Binding ImagePath}" TextWrapping="Wrap"/>-->
                         </Border>
                     </DataTemplate>
