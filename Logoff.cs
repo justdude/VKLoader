@@ -16,6 +16,11 @@ namespace VK
             InitializeComponent();
         }
 
+        private void Logoff_Load(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

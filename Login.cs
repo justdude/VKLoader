@@ -20,28 +20,31 @@ namespace VK
     {
         public Login()
         {
+            loaded = true;
             InitializeComponent();
+            SetSetting();
         }
 
-        public static int appId = 3793209;
+        public static bool loaded = false;
+
+        public static int appId = 3793209;//4345193
         public static int scope = (int)(VkontakteScopeList.audio |
-                                       // VkontakteScopeList.docs | 
                                         VkontakteScopeList.friends | 
                                         VkontakteScopeList.link | 
-                                        VkontakteScopeList.messages | 
+                                        //VkontakteScopeList.messages | 
+                                        //VkontakteScopeList.notify |
+                                        VkontakteScopeList.photos | 
+                                        // VkontakteScopeList.docs | 
                                         //VkontakteScopeList.notes | 
-                                        VkontakteScopeList.notify | 
                                         //VkontakteScopeList.offers | 
                                         //VkontakteScopeList.pages | 
-                                        VkontakteScopeList.photos | 
                                         //VkontakteScopeList.questions | 
                                         //VkontakteScopeList.video | 
                                         VkontakteScopeList.wall);
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //webBrowser1.Navigate(StringHelper.ClearSpaces(tok));
-            webBrowser1.Navigate(String.Format("https://oauth.vk.com/authorize?client_id={0}&scope={1}&redirect_uri=https://oauth.vk.com/blank.html&display=popup&response_type=token", Login.appId, Login.scope));
+            webBrowser1.Navigate(String.Format("https://oauth.vk.com/authorize?client_id={0}&scope={1}&redirect_uri=https://oauth.vk.com/blank.html&display=popup&v=5.0&response_type=token", Login.appId, Login.scope));
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -51,16 +54,11 @@ namespace VK
             {
                 if (url.IndexOf("access_token") > 0)
                 {
-                    int id = 0;
-                    string token = " ";
-                    Parse(url, out id, out token);
-                    
-                    Program.vk = new vkAPI.VKApi(id, token);
+                    Program.vk = new vkAPI.VKApi(url);
 
-                    Main main = new Main();
-                    main.Owner = this;
-                    main.Show();
+                    AudioForm form = new AudioForm();
                     this.Hide();
+                    form.Show();
 
                 }
                 else if (url.IndexOf("access_denied") > 0)
@@ -72,19 +70,18 @@ namespace VK
 
         }
 
-        private void Parse(string url,out int id,out string token) 
-        {
-            token = "";
-            id = 0;
-            Regex reg = new Regex(@"(?<name>[\w\d\x5f]+)=(?<value>[^\x26\s]+)",
-                      RegexOptions.IgnoreCase | RegexOptions.Singleline);
-            var mathes = reg.Matches(url);
-            foreach (Match m in mathes)
-                if (m.Groups["name"].Value == "access_token")
-                    token = m.Groups["value"].Value;
-                else if (m.Groups["name"].Value == "user_id")
-                    id = int.Parse(m.Groups["value"].Value);
-        }
         
+
+
+        private void SetSetting()
+        {
+            Properties.Settings.Default.ProgramPath = Environment.CurrentDirectory;
+            Properties.Settings.Default.SettingPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        }
+
+        private void Login_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

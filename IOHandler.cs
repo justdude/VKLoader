@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 using System.IO;
+using System.ComponentModel;
+using System.Net;
 
 namespace VK
 {
@@ -39,7 +41,7 @@ namespace VK
         public void Synchronize(List<T> containValues, Func<FileInfo[], T, bool> Check)
         {
             for (int i=0; i< containValues.Count; i++)
-                if (!Check(folderFiles,containValues[i]))
+                if (!Check(folderFiles,containValues[i]) && !existFiles.Contains(containValues[i]))
                     existFiles.Add(containValues[i]);
         }
 
@@ -70,6 +72,9 @@ namespace VK
             }
         }
 
+        public DownloadDataCompletedEventHandler OnLoaded;
+        public DownloadProgressChangedEventHandler OnProgress;
+
         private void SyncFiles<T>(List<T> values, string directory, Downloader downloader) where T : IData
         {
             Synchronizer<T> sync = new Synchronizer<T>(directory);
@@ -77,9 +82,34 @@ namespace VK
 
             sync.Synchronize(values, CompareAudioAndFile);
             List<T> valuesToDownload = sync.GetDownloadList();
+
+            downloader.SetOnLoaded(OnLoaded);
+            downloader.SetOnChanged(OnProgress);
+            DownloadEachFile<T>(downloader, valuesToDownload);
+        }
+
+        private int fileNumber;
+        private int filesCount;
+        public int GetDownloadedFileNumber()
+        {
+            return fileNumber;
+        }
+
+        public int GetDownloadedFilesCount()
+        {
+            return filesCount;
+        }
+
+        private void DownloadEachFile<T>(Downloader downloader, List<T> valuesToDownload) where T : IData
+        {
+            filesCount = valuesToDownload.Count;
             for (int i = 0; i < valuesToDownload.Count; i++)
+            {
+                fileNumber = i;
                 downloader.Download(valuesToDownload[i].GetUrl(),
-                                    valuesToDownload[i].GenerateFileName() + valuesToDownload[i].GenerateFileExtention());
+                                    valuesToDownload[i].GenerateFileName()
+                                  + valuesToDownload[i].GenerateFileExtention());
+            }
         }
 
         private bool CompareAudioAndFile<T>(System.IO.FileInfo[] files, T value) where T : IData

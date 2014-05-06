@@ -6,7 +6,9 @@ using System.Collections.Specialized;
 using System.Xml;
 using System.Threading;
 using System.Collections;
-
+using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
 namespace vkAPI
 {
     class VKApi
@@ -14,16 +16,33 @@ namespace vkAPI
         public int UserId = 0;
         public string AccessToken = "";
 
-        public VKApi(string accessToken)
-        {
-            this.AccessToken = accessToken;
-            accessToken = AccessToken;
-        }
+
         public VKApi(int userId, string accessToken)
         {
             this.UserId = userId;
             this.AccessToken = accessToken;
         }
+
+        public VKApi(string url)
+        {
+            Parse(url, out this.UserId, out this.AccessToken);
+        }
+
+        private void Parse(string url, out int id, out string token)
+        {
+            token = "";
+            id = 0;
+            Regex reg = new Regex(@"(?<name>[\w\d\x5f]+)=(?<value>[^\x26\s]+)",
+                      RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            var mathes = reg.Matches(url);
+            foreach (Match m in mathes)
+                if (m.Groups["name"].Value == "access_token")
+                    token = m.Groups["value"].Value;
+                else if (m.Groups["name"].Value == "user_id")
+                    id = int.Parse(m.Groups["value"].Value);
+        }
+
+
         public string GetDataFromXMLNode(XmlNode node) {
             if (node == null || String.IsNullOrEmpty(node.InnerText)) {
                 return "нету данных";
@@ -34,11 +53,39 @@ namespace vkAPI
         private XmlDocument ExecuteCommand(string name, NameValueCollection param)
         {
             XmlDocument result = new XmlDocument();
-            result.Load(String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}",
-                        name,
-                        AccessToken,
-                        String.Join("&", SelectItem(param))));
+            System.Net.WebClient downloader = new System.Net.WebClient();
+
+            string str = MakeQueryString(name, AccessToken, param);
+
+            downloader.DownloadProgressChanged += downloadFileProgressChanged;
+            downloader.DownloadFileAsync(new Uri(str), name);
+            while (true)
+                if (!downloader.IsBusy) break;
+            FileStream fileStream = new FileStream(name, FileMode.Open, FileAccess.Read);
+            
+            result.Load(fileStream);
+
+            downloader.DownloadProgressChanged -= downloadFileProgressChanged;
+            downloader.Dispose();
+            fileStream.Dispose();
+            
             return result;
+        }
+
+        private DownloadProgressChangedEventHandler downloadFileProgressChanged;
+
+        public void SetDownloadXMLProgressChanged(DownloadProgressChangedEventHandler value)
+        {
+            this.downloadFileProgressChanged = new DownloadProgressChangedEventHandler(value);
+        }
+
+
+        private string MakeQueryString(string name, string accessToken, NameValueCollection param)
+        {
+            return String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}",
+                                    name,
+                                    accessToken,
+                                    String.Join("&", SelectItem(param)));
         }
 
         private XmlDocument ExecuteCommand(string name)

@@ -10,24 +10,30 @@ namespace VK
 {
     public class Downloader
     {
-        string path;
+        private string path;
+        private WebClient web;
+        private DownloadProgressChangedEventHandler OnDownloadProgressChanged;
+        private DownloadDataCompletedEventHandler OnDownloadComplete;
 
 
         public string GetPatch(){
             return path;
         }
 
-        public delegate void OnDownloading(object sender, DownloadProgressChangedEventArgs e);
-        public delegate void OnCompleted(object sender, AsyncCompletedEventArgs e);
-        System.Net.WebClient web;
-
         public Downloader(string path)
         {
             this.path = path;
-            web = new System.Net.WebClient();
-            /*
-             * web.DownloadProgressChanged += new System.Net.DownloadProgressChangedEventHandler(onDownloading);
-            web.DownloadFileCompleted += new AsyncCompletedEventHandler(onDownload);*/
+            web = new WebClient();
+        }
+
+        public void SetOnChanged(DownloadProgressChangedEventHandler onChanged)
+        {
+            this.OnDownloadProgressChanged = onChanged;
+        }
+
+        public void SetOnLoaded(DownloadDataCompletedEventHandler onCompleted)
+        {
+            this.OnDownloadComplete = onCompleted;
         }
 
 
@@ -35,13 +41,33 @@ namespace VK
         {
             try
             {
-                web.DownloadFile(new Uri(uri), path + filename);
+                web.DownloadProgressChanged += OnDownloadProgressChanged;
+                //web.DownloadDataCompleted += OnDownloadComplete;
+                web.DownloadFileAsync(new Uri(uri), path + filename);
+                while (true)
+                {
+                    if (!web.IsBusy) break;
+                }
+                //IOHandler.OpenPath(path);
+                OnDownloadComplete(null, null);
+                web.DownloadProgressChanged -= OnDownloadProgressChanged;
+                //web.DownloadDataCompleted -= OnDownloadComplete;
             }
             catch (WebException ex)
             {
                 System.Windows.Forms.MessageBox.Show(""+ex.Message);
             }
         }
+
+        private void web_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*private void web_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }*/
 
 
     }

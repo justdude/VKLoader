@@ -69,8 +69,7 @@ using vkAPI;
         public string GenerateFileName()
         {
             string value = this.artist + " - " + this.title;
-            /*while (value.IndexOf("&amp;")>0)
-                value.Remove(value.IndexOf("&amp;"), 5);*/
+            value = value.Replace("&amp;", "&");
             return value;
         }
         public string GenerateFileExtention()

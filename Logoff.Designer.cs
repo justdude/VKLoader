@@ -40,14 +40,15 @@
             this.webBrowser1.Size = new System.Drawing.Size(284, 262);
             this.webBrowser1.TabIndex = 0;
             // 
-            // logoff
+            // Logoff
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.webBrowser1);
-            this.Name = "logoff";
+            this.Name = "Logoff";
             this.Text = "logoff";
+            this.Load += new System.EventHandler(this.Logoff_Load);
             this.ResumeLayout(false);
 
         }
