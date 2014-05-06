@@ -83,19 +83,19 @@
     <Compile Include="Albums.Designer.cs">
       <DependentUpon>Albums.cs</DependentUpon>
     </Compile>
-    <Compile Include="ContainerHandlers.cs" />
-    <Compile Include="Downloader.cs" />
-    <Compile Include="DownloadProgressChanged.cs" />
-    <Compile Include="IOHandler.cs" />
+    <Compile Include="Handlers\ContainerHandlers.cs" />
+    <Compile Include="Handlers\Downloader.cs" />
+    <Compile Include="Handlers\DownloadProgressChanged.cs" />
+    <Compile Include="Handlers\IOHandler.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters.cs" />
-    <Compile Include="DataTypes.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="Converters\Converters.cs" />
+    <Compile Include="Data\DataTypes.cs" />
+    <Compile Include="Handlers\Helpers.cs" />
     <Compile Include="Logoff.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,8 +122,8 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Uploader.cs" />
-    <Compile Include="VKApi.cs" />
+    <Compile Include="Handlers\Uploader.cs" />
+    <Compile Include="Handlers\VKApi.cs" />
     <Compile Include="Wall.cs">
       <SubType>Form</SubType>
     </Compile>

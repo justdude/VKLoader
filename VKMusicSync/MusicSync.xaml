@@ -1,0 +1,86 @@
+﻿<Controls:Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
+        xmlns:metro="http://schemas.codeplex.com/elysium"
+        xmlns:params="http://schemas.codeplex.com/elysium/params"
+
+        
+        x:Class="VKMusicSync.MusicSync"
+        Title="MusicSync" Height="300" Width="496.241"
+        WindowStartupLocation="CenterScreen"
+        params:Design.Theme="Light"
+        params:Manager.Theme="Light" 
+        params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}"
+        params:Manager.ContrastBrush="White"
+
+    >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" ></RowDefinition>
+            <RowDefinition Height="8" ></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--<StackPanel Grid.Row="0" Margin="5,5,0,0" HorizontalAlignment="Right" Height="45" Width="auto" Orientation="Horizontal">
+        
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" Click="Sync_Click" >
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Синхронизация"/>
+            </StackPanel>
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="PhotosFormAc" Click="PhotosFormAc_Click" >
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Фото"/>
+            </StackPanel>
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="Audio" Click="Audio_Click" >
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Аудио"/>
+            </StackPanel>
+
+            <StackPanel Width="90"  Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="ShowSetteng" Click="ShowSetteng_Click" >
+                </Button>
+                <TextBlock HorizontalAlignment="Center" Text="Настройки" />
+            </StackPanel>
+
+        </StackPanel>-->
+        <Controls:ProgressBar x:Name="progressBar" Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" />
+
+        <ListBox Grid.Row="2" Name="listbox1" ItemsSource="{Binding}" Height="auto" HorizontalAlignment="Stretch"   Margin="0,0,0,20" Grid.RowSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Content="{Binding artist}"></Label>
+                        <Label  Content=":"></Label>
+                        <Label Content="{Binding title}"></Label>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StatusBar Grid.Row="3" DockPanel.Dock="Bottom" Height="20" Margin="0,10,0,0">
+            <StatusBarItem>
+                <TextBlock  Name="downloadStatus" Width="29" />
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+    <metro:Window.TitleBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+             Content="?"
+             Click="HelpClick"
+            Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"/>
+        </Grid>
+    </metro:Window.TitleBar>
+</Controls:Window>
