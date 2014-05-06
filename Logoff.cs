@@ -5,21 +5,22 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace VK
 {
-    public partial class Form2 : Form
+    public partial class Logoff : Form
     {
-        public Form2()
+        public Logoff()
         {
             InitializeComponent();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+        private void Logoff_Load(object sender, EventArgs e)
         {
 
         }
+
+
     }
 }

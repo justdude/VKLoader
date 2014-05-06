@@ -8,7 +8,7 @@ namespace VK
 {
     static class Program
     {
-        public static VKontakte1.VKApi vk = null;
+        public static vkAPI.VKApi vk = null;
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -17,7 +17,7 @@ namespace VK
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Login());
         }
     }
 }

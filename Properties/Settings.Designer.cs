@@ -22,5 +22,89 @@ namespace VK.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool isUseAutoLogOff {
+            get {
+                return ((bool)(this["isUseAutoLogOff"]));
+            }
+            set {
+                this["isUseAutoLogOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int minAudiosCount {
+            get {
+                return ((int)(this["minAudiosCount"]));
+            }
+            set {
+                this["minAudiosCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int maxAudiosCount {
+            get {
+                return ((int)(this["maxAudiosCount"]));
+            }
+            set {
+                this["maxAudiosCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProgramPath {
+            get {
+                return ((string)(this["ProgramPath"]));
+            }
+            set {
+                this["ProgramPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SettingPath {
+            get {
+                return ((string)(this["SettingPath"]));
+            }
+            set {
+                this["SettingPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool isCanBeInTray {
+            get {
+                return ((bool)(this["isCanBeInTray"]));
+            }
+            set {
+                this["isCanBeInTray"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool isOpenFolderAfterLoad {
+            get {
+                return ((bool)(this["isOpenFolderAfterLoad"]));
+            }
+            set {
+                this["isOpenFolderAfterLoad"] = value;
+            }
+        }
     }
 }
