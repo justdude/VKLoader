@@ -2,16 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-namespace VKMusicSync.ModelConector
-{
-    public class AudioModelConnector
-    {
-
-    }
-
-/*    using System;
-using System.Collections.Generic;
+using System.Threading;
+using System.ComponentModel;
+using System.Net;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -24,22 +17,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Threading;
-using System.ComponentModel;
-using System.Net;
+using VK.Data;
+using VK.Handlers;
 
-namespace VK
+
+
+namespace VKMusicSync.ModelConector
 {
-    /// <summary>
-    /// Логика взаимодействия для UserControl1.xaml
-    /// </summary>
-    public partial class AudioForm : Window
+   /* public class AudioModelConnector
     {
-        public AudioForm()
-        {
-            InitializeComponent();
-        }
-
         List<Sound> sounds = new List<Sound>();
         SynhronizeAdapter adapter;
 
@@ -147,9 +133,9 @@ namespace VK
         #endregion
 
 
-        private void Window_Closed(object sender, EventArgs e)
+        /*private void Window_Closed(object sender, EventArgs e)
         {
-            /*if (Properties.Settings.Default.isUseAutoLogOff) Environment.Exit(0);
+            if (Properties.Settings.Default.isUseAutoLogOff) Environment.Exit(0);
             Login.loaded = false;
             Main.LogOff(this, this.OnLoggOff);
         }
@@ -164,8 +150,5 @@ namespace VK
             WebBrowser browser = (WebBrowser)sender;
             browser.Dispose();
         }
-
-    }
-}*/
-
+    }*/
 }
