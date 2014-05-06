@@ -10,7 +10,7 @@ namespace VKMusicSync.ModelConector
 
     }
 
-    using System;
+/*    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -151,7 +151,7 @@ namespace VK
         {
             /*if (Properties.Settings.Default.isUseAutoLogOff) Environment.Exit(0);
             Login.loaded = false;
-            Main.LogOff(this, this.OnLoggOff);*/
+            Main.LogOff(this, this.OnLoggOff);
         }
 
         private void OnLoggOff(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e)
@@ -162,10 +162,10 @@ namespace VK
             Login form = new Login();
             form.Show();
             WebBrowser browser = (WebBrowser)sender;
-            browser.Dispose();*/
+            browser.Dispose();
         }
 
     }
-}
+}*/
 
 }
