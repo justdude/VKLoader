@@ -63,7 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -71,14 +71,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Auth.cs">
+    <Compile Include="ModelView\SongModelView.cs" />
+    <Compile Include="Model\Sound.cs" />
+    <Compile Include="Model\IData.cs" />
+    <Compile Include="MVVM\Commands\CommandReference.cs" />
+    <Compile Include="MVVM\Commands\DelegateCommand.cs" />
+    <Compile Include="MVVM\ViewModelsBase\ViewModelBase.cs" />
+    <Compile Include="View\Auth.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Auth.Designer.cs">
+    <Compile Include="View\Auth.Designer.cs">
       <DependentUpon>Auth.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\Converters.cs" />
-    <Compile Include="Data\DataTypes.cs" />
+    <Compile Include="Model\DataTypes.cs" />
     <Compile Include="Handlers\AuthWindowed.cs" />
     <Compile Include="Handlers\ContainerHandlers.cs" />
     <Compile Include="Handlers\Downloader.cs" />
@@ -87,18 +93,18 @@
     <Compile Include="Handlers\IOHandler.cs" />
     <Compile Include="Handlers\Uploader.cs" />
     <Compile Include="Handlers\VKApi.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MusicSync.xaml">
+    <Page Include="View\MusicSync.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModelConector\AudioModelConnector.cs" />
-    <Compile Include="MusicSync.xaml.cs">
+    <Compile Include="View\MusicSync.xaml.cs">
       <DependentUpon>MusicSync.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -114,7 +120,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Auth.resx">
+    <EmbeddedResource Include="View\Auth.resx">
       <DependentUpon>Auth.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

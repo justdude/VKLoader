@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 
 using VK.vkAPI;
-using VK.Data;
+using VK.Model;
 using VK.Handlers;
 
 namespace VK.Handlers

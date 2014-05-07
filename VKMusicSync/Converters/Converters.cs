@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-using VK.Data;
+using VK.Model;
 
 namespace VK.Converters
 {

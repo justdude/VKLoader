@@ -12,5 +12,10 @@ namespace VKMusicSync
     /// </summary>
     public partial class App : Application
     {
+        public void OnStartup(object sender, StartupEventArgs e)
+        {
+            MusicSync musicSync = new MusicSync();
+            musicSync.Show();
+        }
     }
 }

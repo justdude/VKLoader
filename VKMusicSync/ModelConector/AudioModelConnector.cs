@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using VK.Data;
+using VK.Model;
 using VK.Handlers;
 
 

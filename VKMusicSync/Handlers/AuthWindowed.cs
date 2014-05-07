@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Web;
 using System.Windows.Forms;
 
-using VK.Data;
+using VK.Model;
 using VK.Handlers;
 using VK.vkAPI;
 namespace VK.Auth

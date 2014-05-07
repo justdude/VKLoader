@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Net;
 
 using VK.vkAPI;
-using VK.Data;
+using VK.Model;
 using VK.Handlers;
 
 namespace VK.Handlers
