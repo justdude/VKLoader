@@ -72,6 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ModelView\SongModelView.cs" />
+    <Compile Include="ModelView\SoundDownloaderMovelView.cs" />
     <Compile Include="Model\Sound.cs" />
     <Compile Include="Model\IData.cs" />
     <Compile Include="MVVM\Commands\CommandReference.cs" />

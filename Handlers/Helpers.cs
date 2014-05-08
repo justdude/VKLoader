@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VK{
+namespace VKMusicSync{
 
     public class StringHelper
     {

@@ -7,10 +7,10 @@ using System.Globalization;
 using System.Web;
 using System.Windows.Forms;
 
-using VK.Model;
-using VK.Handlers;
-using VK.vkAPI;
-namespace VK.Auth
+using VKMusicSync.Model;
+using VKMusicSync.Handlers;
+using VKMusicSync.vkAPI;
+namespace VKMusicSync
 {
     public class AuthWindowed
     {

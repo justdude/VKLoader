@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VK
+namespace VKMusicSync
 {
     /// <summary>
     /// Логика взаимодействия для Settings.xaml

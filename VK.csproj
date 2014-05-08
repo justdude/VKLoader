@@ -7,7 +7,7 @@
     <ProjectGuid>{3DF72532-5B40-45AB-BB58-08AE6A192733}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VK</RootNamespace>
+    <RootNamespace>VKMusicSync</RootNamespace>
     <AssemblyName>VK</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Net;
 using System.IO;
-namespace VK
+namespace VKMusicSync
 {
     class Uploader
     {

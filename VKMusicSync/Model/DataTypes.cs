@@ -8,11 +8,11 @@ using System.Threading;
 using System.Collections;
 using System.Windows.Media.Imaging;
 
-using VK.vkAPI;
-using VK.Model;
-using VK.Handlers;
+using VKMusicSync.vkAPI;
+using VKMusicSync.Model;
+using VKMusicSync.Handlers;
 
-namespace VK.Model
+namespace VKMusicSync.Model
 {
     public class Wall
     {

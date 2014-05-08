@@ -6,11 +6,11 @@ using System.IO;
 using System.ComponentModel;
 using System.Net;
 
-using VK.vkAPI;
-using VK.Model;
-using VK.Handlers;
+using VKMusicSync.vkAPI;
+using VKMusicSync.Model;
+using VKMusicSync.Handlers;
 
-namespace VK.Handlers
+namespace VKMusicSync.Handlers
 {
 
 

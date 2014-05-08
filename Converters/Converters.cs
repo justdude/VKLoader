@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-namespace VK
+namespace VKMusicSync
 {
     public class ImagePathConverter : IValueConverter 
     {

@@ -17,8 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using VK.Model;
-using VK.Handlers;
+using VKMusicSync.Model;
+using VKMusicSync.Handlers;
 
 
 

@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Web;
 using vkAPI;
-namespace VK
+namespace VKMusicSync
 {
     public partial class Login : Form
     {

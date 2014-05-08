@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace VK
+namespace VKMusicSync
 {
     public partial class Wall : Form
     {

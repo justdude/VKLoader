@@ -11,7 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Elysium;
-using VK.Auth;
+using VKMusicSync;
+using VKMusicSync.Model;
+using VKMusicSync.ModelView;
 
 namespace VKMusicSync
 {
@@ -32,8 +34,23 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var sounds = new List<Sound>()
+            {
+                new Sound("Var Hamer","Song1"),
+                new Sound("Armin Van Buuren","Song2"),
+                new Sound("Var Hamer","Song3"),
+                new Sound("Armin Van Buuren","Song4"),
+                new Sound("Var Hamer","Song5"),
+                new Sound("Armin Van Buuren","Song6"),
+                new Sound("Var Hamer","Song7"),
+                new Sound("Armin Van Buuren","Song8")
+            };
 
-
+            SoundDownloaderMovelView modelView = new SoundDownloaderMovelView(sounds);
+            this.DataContext = modelView;
+            //this.Hide();
+            //this.Show();
+            //var data = this.DataContext as SoundDownloaderMovelView;
         }
 
         private Auth authWindow;

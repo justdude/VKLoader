@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace VK
+namespace VKMusicSync
 {
     static class Program
     {

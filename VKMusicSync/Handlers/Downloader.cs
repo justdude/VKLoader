@@ -7,7 +7,7 @@ using System.Net;
 using System.Threading;
 using System.ComponentModel;
 
-namespace VK.Handlers
+namespace VKMusicSync.Handlers
 {
     public class Downloader
     {

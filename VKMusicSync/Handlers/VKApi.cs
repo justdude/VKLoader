@@ -11,7 +11,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 
 
-namespace VK.vkAPI
+namespace VKMusicSync.vkAPI
 {
     public class APIManager
     {

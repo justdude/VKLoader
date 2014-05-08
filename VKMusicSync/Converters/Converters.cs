@@ -6,9 +6,9 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-using VK.Model;
+using VKMusicSync.Model;
 
-namespace VK.Converters
+namespace VKMusicSync.Converters
 {
     public class ImagePathConverter : IValueConverter 
     {

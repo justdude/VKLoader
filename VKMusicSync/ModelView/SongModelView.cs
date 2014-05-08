@@ -40,7 +40,7 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        public float Duration
+        public int Duration
         {
             get { return Sound.duration; }
             set

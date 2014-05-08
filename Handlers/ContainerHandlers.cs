@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using vkAPI;
-namespace VK
+namespace VKMusicSync
 {
 
     public enum PhotosSize

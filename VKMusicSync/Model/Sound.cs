@@ -11,12 +11,29 @@ namespace VKMusicSync.Model
         public string id { get; set; }
         public string artist { get; set; }
         public string title { get; set; }
-        public string duration { get; set; }
+        public int duration { get; set; }
         public string url { get; set; }
         public string lyrics_id { get; set; }
         public string genre_id { get; set; }
 
-        public string ToString()
+
+        public Sound()
+        {
+
+        }
+
+        public Sound(string artist, string title)
+        {
+            this.artist = artist;
+            this.title = title;
+        }
+
+        public Sound(string url)
+        {
+            this.url = url;
+        }
+
+        public override string ToString()
         {
             return String.Format("Sound:{0} : {1}", artist, title);
         }

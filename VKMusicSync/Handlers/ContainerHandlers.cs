@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using VK.vkAPI;
-using VK.Model;
-using VK.Handlers;
+using VKMusicSync.vkAPI;
+using VKMusicSync.Model;
+using VKMusicSync.Handlers;
 
-namespace VK.Handlers
+namespace VKMusicSync.Handlers
 {
 
     public enum PhotosSize
@@ -35,7 +35,7 @@ namespace VK.Handlers
                 s = new Sound();
                 s.artist = nodes[i]["artist"].InnerText;
                 s.title = nodes[i]["title"].InnerText;
-                s.duration = nodes[i]["duration"].InnerText;
+                s.duration = (int.Parse(nodes[i]["duration"].InnerText));
                 s.url = nodes[i]["url"].InnerText;
                 sounds.Add(s);
             }

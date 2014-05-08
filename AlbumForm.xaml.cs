@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
 using System.ComponentModel;
-namespace VK
+namespace VKMusicSync
 {
     /// <summary>
     /// Логика взаимодействия для AlbumForm.xaml

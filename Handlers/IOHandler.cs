@@ -7,7 +7,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Net;
 
-namespace VK
+namespace VKMusicSync
 {
 
 
