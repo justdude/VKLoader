@@ -8,16 +8,15 @@ using VKMusicSync.Model;
 
 namespace vkontakte
 {
-    public class AudioCommand : BaseCommand<Sound>
+    public class AudioUploadComman : BaseCommand<Sound>
     {
 
-        public AudioCommand(string CommandName, NameValueCollection Params):base(CommandName,Params)
+        public AudioUploadComman(string CommandName, NameValueCollection Params):base(CommandName,Params)
         {
         }
 
-        public AudioCommand(AccessData AccessData,string CommandName, NameValueCollection Params):base(AccessData,
-                                                                                                        CommandName,
-                                                                                                        Params)
+        public AudioUploadComman(AccessData AccessData, string CommandName, NameValueCollection Params)
+            : base(AccessData,  CommandName, Params)
         {
         }
 
@@ -37,6 +36,17 @@ namespace vkontakte
         {
             base.ExecuteCommand();
         }
+
+        public string ServerPath
+        {
+            get
+            {
+                System.Xml.XmlNodeList nodes = base.Result["response"].ChildNodes;
+                return base.Result["response"].FirstChild.InnerText;//["upload_url"].Value;//XMLNodeHelper.TryParse(nodes[0],"upload_url");
+            }
+        }
+
+
         
         private List<Sound> Bind(XmlDocument doc)
         {

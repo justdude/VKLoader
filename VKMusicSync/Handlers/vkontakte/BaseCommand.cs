@@ -72,7 +72,9 @@ namespace vkontakte
         }
 
 
-        public abstract List<T> Execute();
+        public abstract List<T> ExecuteForList();
+
+        public abstract object Execute();
 
         public abstract void ExecuteNonQuery();
     }

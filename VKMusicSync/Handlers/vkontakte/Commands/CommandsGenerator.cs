@@ -78,6 +78,28 @@ namespace vkontakte
             CommandName = "audio.getRecommendations";
             return new AudioCommand(CommandName, Params);
         }
+
+        public static AudioUploadComman GetUploadServer()
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+            CommandName = "audio.getUploadServer";
+            return new AudioUploadComman(CommandName, Params);
+        }
+
+        public static AudioCommand SaveAudio(int server, string audio, string hash)
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+            Params.Add("server", server.ToString());
+            Params.Add("audio", audio);
+            Params.Add("hash", hash);
+            Params.Add("fields", "server,audio,hash");
+            CommandName = "audio.save";
+            return new AudioCommand(CommandName, Params);
+        }
+
+
         #endregion
     }
 }

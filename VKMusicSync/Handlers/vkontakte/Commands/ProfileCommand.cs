@@ -24,10 +24,16 @@ namespace vkontakte
         {
         }
 
-        public override List<Profile> Execute()
+        public override List<Profile> ExecuteForList()
         {
             base.ExecuteCommand();
             return this.BindItems(base.Result);
+        }
+
+        public override object Execute()
+        {
+            base.ExecuteCommand();
+            return null;
         }
 
         public override void ExecuteNonQuery()

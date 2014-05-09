@@ -58,7 +58,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Закачать" Command="{Binding DownloadFiles}" />
+            <Button Content="Скачать" Command="{Binding DownloadFiles}" />
             <Button Content="Синронизировать" Command="{Binding SyncClick}" />
             <Button Content="Настройки"  Command="{Binding SettingsClick}" />
             <!--<Button Content="Сменить пользователя" Command="{Binding AuthClick}" HorizontalAlignment="Left" />-->

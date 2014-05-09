@@ -13,21 +13,19 @@ namespace VKMusicSync.Handlers
         {
         }
 
-        public static HttpWebResponse PostMethod(string postedData, string postUrl)
+        public static HttpWebResponse PostMethod(byte[] postedData, string postUrl)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(postUrl);
             request.Method = "POST";
-            request.Credentials = CredentialCache.DefaultCredentials;
+            //request.Credentials = CredentialCache.DefaultCredentials;
+            request.ContentType = "multipart/form-data";
+            request.ContentLength = postedData.Length;
 
             UTF8Encoding encoding = new UTF8Encoding();
-            var bytes = encoding.GetBytes(postedData);
-
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = bytes.Length;
 
             using (var newStream = request.GetRequestStream())
             {
-                newStream.Write(bytes, 0, bytes.Length);
+                newStream.Write(postedData, 0, postedData.Length);
                 newStream.Close();
             }
             return (HttpWebResponse)request.GetResponse();

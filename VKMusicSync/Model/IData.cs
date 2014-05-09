@@ -5,8 +5,12 @@ using System.Text;
 
 namespace VKMusicSync.Model
 {
-    public interface IData
+    public interface IDownnloadedData
     {
+        double Size { get; set; }
+        double LoadedSize { get; set; }
+        bool SyncState { get; set; }
+
         string GenerateFileName();
         string GenerateFileExtention();
         string GetUrl();

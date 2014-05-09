@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VKMusicSync.Handlers.Synchronize
 {
-    class Synchronizer<T>
+    class IOSync<T>
     {
         private List<T> existFiles;
         private List<T> skippedFiles;
@@ -14,7 +14,7 @@ namespace VKMusicSync.Handlers.Synchronize
         private FileInfo[] folderFiles;
         private DirectoryInfo dir;
 
-        public Synchronizer(string dir)
+        public IOSync(string dir)
         {
             if (Directory.Exists(dir))
             {
@@ -28,20 +28,17 @@ namespace VKMusicSync.Handlers.Synchronize
             }
         }
 
-        public void ComputeFileList()
+
+        public void ComputeFileList(List<T> containValues, Func<FileInfo[], T, bool> Check)
         {
             folderFiles = dir.GetFiles();
-        }
-
-        public void Synchronize(List<T> containValues, Func<FileInfo[], T, bool> Check)
-        {
             for (int i = 0; i < containValues.Count; i++)
                 if (!Check(folderFiles, containValues[i]) && !existFiles.Contains(containValues[i]))
                     existFiles.Add(containValues[i]);
         }
 
 
-        public List<T> GetDownloadList()
+        public List<T> GetExist()
         {
             return existFiles;
         }

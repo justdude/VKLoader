@@ -9,8 +9,10 @@ namespace VKMusicSync.Handlers.Synchronize
 {
     public class SynhronizeAdapter
     {
-        public int CurrentFileNumber { get; private set; }
-        public int FilesCount { get; private set; }
+
+        public T currentItem;
+        public int fileNumber { get; private set; }
+        public int filesCount { get; private set; }
 
         public DownloadDataCompletedEventHandler OnLoaded { get; set; }
         public DownloadProgressChangedEventHandler OnProgress { get; set; }
@@ -32,11 +34,13 @@ namespace VKMusicSync.Handlers.Synchronize
             }
         }
 
-        private void SyncFiles<T>(List<T> existData, string directory, Downloader downloader) where T : IDownnloadedData
+        private void SyncFiles<T>(List<T> values, string directory, Downloader downloader) where T : IDownnloadedData
         {
-            IOSync<T> localSync = new IOSync<T>(directory);
-            localSync.ComputeFileList(existData, AudioComparer);
-            List<T> valuesToDownload = localSync.GetExist();
+            Synchronizer<T> sync = new Synchronizer<T>(directory);
+            sync.ComputeFileList();
+
+            sync.Synchronize(values, CompareAudioAndFile);
+            List<T> valuesToDownload = sync.GetDownloadList();
 
             downloader.SetOnLoaded(OnLoaded);
             downloader.SetOnChanged(OnProgress);
@@ -45,17 +49,17 @@ namespace VKMusicSync.Handlers.Synchronize
 
         private void DownloadEachFile<T>(Downloader downloader, List<T> valuesToDownload) where T : IDownnloadedData
         {
-            FilesCount = valuesToDownload.Count;
+            filesCount = valuesToDownload.Count;
             for (int i = 0; i < valuesToDownload.Count; i++)
             {
-                CurrentFileNumber = i;
+                fileNumber = i;
                 downloader.Download(valuesToDownload[i].GetUrl(),
                                     valuesToDownload[i].GenerateFileName()
                                   + valuesToDownload[i].GenerateFileExtention());
             }
         }
 
-        private bool AudioComparer<T>(System.IO.FileInfo[] files, T value) where T : IDownnloadedData
+        private bool CompareAudioAndFile<T>(System.IO.FileInfo[] files, T value) where T : IDownnloadedData
         {
             string valueFileName = value.GenerateFileName();
             return Array.Exists<System.IO.FileInfo>(files, p => (IOHandler.ParseFileName(p) == valueFileName));

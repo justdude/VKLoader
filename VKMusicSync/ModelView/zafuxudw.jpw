@@ -185,7 +185,7 @@ namespace VKMusicSync.ModelView
                                                                       false).SelectSingleNode("response")
                                                                             .InnerText);
             ProfileCommand profCommand = vkontakte.CommandsGenerator.GetUsers(APIManager.AccessData.UserId);
-            this.Profile = profCommand.ExecuteForList().FirstOrDefault();
+            this.Profile = profCommand.Execute().FirstOrDefault();
             var paths = (new List<string>() { Profile.photo, Profile.photoMedium, Profile.photoBig });
             var path = string.Empty;
             foreach(var p in paths)
@@ -203,7 +203,7 @@ namespace VKMusicSync.ModelView
             {
                 AudioCommand command = vkontakte.CommandsGenerator.GetAudioFromUser(APIManager.vk.UserId, false, 0, count);
                 command.OnCommandExecuting += OnCommandLoading;
-                sounds = command.ExecuteForList();
+                sounds = command.Execute();
             }
         }
 
@@ -225,34 +225,19 @@ namespace VKMusicSync.ModelView
 
         #region Load audio
 
-        private SynhronizeAdapter adapter = new SynhronizeAdapter();
+        private SynhronizeAdapter<SoundModelView> adapter = new SynhronizeAdapter();
 
         private void OnDownloadFiles()
         {
-            AudioUploadComman comm = CommandsGenerator.GetUploadServer();
-            comm.Execute();
-            var path = comm.ServerPath;
-            var filePath = @"D:\Musik\04. Doesn't Remind Me.mp3";
-            byte[] bytes = System.IO.File.ReadAllBytes(filePath);
-
-            var values = new System.Collections.Specialized.NameValueCollection();
-            //values.Add("значение", "данные");
-            WebClient client = new WebClient();
-            client.Headers.Add("Content-Type", "multipart/form-data");
-            var data = client.UploadData(path, null, bytes);
-            string answer = System.Text.Encoding.UTF8.GetString(data);
-          
-
-            return;
-            BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += this.DoWork;
-            backgroundWorker.RunWorkerCompleted += this.OnCompletedAllLoad;
-            backgroundWorker.RunWorkerAsync(sounds);
+                BackgroundWorker backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += this.DoWork;
+                backgroundWorker.RunWorkerCompleted += this.OnCompletedAllLoad;
+                backgroundWorker.RunWorkerAsync(sounds);
         }
 
         private void OnChangeLoadFile(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.ProgressPercentage = ((float)adapter.CurrentFileNumber / (float)adapter.FilesCount * 100);
+            this.ProgressPercentage = ((float)adapter.GetDownloadedFileNumber() / (float)adapter.GetDownloadedFilesCount() * 100);
         }
 
         private void OnCompleteLoadFile(object sender, DownloadDataCompletedEventArgs e)

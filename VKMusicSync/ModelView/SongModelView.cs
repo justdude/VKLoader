@@ -7,7 +7,7 @@ using VKMusicSync.Model;
 
 namespace VKMusicSync.ModelView
 {
-    class SoundModelView : ViewModelBase
+    class SoundModelView : ViewModelBase, IDownnloadedData
     {
         public Sound Sound { get; set; }
         /*
@@ -62,27 +62,27 @@ namespace VKMusicSync.ModelView
 
         public double Size
         {
-            get { return 2.12; }
+            get { return Sound.Size; }
             set
             {
-                //Sound.Quality = value;
+                Sound.Size = value;
                 OnPropertyChanged("Size");
             }
         }
 
         public double LoadedSize
         {
-            get { return 1.59; }
+            get { return Sound.LoadedSize; }
             set
             {
-                //Sound.Quality = value;
+                Sound.LoadedSize = value;
                 OnPropertyChanged("LoadedSize");
             }
         }
 
         public bool SyncState
         {
-            get { return true; }
+            get { return Sound.SyncState; }
             set
             {
                 //Sound.Quality = value;
@@ -97,5 +97,20 @@ namespace VKMusicSync.ModelView
 
 
 
+
+        public string GenerateFileName()
+        {
+            return this.Sound.GenerateFileName();
+        }
+
+        public string GenerateFileExtention()
+        {
+            return this.Sound.GenerateFileExtention();
+        }
+
+        public string GetUrl()
+        {
+            return this.Sound.GetUrl();
+        }
     }
 }

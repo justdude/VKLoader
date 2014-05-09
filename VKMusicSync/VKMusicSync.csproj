@@ -64,10 +64,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
-    <Compile Include="Handlers\Synchronize\Synchronizer.cs" />
+    <Compile Include="Handlers\Synchronize\IOSync.cs" />
     <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
     <Compile Include="Handlers\vkontakte\AcessData.cs" />
     <Compile Include="Handlers\vkontakte\Commands\AudioCommand.cs" />
+    <Compile Include="Handlers\vkontakte\Commands\AudioUploadComman.cs" />
     <Compile Include="Handlers\vkontakte\Commands\CommandsGenerator.cs" />
     <Compile Include="Handlers\vkontakte\BaseCommand.cs" />
     <Compile Include="Handlers\vkontakte\Commands\ProfileCommand.cs" />

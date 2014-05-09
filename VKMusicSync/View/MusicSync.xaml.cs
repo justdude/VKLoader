@@ -34,7 +34,7 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var sounds = new List<Sound>()
+            /*var sounds = new List<Sound>()
             {
                 new Sound("Var Hamer","Song1"),
                 new Sound("Armin Van Buuren","Song2"),
@@ -44,10 +44,11 @@ namespace VKMusicSync
                 new Sound("Armin Van Buuren","Song6"),
                 new Sound("Var Hamer","Song7"),
                 new Sound("Armin Van Buuren","Song8")
-            };
+            };*/
 
-            SoundDownloaderMovelView modelView = new SoundDownloaderMovelView(sounds);
+            SoundDownloaderMovelView modelView = new SoundDownloaderMovelView();
             this.DataContext = modelView;
+            modelView.Window_Loaded();
             //this.Hide();
             //this.Show();
             //var data = this.DataContext as SoundDownloaderMovelView;
