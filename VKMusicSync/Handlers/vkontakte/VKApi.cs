@@ -11,11 +11,13 @@ using System.Net;
 using System.Text.RegularExpressions;
 
 
-namespace VKMusicSync.vkAPI
+namespace vkontakte
 {
     public class APIManager
     {
-        public static vkAPI.VKApi vk = null;
+        public static VKApi vk = null;
+
+        public static AccessData AccessData { get; set; }
     }
 
     public class VKApi
@@ -24,10 +26,10 @@ namespace VKMusicSync.vkAPI
         public string AccessToken = "";
 
 
-        public VKApi(int userId, string accessToken)
+        public VKApi(AccessData data)
         {
-            this.UserId = userId;
-            this.AccessToken = accessToken;
+            this.UserId = data.UserId;
+            this.AccessToken = data.AccessToken;
         }
 
         public VKApi(string url)
@@ -39,13 +41,13 @@ namespace VKMusicSync.vkAPI
         {
             token = "";
             id = 0;
-            Regex reg = new Regex(@"(?<name>[\w\d\x5f]+)=(?<value>[^\x26\s]+)",
+            Regex reg = new Regex(@"(?<CommandName>[\w\d\x5f]+)=(?<value>[^\x26\item]+)",
                       RegexOptions.IgnoreCase | RegexOptions.Singleline);
             var mathes = reg.Matches(url);
             foreach (Match m in mathes)
-                if (m.Groups["name"].Value == "access_token")
+                if (m.Groups["CommandName"].Value == "access_token")
                     token = m.Groups["value"].Value;
-                else if (m.Groups["name"].Value == "user_id")
+                else if (m.Groups["CommandName"].Value == "user_id")
                     id = int.Parse(m.Groups["value"].Value);
         }
 
@@ -105,7 +107,7 @@ namespace VKMusicSync.vkAPI
         }
 
         string[] SelectItem(NameValueCollection qs) { 
-        //from item in qs.AllKeys select item + "=" + qs[item]
+        //from item in Params.AllKeys select item + "=" + Params[item]
            List<string> str=new List<string>();
            foreach (string obj in qs.AllKeys)
                str.Add(obj+"="+qs[obj]);

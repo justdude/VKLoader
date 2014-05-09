@@ -72,7 +72,7 @@ namespace MVVM
         }
 
         /// <summary>
-        ///     Property to enable or disable CommandManager's automatic requery on this command
+        ///     Property to enable or disable CommandManager'item automatic requery on this command
         /// </summary>
         public bool IsAutomaticRequeryDisabled
         {
@@ -166,7 +166,7 @@ namespace MVVM
     ///     This class allows delegating the commanding logic to methods passed as parameters,
     ///     and enables a View to bind commands to objects that are not part of the element tree.
     /// </summary>
-    /// <typeparam name="T">Type of the parameter passed to the delegates</typeparam>
+    /// <typeparam CommandName="T">Type of the parameter passed to the delegates</typeparam>
     public class DelegateCommand<T> : ICommand
     {
         #region Constructors
@@ -246,7 +246,7 @@ namespace MVVM
         }
 
         /// <summary>
-        ///     Property to enable or disable CommandManager's automatic requery on this command
+        ///     Property to enable or disable CommandManager'item automatic requery on this command
         /// </summary>
         public bool IsAutomaticRequeryDisabled
         {

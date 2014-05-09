@@ -14,12 +14,12 @@ namespace VKMusicSync.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var uri = value as MyImage;
+            var uri = value as ImageModel;
             if (uri == null)
                 return null;
 
-           // var result = new BitmapImage( new Uri(uri.ImagePath));
-           // return result;
+           // var Result = new BitmapImage( new Uri(uri.ImagePath));
+           // return Result;
             return null;
         }
 

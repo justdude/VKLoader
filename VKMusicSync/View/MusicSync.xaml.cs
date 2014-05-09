@@ -65,5 +65,10 @@ namespace VKMusicSync
         {
             if (authWindow != null) authWindow.Close();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

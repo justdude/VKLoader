@@ -9,8 +9,8 @@ using System.Windows.Forms;
 
 using VKMusicSync.Model;
 using VKMusicSync.Handlers;
-using VKMusicSync.vkAPI;
-namespace VKMusicSync
+
+namespace vkontakte
 {
     public class AuthWindowed
     {
@@ -52,7 +52,8 @@ namespace VKMusicSync
             {
                 if (url.IndexOf("access_token") > 0)
                 {
-                    APIManager.vk = new VKApi(url);
+                    APIManager.AccessData = new AccessData(url);
+                    APIManager.vk = new VKApi(APIManager.AccessData);
                     if (OnInit != null) OnInit();
                 }
                 else if (url.IndexOf("access_denied") > 0)

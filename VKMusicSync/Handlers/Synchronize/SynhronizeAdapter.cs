@@ -1,61 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.IO;
-using System.ComponentModel;
 using System.Net;
-
-using VKMusicSync.vkAPI;
+using System.Text;
 using VKMusicSync.Model;
-using VKMusicSync.Handlers;
 
-namespace VKMusicSync.Handlers
+namespace VKMusicSync.Handlers.Synchronize
 {
-
-
-    class Synchronizer<T> {
-
-        private List<T> existFiles;
-        private List<T> skippedFiles;
-        
-        private FileInfo[] folderFiles;
-        private DirectoryInfo dir;
-
-        public Synchronizer(string dir)
-        {
-            if (Directory.Exists(dir))
-            {
-                this.existFiles = new List<T>();
-                this.dir = new DirectoryInfo(dir);
-                this.skippedFiles = new List<T>();
-            }
-            else
-            {
-                throw new Exception("Folder doesnt exist");
-            }
-        }
-
-        public void ComputeFileList()
-        {
-            folderFiles = dir.GetFiles();
-        }
-
-        public void Synchronize(List<T> containValues, Func<FileInfo[], T, bool> Check)
-        {
-            for (int i=0; i< containValues.Count; i++)
-                if (!Check(folderFiles,containValues[i]) && !existFiles.Contains(containValues[i]))
-                    existFiles.Add(containValues[i]);
-        }
-
-
-        public List<T> GetDownloadList()
-        {
-            return existFiles;
-        }
-
-    }
-
     public class SynhronizeAdapter
     {
         public void SyncFolderWithList<T>(List<T> sounds, string directory) where T : IData
@@ -119,31 +70,6 @@ namespace VKMusicSync.Handlers
         {
             string valueFileName = value.GenerateFileName();
             return Array.Exists<System.IO.FileInfo>(files, p => (IOHandler.ParseFileName(p) == valueFileName));
-        }
-    }
-
-    class IOHandler
-    {
-
-        public static string ParseFileName(System.IO.FileInfo file)
-        {
-            return file.Name.Remove(file.Name.IndexOf(file.Extension));
-        }
-
-        public static void Write(string path, string value)
-        {
-            System.IO.File.WriteAllText(path, value);
-        }
-
-        public static void ClearFolder(string dir) 
-        {
-            foreach (string file in Directory.GetFiles(dir))
-                File.Delete(file);
-        }
-
-        public static void OpenPath(string dir)
-        {
-            System.Diagnostics.Process.Start(dir);
         }
     }
 }

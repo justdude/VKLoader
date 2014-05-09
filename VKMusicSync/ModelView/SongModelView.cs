@@ -11,7 +11,7 @@ namespace VKMusicSync.ModelView
     {
         public Sound Sound { get; set; }
         /*
-         public string id { get; set; }
+         public string UserId { get; set; }
         public string artist { get; set; }
         public string title { get; set; }
         public string duration { get; set; }

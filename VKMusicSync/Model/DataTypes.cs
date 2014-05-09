@@ -8,10 +8,6 @@ using System.Threading;
 using System.Collections;
 using System.Windows.Media.Imaging;
 
-using VKMusicSync.vkAPI;
-using VKMusicSync.Model;
-using VKMusicSync.Handlers;
-
 namespace VKMusicSync.Model
 {
     public class Wall
@@ -71,14 +67,14 @@ namespace VKMusicSync.Model
     public class MyCategory
     {
         public string Name { get; set; }
-        public List<MyImage> Images { get; set; }
+        public List<ImageModel> Images { get; set; }
     }
 
-    public class MyImage
+    public class ImageModel
     {
         public string ImageId { get; set; }
 
-        public MyImage(string path)
+        public ImageModel(string path)
         {
             _path = path;
             _source = new Uri(path);

@@ -63,6 +63,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Handlers\Synchronize\IOHandler.cs" />
+    <Compile Include="Handlers\Synchronize\Synchronizer.cs" />
+    <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
+    <Compile Include="Handlers\vkontakte\AcessData.cs" />
+    <Compile Include="Handlers\vkontakte\Commands\AudioCommand.cs" />
+    <Compile Include="Handlers\vkontakte\Commands\CommandsGenerator.cs" />
+    <Compile Include="Handlers\vkontakte\BaseCommand.cs" />
+    <Compile Include="Handlers\vkontakte\Commands\ProfileCommand.cs" />
+    <Compile Include="Handlers\vkontakte\Commands\XMLNodeHelper.cs" />
+    <Compile Include="Handlers\vkontakte\ICommand.cs" />
+    <Compile Include="Model\Profile.cs" />
+    <Compile Include="View\TestVectorImages.xaml.cs">
+      <DependentUpon>TestVectorImages.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,14 +100,12 @@
     </Compile>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="Model\DataTypes.cs" />
-    <Compile Include="Handlers\AuthWindowed.cs" />
-    <Compile Include="Handlers\ContainerHandlers.cs" />
-    <Compile Include="Handlers\Downloader.cs" />
-    <Compile Include="Handlers\DownloadProgressChanged.cs" />
-    <Compile Include="Handlers\Helpers.cs" />
-    <Compile Include="Handlers\IOHandler.cs" />
-    <Compile Include="Handlers\Uploader.cs" />
-    <Compile Include="Handlers\VKApi.cs" />
+    <Compile Include="Handlers\vkontakte\AuthWindowed.cs" />
+    <Compile Include="Handlers\toclean\ContainerHandlers.cs" />
+    <Compile Include="Handlers\Network\Downloader.cs" />
+    <Compile Include="Handlers\toclean\Helpers.cs" />
+    <Compile Include="Handlers\Network\Uploader.cs" />
+    <Compile Include="Handlers\vkontakte\VKApi.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -102,9 +114,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\TestVectorImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelConector\AudioModelConnector.cs" />
     <Compile Include="View\MusicSync.xaml.cs">
       <DependentUpon>MusicSync.xaml</DependentUpon>
     </Compile>
@@ -134,6 +149,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ModelConector\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

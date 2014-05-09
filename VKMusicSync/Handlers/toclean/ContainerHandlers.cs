@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using VKMusicSync.vkAPI;
+using vkontakte;
 using VKMusicSync.Model;
 using VKMusicSync.Handlers;
 
@@ -112,12 +112,12 @@ namespace VKMusicSync.Handlers
             return null;
         }
 
-        public List<MyImage> GetPhotosListFromAlbum(int albumID) {
-            List<MyImage> photos = new List<MyImage>();
+        public List<ImageModel> GetPhotosListFromAlbum(int albumID) {
+            List<ImageModel> photos = new List<ImageModel>();
             XmlNodeList xml = APIManager.vk.GetPhotosFromAlbum(APIManager.vk.UserId, albumID)["response"].ChildNodes;
                 foreach (XmlNode node in xml)
                 {
-                   photos.Add(new MyImage(GetMaxPhotoAdress(node,PhotosSize.x))); 
+                   photos.Add(new ImageModel(GetMaxPhotoAdress(node,PhotosSize.x))); 
                 }
             return photos;
         }
