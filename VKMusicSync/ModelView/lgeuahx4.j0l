@@ -16,8 +16,6 @@ using vkontakte;
 using VKMusicSync.Handlers;
 using System.Collections.Specialized;
 using System.IO;
-using System.Xml;
-using System.Security.Cryptography;
 
 namespace VKMusicSync.ModelView
 {
@@ -226,13 +224,7 @@ namespace VKMusicSync.ModelView
         }
 
         #endregion
-        public static string DecodeUrlString(string url)
-        {
-            string newUrl;
-            while ((newUrl = Uri.UnescapeDataString(url)) != url)
-                url = newUrl;
-            return newUrl;
-        }
+
         #region Load audio
 
         private SynhronizeAdapter adapter = new SynhronizeAdapter();
@@ -241,23 +233,150 @@ namespace VKMusicSync.ModelView
         {
             AudioUploadComman comm = CommandsGenerator.GetUploadServer();
             comm.Execute();
-            var info = comm.UploadAudio(@"D:\Musik\", @"myzuka.ru_08_nobody_but_me.mp3");
-  
+            var path = comm.ServerPath;
+            var filePath = @"D:\Musik\04. Doesn't Remind Me.mp3";
+            byte[] bytes = System.IO.File.ReadAllBytes(filePath);
 
-            /*var audio = "%7B%22audio%22%3A%222e26475e89%22%2C%22time%22%3A138%2C%22artist%22%3A%22The+Human+Beinz%22%2C%22title%22%3A%22Nobody+But+Me%22%2C%22genre%22%3A24%2C%22album%22%3A%22The+Departed%22%2C%22bitrate%22%3A320%2C%22md5%22%3A%2292c8c6fdcd25c6998b3b86a1deaa99fa%22%2C%22kad%22%3A%2212005fec2aabe7208a349f46b98e96ff%5Cn%22%7D";
-            audio = DecodeUrlString(audio);
+            var values = new System.Collections.Specialized.NameValueCollection();
+            //values.Add("значение", "данные");
+            string variable = HttpUploadFile(path, filePath, @"audio", "form-data", new NameValueCollection());
 
-            var info = new AudioUploadedInfo("536214", audio, "a71d783bad416ff57f703438eeaacf37");*/
+            /*var resp = Uploader.PostMethod(bytes, path);
+            var streamReader = new System.IO.StreamReader(resp.GetResponseStream());
+            string answer = streamReader.ReadToEnd();*/
+            //string answer = System.Text.Encoding.UTF8.GetString(data);
+          
 
-            AudioUploadComman audioCommand = CommandsGenerator.SaveAudio(info);
-            var fullstr = audioCommand.QueryString;
-            var paramsAndtoken = audioCommand.GetParamsWithToken();
-            string asnwer = Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
-            //audioCommand.Execute();
             /*BackgroundWorker backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += this.DoWork;
             backgroundWorker.RunWorkerCompleted += this.OnCompletedAllLoad;
             backgroundWorker.RunWorkerAsync(sounds);*/
+        }
+
+     /*   private void UploadPhoto()
+        {
+            //ЗАГРУЗКА ФОТОГРАФИИ
+            //получение адреса сервера для загрузки фотографии
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            System.Net.WebRequest post_request2 = System.Net.WebRequest.Create("https://api.vkontakte.ru/method/photos.getWallUploadServer?gid=100669061&access_token=");// + textBox3.Text.Trim());
+            System.Net.WebResponse post_request_response2 = post_request2.GetResponse();
+            System.IO.Stream post_request_stream2 = post_request_response2.GetResponseStream();
+            System.IO.StreamReader post_request_stream_reader2 = new System.IO.StreamReader(post_request_stream2);
+            string post_request_answer2 = post_request_stream_reader2.ReadToEnd();
+            string[] words_empty = post_request_answer2.Split('"');
+            string s = words_empty[5];
+
+            s = s.Replace("\\/", "/");
+            s = s.Replace("\\/", "/");
+            s = s.Replace("\\/", "/");
+
+
+            //отправка файла на полученый сервер
+            NameValueCollection nvc = new NameValueCollection();
+            //nvc.Add("user", "user");
+            //nvc.Add("passwd", "passwd");
+            string s9;
+            //s9 = HttpUploadFile(s, @"C:\file_1.jpg", "photo", "image/jpeg", nvc);
+
+            //textBox6.Text = s9;
+
+            char[] delimiterChars = { ':', ',' };
+            string[] parameters = s9.Split(delimiterChars);
+            string server = parameters[1];
+
+            char[] delimiterChars2 = { ':' };
+            string[] parameters2 = s9.Split(delimiterChars2);
+            string hash = parameters2[7];
+
+            char[] delimiterChars3 = { '"' };
+            string[] parameters3 = hash.Split(delimiterChars3);
+            hash = parameters3[1];
+
+            string photo = s9.Substring(s9.IndexOf("photo") + 8, s9.IndexOf("hash") - s9.IndexOf("photo") - 11);
+
+            photo = photo.Replace("\\\"", "\"");
+
+
+
+            //сохранение фотографии на сервере
+            string url3 = "https://api.vk.com/method/photos.saveWallPhoto?server="; //+ server + "&photo=" + HttpUtility.UrlEncode(photo) + "&hash=" + hash + "&access_token=" + textBox3.Text.Trim();
+            //textBox6.Text = textBox6.Text + " ---------- " + url3;
+
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            System.Net.WebRequest post_request3 = System.Net.WebRequest.Create(url3);
+            System.Net.WebResponse post_request_response3 = post_request3.GetResponse();
+            System.IO.Stream post_request_stream3 = post_request_response3.GetResponseStream();
+            System.IO.StreamReader post_request_stream_reader3 = new System.IO.StreamReader(post_request_stream3);
+            string post_request_answer3 = post_request_stream_reader3.ReadToEnd();
+
+            //textBox6.Text = textBox6.Text + " ---------- " + post_request_answer3;
+
+        }*/
+
+
+        public static void HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
+        {
+            Console.WriteLine(string.Format("Uploading {0} to {1}", file, url));
+            string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+            byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+            wr.ContentType = "multipart/form-data; boundary=" + boundary;
+            wr.Method = "POST";
+            wr.KeepAlive = true;
+            wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
+
+            Stream rs = wr.GetRequestStream();
+
+            string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+            foreach (string key in nvc.Keys)
+            {
+                rs.Write(boundarybytes, 0, boundarybytes.Length);
+                string formitem = string.Format(formdataTemplate, key, nvc[key]);
+                byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
+                rs.Write(formitembytes, 0, formitembytes.Length);
+            }
+            rs.Write(boundarybytes, 0, boundarybytes.Length);
+
+            string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+            string header = string.Format(headerTemplate, paramName, file, contentType);
+            byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
+            rs.Write(headerbytes, 0, headerbytes.Length);
+
+            FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            byte[] buffer = new byte[4096];
+            int bytesRead = 0;
+            while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                rs.Write(buffer, 0, bytesRead);
+            }
+            fileStream.Close();
+
+            byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+            rs.Write(trailer, 0, trailer.Length);
+            rs.Close();
+
+            WebResponse wresp = null;
+            try
+            {
+                wresp = wr.GetResponse();
+                Stream stream2 = wresp.GetResponseStream();
+                StreamReader reader2 = new StreamReader(stream2);
+                Console.WriteLine(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error uploading file", ex);
+                if (wresp != null)
+                {
+                    wresp.Close();
+                    wresp = null;
+                }
+            }
+            finally
+            {
+                wr = null;
+            }
         }
 
         private void OnChangeLoadFile(object sender, DownloadProgressChangedEventArgs e)

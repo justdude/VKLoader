@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
+
 namespace vkontakte
 {
     class CommandsGenerator
@@ -87,19 +88,29 @@ namespace vkontakte
             return new AudioUploadComman(CommandName, Params);
         }
 
-        public static AudioCommand SaveAudio(int server, string audio, string hash)
+        public static AudioUploadComman SaveAudio(VKMusicSync.Model.AudioUploadedInfo info)
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+            Params.Add("server", info.Server);
+            Params.Add("audio", info.Audio);
+            Params.Add("hash", info.Hash);
+            Params.Add("v", "5.21");
+            CommandName = "audio.save";
+            return new AudioUploadComman(CommandName, Params);
+        }
+
+        /*public static AudioUploadComman SaveAudio(string server, string audio, string hash)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
             Params.Add("server", server.ToString());
             Params.Add("audio", audio);
             Params.Add("hash", hash);
-            Params.Add("fields", "server,audio,hash");
+            //Params.Add("fields", "audio,hash,server");
             CommandName = "audio.save";
-            return new AudioCommand(CommandName, Params);
-        }
-
-
+            return new AudioUploadComman(CommandName, Params);
+        }*/
         #endregion
     }
 }

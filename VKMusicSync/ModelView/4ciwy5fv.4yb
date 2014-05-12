@@ -252,7 +252,7 @@ namespace VKMusicSync.ModelView
             AudioUploadComman audioCommand = CommandsGenerator.SaveAudio(info);
             var fullstr = audioCommand.QueryString;
             var paramsAndtoken = audioCommand.GetParamsWithToken();
-            string asnwer = Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
+            Reqeust.POST("https://api.vk.com/method/audio.save.xml", paramsAndtoken);
             //audioCommand.Execute();
             /*BackgroundWorker backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += this.DoWork;

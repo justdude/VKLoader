@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Handlers\Network\HttpUtility.cs" />
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
     <Compile Include="Handlers\Synchronize\IOSync.cs" />
     <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Handlers\vkontakte\Commands\ProfileCommand.cs" />
     <Compile Include="Handlers\vkontakte\Commands\XMLNodeHelper.cs" />
     <Compile Include="Handlers\vkontakte\ICommand.cs" />
+    <Compile Include="Model\AudioUploadedInfo.cs" />
     <Compile Include="Model\Profile.cs" />
     <Compile Include="View\TestVectorImages.xaml.cs">
       <DependentUpon>TestVectorImages.xaml</DependentUpon>
@@ -105,7 +107,7 @@
     <Compile Include="Handlers\toclean\ContainerHandlers.cs" />
     <Compile Include="Handlers\Network\Downloader.cs" />
     <Compile Include="Handlers\toclean\Helpers.cs" />
-    <Compile Include="Handlers\Network\Uploader.cs" />
+    <Compile Include="Handlers\Network\Reqeust.cs" />
     <Compile Include="Handlers\vkontakte\VKApi.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -152,6 +154,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Handlers\vkontakte\UploadAnswers\" />
     <Folder Include="ModelConector\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

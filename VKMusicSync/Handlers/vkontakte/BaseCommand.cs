@@ -19,6 +19,20 @@ namespace vkontakte
         
         public DownloadProgressChangedEventHandler OnCommandExecuting{get; set;}
 
+        private string queryString;
+        public string QueryString
+        {
+            get
+            {
+                queryString = MakeQueryString(CommandName, AccessData.AccessToken, Params);
+                return queryString;
+            }
+            set
+            {
+                queryString = value;
+            }
+        }
+
         public BaseCommand(string CommandName, NameValueCollection Params)
         {
             this.AccessData = APIManager.AccessData;
@@ -35,11 +49,24 @@ namespace vkontakte
 
         private string MakeQueryString(string name, string accessToken, NameValueCollection param)
         {
-            return String.Format("https://api.vkontakte.ru/method/{0}.xml?access_token={1}&{2}",
+            var cachedStr = String.Format("https://api.vk.com/method/{0}.xml?{1}&access_token={2}",
                                     name,
-                                    accessToken,
-                                    String.Join("&", SelectItem(param)));
+                                     String.Join("&", SelectItem(param)),
+                                    accessToken
+                                   );
+
+            return cachedStr;
         }
+
+        public string GetParamsWithToken()
+        {
+            var cachedStr = String.Format("{0}&access_token={1}",
+                         String.Join("&", SelectItem(Params)),
+                         this.AccessData.AccessToken   );
+            return cachedStr;
+
+        }
+
 
         private string[] SelectItem(NameValueCollection qs)
         {
@@ -55,10 +82,10 @@ namespace vkontakte
             this.Result = new XmlDocument();
             System.Net.WebClient downloader = new System.Net.WebClient();
 
-            string str = MakeQueryString(CommandName, AccessData.AccessToken, Params);
+            queryString = MakeQueryString(CommandName, AccessData.AccessToken, Params);
 
             downloader.DownloadProgressChanged += OnCommandExecuting;
-            downloader.DownloadFileAsync(new Uri(str), CommandName);
+            downloader.DownloadFileAsync(new Uri(queryString), CommandName);
 
             while (true)
                 if (!downloader.IsBusy) break;

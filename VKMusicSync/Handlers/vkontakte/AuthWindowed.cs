@@ -20,7 +20,8 @@ namespace vkontakte
                                                     VkontakteScopeList.link | 
                                                     //VkontakteScopeList.messages | 
                                                     //VkontakteScopeList.notify |
-                                                    VkontakteScopeList.photos | 
+                                                    VkontakteScopeList.photos |
+                                                    VkontakteScopeList.offline | 
                                                     // VkontakteScopeList.docs | 
                                                     //VkontakteScopeList.notes | 
                                                     //VkontakteScopeList.offers | 

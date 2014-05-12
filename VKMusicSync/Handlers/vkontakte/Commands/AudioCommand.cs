@@ -11,6 +11,12 @@ namespace vkontakte
     public class AudioCommand : BaseCommand<Sound>
     {
 
+        public Sound Result
+        {
+            get;
+            private set;
+        }
+
         public AudioCommand(string CommandName, NameValueCollection Params):base(CommandName,Params)
         {
         }
@@ -30,7 +36,15 @@ namespace vkontakte
         public override object Execute()
         {
             base.ExecuteCommand();
-            return null;
+            
+           /* s = new Sound();
+            s.artist = base.Result[["artist"].InnerText;
+            s.title = nodes[i]["title"].InnerText;
+            s.duration = (int.Parse(nodes[i]["duration"].InnerText));
+            s.url = nodes[i]["url"].InnerText;
+            sounds.Add(s);*/
+
+            return base.Result;
         }
 
         public override void ExecuteNonQuery()

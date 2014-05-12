@@ -244,16 +244,13 @@ namespace VKMusicSync.ModelView
             var info = comm.UploadAudio(@"D:\Musik\", @"myzuka.ru_08_nobody_but_me.mp3");
   
 
-            /*var audio = "%7B%22audio%22%3A%222e26475e89%22%2C%22time%22%3A138%2C%22artist%22%3A%22The+Human+Beinz%22%2C%22title%22%3A%22Nobody+But+Me%22%2C%22genre%22%3A24%2C%22album%22%3A%22The+Departed%22%2C%22bitrate%22%3A320%2C%22md5%22%3A%2292c8c6fdcd25c6998b3b86a1deaa99fa%22%2C%22kad%22%3A%2212005fec2aabe7208a349f46b98e96ff%5Cn%22%7D";
+            /*var audio = "%7B%22audio%22%3A%22b628fb3445%22%2C%22time%22%3A138%2C%22artist%22%3A%22The+Human+Beinz%22%2C%22title%22%3A%22Nobody+But+Me%22%2C%22genre%22%3A24%2C%22album%22%3A%22The+Departed%22%2C%22bitrate%22%3A320%2C%22md5%22%3A%2292c8c6fdcd25c6998b3b86a1deaa99fa%22%2C%22kad%22%3A%2212005fec2aabe7208a349f46b98e96ff%5Cn%22%7D";
             audio = DecodeUrlString(audio);
 
-            var info = new AudioUploadedInfo("536214", audio, "a71d783bad416ff57f703438eeaacf37");*/
+            var info = new AudioUploadedInfo("536106", audio , "07f43bcc0b2a5e5cfc67164eb722a3ed");*/
 
             AudioUploadComman audioCommand = CommandsGenerator.SaveAudio(info);
-            var fullstr = audioCommand.QueryString;
-            var paramsAndtoken = audioCommand.GetParamsWithToken();
-            string asnwer = Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
-            //audioCommand.Execute();
+            audioCommand.Execute();
             /*BackgroundWorker backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += this.DoWork;
             backgroundWorker.RunWorkerCompleted += this.OnCompletedAllLoad;
