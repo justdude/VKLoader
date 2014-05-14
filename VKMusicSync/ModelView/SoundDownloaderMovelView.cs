@@ -251,7 +251,9 @@ namespace VKMusicSync.ModelView
 
             AudioUploadComman audioCommand = CommandsGenerator.SaveAudio(info);
             var fullstr = audioCommand.QueryString;
-            var paramsAndtoken = audioCommand.GetParamsWithToken();
+            var paramsAndtoken = @"?"+audioCommand.GetParamsWithToken();
+            //paramsAndtoken = @"?uid=15852307&fields=uid, first_name, last_name, nickname, sex, bdate, city, countryphoto, photo_medium, photo_big&access_token=f734a0848b5e7843e423e3acf72fd35736dfcff1e87b0e8aa5d22ddafd778c95c784dd8995b454d6e6b48";
+            //paramsAndtoken = @"?server=536518&audio=%7B%22audio%22%3A%22a0e144777d%22%2C%22time%22%3A138%2C%22artist%22%3A%22The+Human+Beinz%22%2C%22title%22%3A%22Nobody+But+Me%22%2C%22genre%22%3A24%2C%22album%22%3A%22The+Departed%22%2C%22bitrate%22%3A320%2C%22md5%22%3A%2292c8c6fdcd25c6998b3b86a1deaa99fa%22%2C%22kad%22%3A%2212005fec2aabe7208a349f46b98e96ff%5Cn%22%7D&hash=21f7deda067d8930bf963f0159308348&artist=artist&title=title&access_token=69fedfbf0e43a0e942c5e1bf7158f25204224349a0e005890a9db1b63c181c9a69bc40ef3043b0ca1585a";
             string asnwer = Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
             //audioCommand.Execute();
             /*BackgroundWorker backgroundWorker = new BackgroundWorker();
