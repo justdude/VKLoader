@@ -75,8 +75,12 @@
     <Compile Include="Handlers\vkontakte\Commands\ProfileCommand.cs" />
     <Compile Include="Handlers\vkontakte\Commands\XMLNodeHelper.cs" />
     <Compile Include="Handlers\vkontakte\ICommand.cs" />
+    <Compile Include="ModelView\SettingsModelView.cs" />
     <Compile Include="Model\AudioUploadedInfo.cs" />
     <Compile Include="Model\Profile.cs" />
+    <Compile Include="View\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TestVectorImages.xaml.cs">
       <DependentUpon>TestVectorImages.xaml</DependentUpon>
     </Compile>
@@ -114,6 +118,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\MusicSync.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

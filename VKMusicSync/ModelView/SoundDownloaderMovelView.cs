@@ -152,7 +152,8 @@ namespace VKMusicSync.ModelView
 
         private void OnSettingsClick()
         {
-            System.Windows.Forms.MessageBox.Show("SettingsClick");
+            var form = new VKMusicSync.View.Settings();
+            form.ShowDialog();
         }
 
         private void OnAuthClick()

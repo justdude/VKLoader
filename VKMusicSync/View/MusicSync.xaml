@@ -52,41 +52,56 @@
         </StackPanel>-->
         <Rectangle Grid.Row="0" Fill="#FF017BCD"/>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,2,0,0">
-            <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" ></Image>
+        <StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,0,0,0">
+            <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,2,0,0"></Image>
             <TextBlock Text="{Binding UserFullName}" HorizontalAlignment="Center"  ></TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Закачать" Command="{Binding DownloadFiles}" />
+            <!--<Button Content="Закачать" Command="{Binding DownloadFiles}" />-->
             <Button Content="Синронизировать" Command="{Binding SyncClick}" />
+            <Button Content="Закачать" Command="{Binding DownloadFiles}" />
             <Button Content="Настройки"  Command="{Binding SettingsClick}" />
             <!--<Button Content="Сменить пользователя" Command="{Binding AuthClick}" HorizontalAlignment="Left" />-->
         </StackPanel>
 
         <Controls:ProgressBar x:Name="progressBar" Grid.Row="2"  Value="{Binding ProgressPercentage}" Minimum="0" Maximum="100" Visibility="{Binding ProgressVisibility}" HorizontalAlignment="Stretch" Height="auto" />
-        <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding Sounds}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border HorizontalAlignment="Stretch"  Margin="2"  BorderThickness="1.2" BorderBrush="Blue" Padding="2.5" >
-                        <StackPanel Orientation="Horizontal" >
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="120">
-                                <TextBlock Text="{Binding Title}" FontWeight="Bold" ></TextBlock>
-                                <TextBlock Text="{Binding Artist}" ></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="45" Margin="8,0,0,0">
-                                <TextBlock Text="2.31 seconds" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
-                                <TextBlock Text="192 kb/s" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" MinWidth="120" Margin="8,0,0,0">
-                                <Controls:ProgressBar State="Busy" Value="{Binding LoadedSize}" HorizontalAlignment="Stretch" Width="100" Height="auto" />
-                                <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+
+
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Download">
+                <Grid>
+                    <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding Sounds}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="10" HorizontalAlignment="Stretch"  Margin="2"  BorderThickness="1.2" BorderBrush="Blue" Padding="2.5" >
+                                    <StackPanel Orientation="Horizontal" >
+                                        <CheckBox></CheckBox>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="170" MaxWidth="220">
+                                            <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
+                                            <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
+                                        </StackPanel>
+                                        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="45" Margin="8,0,0,0">
+                                            <TextBlock Text="2.31 seconds" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
+                                            <TextBlock Text="192 kb/s" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+                                        </StackPanel>-->
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" MinWidth="120" Margin="8,0,0,0">
+                                            <Controls:ProgressBar State="Busy" Value="{Binding LoadedSize}" HorizontalAlignment="Stretch" Width="100" Height="auto" />
+                                            <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Upload">
+                <Grid/>
+            </TabItem>
+        </TabControl>
+
+        
 
         <StatusBar Grid.Row="3" DockPanel.Dock="Bottom" Height="20" Margin="0,10,0,0">
             <StatusBarItem>
