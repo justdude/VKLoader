@@ -61,8 +61,11 @@
             <!--<Button Content="Закачать" Command="{Binding DownloadFiles}" />-->
             <Button Content="Синронизировать" Command="{Binding SyncClick}" />
             <Button Content="Закачать" Command="{Binding DownloadFiles}" />
+            <!--Content="{Binding SelectButtonState}"  Command="{Binding ButtonStateClick}" />-->
             <Button Content="Настройки"  Command="{Binding SettingsClick}" />
-            <!--<Button Content="Сменить пользователя" Command="{Binding AuthClick}" HorizontalAlignment="Left" />-->
+            <Button  Content="{Binding CheckedText}" Command="{Binding CheckAll}" >
+            </Button>
+
         </StackPanel>
 
         <Controls:ProgressBar x:Name="progressBar" Grid.Row="2"  Value="{Binding ProgressPercentage}" Minimum="0" Maximum="100" Visibility="{Binding ProgressVisibility}" HorizontalAlignment="Stretch" Height="auto" />
@@ -76,7 +79,7 @@
                             <DataTemplate>
                                 <Border CornerRadius="10" HorizontalAlignment="Stretch"  Margin="2"  BorderThickness="1.2" BorderBrush="Blue" Padding="2.5" >
                                     <StackPanel Orientation="Horizontal" >
-                                        <CheckBox></CheckBox>
+                                        <CheckBox IsChecked="{Binding Checked, Mode=TwoWay}"></CheckBox>
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="170" MaxWidth="220">
                                             <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
                                             <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>

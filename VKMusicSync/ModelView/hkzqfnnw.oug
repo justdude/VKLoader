@@ -78,53 +78,17 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        private DelegateCommand loginClick;
-        public ICommand LoginClick
+        private DelegateCommand selectDownloadFolderClick;
+        public ICommand SelectDownloadFolderClick
         {
             get
             {
-                if (loginClick == null)
+                if (selectDownloadFolderClick == null)
                 {
-                    loginClick = new DelegateCommand(OnLoginClick, CanLogin);
+                    selectDownloadFolderClick = new DelegateCommand(OnSelectDownloadFolderClick);
                 }
-                return loginClick;
+                return selectDownloadFolderClick;
             }
-        }
-
-        private DelegateCommand exitClick;
-        public ICommand ExitClick
-        {
-            get
-            {
-                if (exitClick == null)
-                {
-                    exitClick = new DelegateCommand(OnExitClick,CanExit);
-                }
-                return exitClick;
-            }
-        }
-
-        private bool CanLogin()
-        {
-            return vkontakte.APIManager.AccessData == null;
-        }
-
-        private bool CanExit()
-        {
-            return vkontakte.APIManager.AccessData != null;
-        }
-
-        private void OnExitClick()
-        {
-            vkontakte.APIManager.AccessData = null;
-            vkontakte.APIManager.Profile = null;
-            
-        }
-
-        private void OnLoginClick()
-        {
-            Auth form = new Auth();
-            form.ShowDialog();
         }
 
 
@@ -148,7 +112,7 @@ namespace VKMusicSync.ModelView
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
             dialog.ShowDialog();
-            if (System.IO.Directory.Exists(dialog.SelectedPath)==true)
+            if (System.IO.Path.Exists(dialog.SelectedPath)==true)
                 this.DownloadFolderPath = dialog.SelectedPath+@"\Audio";
         }
 

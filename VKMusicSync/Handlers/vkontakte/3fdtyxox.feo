@@ -18,7 +18,7 @@ namespace vkontakte
         public static VKApi vk = null;
 
         public static AccessData AccessData { get; set; }
-        public static Profile Profile { get; set; }
+        public static Profile
     }
 
     public class VKApi

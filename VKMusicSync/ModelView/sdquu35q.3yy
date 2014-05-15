@@ -87,10 +87,10 @@ namespace VKMusicSync.ModelView
             {
                 return checkedText; 
             }
-            set
+            private set
             {
                 checkedText = value;
-                OnPropertyChanged("CheckedText");
+                OnPropertyChanged("AllChecked");
             }
         }
 
@@ -108,10 +108,6 @@ namespace VKMusicSync.ModelView
                     checkAll = new DelegateCommand(OnCheckedAllClick);
                 }
                 return checkAll;
-            }
-            set
-            {
-                OnPropertyChanged("CheckAll");
             }
 
         }
@@ -205,17 +201,15 @@ namespace VKMusicSync.ModelView
                 allChecked = false;
                 foreach (var value in Sounds)
                     value.Checked = false;
-                this.CheckedText = "Выбрать все";
-                
+                this.CheckedText =  "Отменить все";
             }
             else
             {
                 allChecked = true;
                 foreach (var value in Sounds)
                     value.Checked = true;
-                this.CheckedText = "Отменить все";
+                this.CheckedText = "Выбрать все";
             }
-            OnPropertyChanged("Sounds");
         }
 
         public void Window_Loaded()

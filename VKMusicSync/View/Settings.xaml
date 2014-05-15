@@ -35,11 +35,14 @@
                                 <RowDefinition Height="36*"/>
                                 <RowDefinition Height="71*"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="1" Content="Папка для загрузок:" HorizontalAlignment="Left" Margin="30.842,11,0,0" VerticalAlignment="Top" Height="27" Width="129"/>
+                            <StackPanel Grid.Row="1"  Grid.Column="1">
+                                <Label  Content="Пользователь:" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="27" Width="129"/>
+                                <TextBlock Text="{Binding UserFullName}" HorizontalAlignment="Center" Height="25" MinWidth="140"  ></TextBlock>
 
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0.01,0,-0.03"  >
-                                <TextBlock Text="{Binding DownloadFolderPath}" HorizontalAlignment="Left" Height="26" Margin="0,0,8,0" Width="240"  />
-                                <Button   Command="{Binding SelectDownloadFolderClick}" Content="Обзор..."  Height="26" Padding="0" Width="83"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  >
+                                    <Button   Command="{Binding LoginClick}" Content="Войти"  Height="32" Width="83"/>
+                                    <Button   Command="{Binding ExitClick}" Content="Выйти"  Height="32" Width="83"/>
+                                </StackPanel>
                             </StackPanel>
                         </Grid>
 
@@ -95,7 +98,7 @@
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Grid.Column="1" Content="Выбор подложки:" HorizontalAlignment="Left" Margin="31,11,0,0" VerticalAlignment="Top" Height="23" Width="120" Grid.ColumnSpan="2"/>
 
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0.01,0,-0.03"  >
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,-70"  >
                                 <TextBlock Text="{Binding BackgroundPath}" HorizontalAlignment="Left" Height="26" Margin="0,0,8,0" Width="240"  />
                                 <Button   Command="{Binding SelectBackgroundPathClick}" Content="Обзор..."  Height="26" Padding="0" Width="83"/>
                             </StackPanel>

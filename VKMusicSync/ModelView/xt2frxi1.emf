@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MVVM;
+using VKMusicSync.Model;
+using System.Windows.Input;
+
+namespace VKMusicSync.ModelView
+{
+    class SettingsModelView : ViewModelBase
+    {
+
+        public string UserFullName
+        {
+            get;
+            private set;
+        }
+
+        public string DownloadFolderPath
+        {
+            get;
+            private set;
+        }
+
+        public string BackgroundPath
+        {
+            get
+            {
+                return Properties.Settings.Default.BackgroundPath;
+            }
+            set
+            {
+                Properties.Settings.Default.BackgroundPath = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private DelegateCommand selectBackgroundPathClick;
+        public ICommand SelectBackgroundPathClick
+        {
+            get
+            {
+                if (selectBackgroundPathClick==null)
+                {
+                    selectBackgroundPathClick = new DelegateCommand(OnSelectBackgroundPathClick);
+                }
+                return selectBackgroundPathClick;
+            }
+        }
+
+
+        private DelegateCommand applySelectedBackground;
+        public ICommand ApplySelectedBackground
+        {
+            get
+            {
+                if (applySelectedBackground == null)
+                {
+                    applySelectedBackground = new DelegateCommand(OnApplySelectedBackground);
+                }
+                return applySelectedBackground;
+            }
+        }
+
+        private void OnApplySelectedBackground()
+        {
+
+        }
+
+        private void OnSelectBackgroundPathClick()
+        {
+
+        }
+
+
+    }
+}

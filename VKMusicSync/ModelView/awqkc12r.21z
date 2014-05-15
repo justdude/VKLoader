@@ -79,42 +79,24 @@ namespace VKMusicSync.ModelView
         }
 
         private bool allChecked = true;
-        private string checkedText =  "Отменить все";
+        private string checkedText;
 
-        public string CheckedText
+        public string AllChecked
         {
             get
             {
-                return checkedText; 
+                return allChecked;
             }
             set
             {
-                checkedText = value;
-                OnPropertyChanged("CheckedText");
+                allChecked = value;
+                OnPropertyChanged("AllChecked");
             }
         }
 
         #endregion
 
         #region Click Commands
-
-        private DelegateCommand checkAll;
-        public ICommand CheckAll
-        {
-            get
-            {
-                if (checkAll == null)
-                {
-                    checkAll = new DelegateCommand(OnCheckedAllClick);
-                }
-                return checkAll;
-            }
-            set
-            {
-                OnPropertyChanged("CheckAll");
-            }
-
-        }
 
         private DelegateCommand downloadFiles;
         public ICommand DownloadFiles
@@ -195,27 +177,6 @@ namespace VKMusicSync.ModelView
             var authWindow = new Auth();
             authWindow.ShowDialog();
             //System.Windows.Forms.MessageBox.Show("OnSyncClick");
-        }
-
-        private void OnCheckedAllClick()
-        {
-            
-            if (allChecked)
-            {
-                allChecked = false;
-                foreach (var value in Sounds)
-                    value.Checked = false;
-                this.CheckedText = "Выбрать все";
-                
-            }
-            else
-            {
-                allChecked = true;
-                foreach (var value in Sounds)
-                    value.Checked = true;
-                this.CheckedText = "Отменить все";
-            }
-            OnPropertyChanged("Sounds");
         }
 
         public void Window_Loaded()

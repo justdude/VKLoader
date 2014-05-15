@@ -30,5 +30,10 @@ namespace VKMusicSync.Model
             this.last_name = last_name;
         }
 
+        public override string ToString()
+        {
+            return this.first_name + " " + this.last_name;
+        }
+
     }
 }

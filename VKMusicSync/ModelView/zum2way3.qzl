@@ -25,6 +25,7 @@ namespace VKMusicSync.ModelView
     {
         #region Private variables
 
+        private Profile Profile = new Profile();
         private List<Sound> sounds = new List<Sound>();
 
         #endregion
@@ -41,7 +42,7 @@ namespace VKMusicSync.ModelView
         public string UserFullName
         {
             get
-            { return APIManager.Profile.ToString(); }
+            { return Profile.first_name + " " + Profile.last_name; }
             set
             {
                 OnPropertyChanged("UserFullName");
@@ -77,44 +78,9 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("ProgressPercentage");
             }
         }
-
-        private bool allChecked = true;
-        private string checkedText =  "Отменить все";
-
-        public string CheckedText
-        {
-            get
-            {
-                return checkedText; 
-            }
-            set
-            {
-                checkedText = value;
-                OnPropertyChanged("CheckedText");
-            }
-        }
-
         #endregion
 
         #region Click Commands
-
-        private DelegateCommand checkAll;
-        public ICommand CheckAll
-        {
-            get
-            {
-                if (checkAll == null)
-                {
-                    checkAll = new DelegateCommand(OnCheckedAllClick);
-                }
-                return checkAll;
-            }
-            set
-            {
-                OnPropertyChanged("CheckAll");
-            }
-
-        }
 
         private DelegateCommand downloadFiles;
         public ICommand DownloadFiles
@@ -197,27 +163,6 @@ namespace VKMusicSync.ModelView
             //System.Windows.Forms.MessageBox.Show("OnSyncClick");
         }
 
-        private void OnCheckedAllClick()
-        {
-            
-            if (allChecked)
-            {
-                allChecked = false;
-                foreach (var value in Sounds)
-                    value.Checked = false;
-                this.CheckedText = "Выбрать все";
-                
-            }
-            else
-            {
-                allChecked = true;
-                foreach (var value in Sounds)
-                    value.Checked = true;
-                this.CheckedText = "Отменить все";
-            }
-            OnPropertyChanged("Sounds");
-        }
-
         public void Window_Loaded()
         {
             OnAuthClick();
@@ -246,8 +191,8 @@ namespace VKMusicSync.ModelView
                                                                             .InnerText);
             
             ProfileCommand profCommand = vkontakte.CommandsGenerator.GetUsers(APIManager.AccessData.UserId);
-            APIManager.Profile = profCommand.ExecuteForList().FirstOrDefault();
-            var paths = (new List<string>() { APIManager.Profile.photo, APIManager.Profile.photoMedium, APIManager.Profile.photoBig });
+            APIManager.Profile =  = profCommand.ExecuteForList().FirstOrDefault();
+            var paths = (new List<string>() { Profile.photo, Profile.photoMedium, Profile.photoBig });
             var path = string.Empty;
             foreach(var p in paths)
                 if (p.Count()>0) 
@@ -258,7 +203,7 @@ namespace VKMusicSync.ModelView
             if (path != string.Empty)
                 Avatar = path;
             
-            this.UserFullName = APIManager.Profile.last_name;
+            this.UserFullName = Profile.last_name;
 
             if (count > 0)
             {

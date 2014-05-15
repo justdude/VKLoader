@@ -93,11 +93,15 @@ namespace vkontakte
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
             Params.Add("server", info.Server);
-            Params.Add("audio", info.Audio);
+            var unescapeStr = Uri.UnescapeDataString(info.Audio);
+            unescapeStr = unescapeStr.Replace(@"\n", "");
+            unescapeStr = Uri.EscapeDataString(unescapeStr);
+
+            Params.Add("audio", Uri.EscapeDataString(info.Audio));
             Params.Add("hash", info.Hash);
             Params.Add("title", "title");
             Params.Add("artist", "artist");
-            //Params.Add("v", "5.21");
+            Params.Add("v", "5.21");
             CommandName = "audio.save";
             return new AudioUploadComman(CommandName, Params);
         }

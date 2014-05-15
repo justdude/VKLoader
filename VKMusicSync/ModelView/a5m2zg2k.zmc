@@ -123,8 +123,7 @@ namespace VKMusicSync.ModelView
 
         private void OnLoginClick()
         {
-            Auth form = new Auth();
-            form.ShowDialog();
+
         }
 
 

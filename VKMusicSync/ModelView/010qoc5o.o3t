@@ -203,19 +203,18 @@ namespace VKMusicSync.ModelView
             if (allChecked)
             {
                 allChecked = false;
-                foreach (var value in Sounds)
-                    value.Checked = false;
-                this.CheckedText = "Выбрать все";
-                
+                /*foreach (var value in Sounds)
+                    value.Checked = false;*/
+                this.CheckedText =  "Отменить все";
             }
             else
             {
                 allChecked = true;
                 foreach (var value in Sounds)
                     value.Checked = true;
-                this.CheckedText = "Отменить все";
+                this.CheckedText = "Выбрать все";
             }
-            OnPropertyChanged("Sounds");
+            Sounds[0].Checked = false;
         }
 
         public void Window_Loaded()

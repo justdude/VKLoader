@@ -20,6 +20,24 @@ namespace VKMusicSync.ModelView
         public string genre_id { get; set; }
          */
 
+        private bool ischecked = true;
+
+        public bool Checked
+        {
+            get
+            {
+                return ischecked;
+            }
+            set
+            {
+                if (ischecked!=value)
+                {
+                    ischecked = value;
+                    OnPropertyChanged("Checked");
+                }
+            }
+        }
+
         public string Artist
         {
             get { return Sound.artist; }
