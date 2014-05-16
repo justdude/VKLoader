@@ -51,6 +51,19 @@ namespace VKMusicSync.ModelView
             }
         }
 
+        private DelegateCommand selectDownloadFolderClick;
+        public ICommand SelectDownloadFolderClick
+        {
+            get
+            {
+                if (selectDownloadFolderClick == null)
+                {
+                    selectDownloadFolderClick = new DelegateCommand(OnSelectDownloadFolderClick);
+                }
+                return selectDownloadFolderClick;
+            }
+        }
+
         private DelegateCommand selectBackgroundPathClick;
         public ICommand SelectBackgroundPathClick
         {

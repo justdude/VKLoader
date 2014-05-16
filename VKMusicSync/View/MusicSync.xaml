@@ -68,13 +68,13 @@
 
         </StackPanel>
 
-        <Controls:ProgressBar x:Name="progressBar" Grid.Row="2"  Value="{Binding ProgressPercentage}" Minimum="0" Maximum="100" Visibility="{Binding ProgressVisibility}" HorizontalAlignment="Stretch" Height="auto" />
+        <Controls:ProgressBar x:Name="progressBar" Grid.Row="2"  Value="{Binding ProgressPercentage}" Minimum="0" Maximum="100" Visibility="{Binding ProgressVisibility}" Margin="5,0,5,0" HorizontalAlignment="Stretch" Height="auto" />
 
 
-        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding TabSelectedIndex}">
             <TabItem Header="Download">
                 <Grid>
-                    <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding Sounds}">
+                    <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding Sounds}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border CornerRadius="10" HorizontalAlignment="Stretch"  Margin="2"  BorderThickness="1.2" BorderBrush="Blue" Padding="2.5" >
@@ -89,7 +89,7 @@
                                             <TextBlock Text="192 kb/s" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
                                         </StackPanel>-->
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" MinWidth="120" Margin="8,0,0,0">
-                                            <Controls:ProgressBar State="Busy" Value="{Binding LoadedSize}" HorizontalAlignment="Stretch" Width="100" Height="auto" />
+                                            <Controls:ProgressBar State="Busy" Visibility="{Binding CurrentProgressVisibility}" HorizontalAlignment="Stretch" Width="100" Height="auto" />
                                             <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
                                         </StackPanel>
                                     </StackPanel>
@@ -100,7 +100,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Upload">
-                <Grid/>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                </Grid>
             </TabItem>
         </TabControl>
 

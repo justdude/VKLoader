@@ -38,6 +38,21 @@ namespace VKMusicSync.ModelView
             }
         }
 
+        private System.Windows.Visibility currentProgressVisibility = System.Windows.Visibility.Hidden;
+        public System.Windows.Visibility CurrentProgressVisibility
+        {
+            get
+            {
+                return currentProgressVisibility;
+            }
+            set
+            {
+                currentProgressVisibility = value;
+                OnPropertyChanged("CurrentProgressVisibility");
+            }
+
+        }
+
         public string Artist
         {
             get { return Sound.artist; }
@@ -103,8 +118,19 @@ namespace VKMusicSync.ModelView
             get { return Sound.SyncState; }
             set
             {
-                //Sound.Quality = value;
-                OnPropertyChanged("LoadedSize");
+                Sound.SyncState = value;
+                OnPropertyChanged("SyncState");
+                if (!Sound.SyncState)
+                {
+                    CurrentProgressVisibility = System.Windows.Visibility.Collapsed;
+                    VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
+
+                }
+                else
+                {
+                    CurrentProgressVisibility = System.Windows.Visibility.Visible;
+                    VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
+                }
             }
         }
 

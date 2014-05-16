@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using VKMusicSync.Model;
 
 namespace VKMusicSync.Handlers.Synchronize
@@ -11,13 +12,17 @@ namespace VKMusicSync.Handlers.Synchronize
     {
         public int CurrentFileNumber { get; private set; }
         public int FilesCount { get; private set; }
+        public string Path
+        { get; private set; }
 
         public DownloadDataCompletedEventHandler OnLoaded { get; set; }
         public DownloadProgressChangedEventHandler OnProgress { get; set; }
 
+
         public void SyncFolderWithList<T>(List<T> items, string path) where T : IDownnloadedData
         {
-            Downloader downloader = new Downloader(path);
+            this.Path = path;
+            Downloader downloader = new Downloader(Path);
 
             if (!System.IO.File.Exists(path))
                 System.IO.Directory.CreateDirectory(path);
@@ -38,21 +43,38 @@ namespace VKMusicSync.Handlers.Synchronize
             localSync.ComputeFileList(existData, AudioComparer);
             List<T> valuesToDownload = localSync.GetExist();
 
-            downloader.SetOnLoaded(OnLoaded);
-            downloader.SetOnChanged(OnProgress);
+            downloader.OnDownloadComplete += OnLoaded;
+            downloader.OnDownloadProgressChanged += OnProgress;
             DownloadEachFile<T>(downloader, valuesToDownload);
         }
 
         private void DownloadEachFile<T>(Downloader downloader, List<T> valuesToDownload) where T : IDownnloadedData
         {
             FilesCount = valuesToDownload.Count;
+            ThreadPool.SetMaxThreads(4, 3);
+
             for (int i = 0; i < valuesToDownload.Count; i++)
             {
                 CurrentFileNumber = i;
-                downloader.Download(valuesToDownload[i].GetUrl(),
-                                    valuesToDownload[i].GenerateFileName()
-                                  + valuesToDownload[i].GenerateFileExtention());
+                Process<T>(valuesToDownload[i]);   
+                /*ThreadPool.QueueUserWorkItem( new WaitCallback( (object arg)=>{
+                    int n = (int)arg;
+                    CurrentFileNumber = n;
+                    Process<T>(valuesToDownload[n]);
+                }));*/
+
+                //WaitHandle.WaitAll()
             }
+        }
+
+        private void Process<T>(T value) where T : IDownnloadedData
+        {
+            value.SyncState = true;
+            var downloader = new Downloader(this.Path);
+            downloader.Download(value.GetUrl(),
+                                value.GenerateFileName() + value.GenerateFileExtention()
+                              );
+            value.SyncState = false;
         }
 
         private bool AudioComparer<T>(System.IO.FileInfo[] files, T value) where T : IDownnloadedData
