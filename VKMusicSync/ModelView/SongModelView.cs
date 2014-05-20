@@ -20,6 +20,8 @@ namespace VKMusicSync.ModelView
         public string genre_id { get; set; }
          */
 
+        public static bool FreezeClick = false;
+
         private bool ischecked = true;
 
         public bool Checked
@@ -30,7 +32,7 @@ namespace VKMusicSync.ModelView
             }
             set
             {
-                if (ischecked!=value)
+                if (ischecked!=value && FreezeClick == false)
                 {
                     ischecked = value;
                     OnPropertyChanged("Checked");
@@ -120,17 +122,12 @@ namespace VKMusicSync.ModelView
             {
                 Sound.SyncState = value;
                 OnPropertyChanged("SyncState");
-                if (!Sound.SyncState)
-                {
-                    CurrentProgressVisibility = System.Windows.Visibility.Collapsed;
-                    VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
 
-                }
+                if (Sound.SyncState==false)
+                    CurrentProgressVisibility = System.Windows.Visibility.Hidden;
                 else
-                {
                     CurrentProgressVisibility = System.Windows.Visibility.Visible;
-                    VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
-                }
+                VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
             }
         }
 

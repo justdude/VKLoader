@@ -90,13 +90,11 @@ namespace VKMusicSync.Handlers
             get;
             set;
         }
-        public DownloadDataCompletedEventHandler OnDownloadComplete
+        public AsyncCompletedEventHandler OnDownloadComplete
         {
             get;
             set;
         }
-
-
 
         public Downloader(string path)
         {
@@ -110,21 +108,44 @@ namespace VKMusicSync.Handlers
             try
             {
                 web.DownloadProgressChanged += OnDownloadProgressChanged;
-                web.DownloadDataCompleted   += OnDownloadComplete;
-                web.DownloadFileAsync(new Uri(uri), Path + filename);
-                while (true)
-                {
-                    if (!web.IsBusy) break;
-                }
-
+                web.DownloadFileCompleted   += OnDownloadComplete;
+                web.DownloadFile(new Uri(uri), Path + filename);
+                
                 web.DownloadProgressChanged -= OnDownloadProgressChanged;
-                web.DownloadDataCompleted -= OnDownloadComplete;
+                //web.DownloadDataCompleted -= OnDownloadComplete;
             }
             catch (WebException ex)
             {
                 //System.Windows.Forms.MessageBox.Show(""+ex.Message); //SPIKE!!!!!!!
             }
         }
+
+        public void DownloadAsync(string uri, string filename)
+        {
+            try
+            {
+                web.DownloadProgressChanged += OnDownloadProgressChanged;
+                web.DownloadFileCompleted += OnDownloadComplete;
+                web.DownloadFileAsync(new Uri(uri), Path + filename);
+               /* while (true)
+                {
+                    if (!web.IsBusy) break;
+                }*/
+
+                //web.DownloadProgressChanged -= OnDownloadProgressChanged;
+                //web.DownloadDataCompleted -= OnDownloadComplete;
+            }
+            catch (WebException ex)
+            {
+                //System.Windows.Forms.MessageBox.Show(""+ex.Message); //SPIKE!!!!!!!
+            }
+        }
+
+        public void Cancel()
+        {
+            this.web.Dispose();
+        }
+
 
         /*public void Download(string uri, string filename)
         {

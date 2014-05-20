@@ -132,6 +132,22 @@ namespace VKMusicSync.ModelView
             }
         }
 
+
+        private string loadButtonText = "Загрузка";
+
+        public string LoadButtonText
+        {
+            get
+            {
+                return loadButtonText;
+            }
+            set
+            {
+                checkedText = value;
+                OnPropertyChanged("LoadButtonText");
+            }
+        }
+
         #endregion
 
         #region Click Commands
@@ -361,41 +377,46 @@ namespace VKMusicSync.ModelView
 
         #region Load audio
 
-        private SynhronizeAdapter adapter = new SynhronizeAdapter();
-
+        private SynhronizeAdapter adapter;
+        private bool IsDownloading = false;
         private void OnDownloadFiles()
         {
-            BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += this.DoWork;
-            backgroundWorker.RunWorkerCompleted += this.OnCompletedAllLoad;
-            backgroundWorker.RunWorkerAsync(sounds);
+            if (!IsDownloading)
+            {
+                IsDownloading = true;
+                BackgroundWorker backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += this.DoWork;
+                backgroundWorker.RunWorkerCompleted += delegate (object s,RunWorkerCompletedEventArgs e) 
+                                                                { IsDownloading = false; };
+                backgroundWorker.RunWorkerAsync(sounds);
+            }
+            else
+            {
+                adapter.Stop();
+                IsDownloading = false;
+            }
+            
         }
 
-        private void OnChangeLoadFile(object sender, DownloadProgressChangedEventArgs e)
+        private void OnProgress(object sender, ProgressArgs e)
         {
-            this.ProgressPercentage = (adapter.CurrentFileNumber / (float)adapter.FilesCount * 100.0);
+            this.ProgressPercentage = (e.ProgressPercentage * 100.0);
         }
 
-        private void OnCompleteLoadFile(object sender, DownloadDataCompletedEventArgs e)
+        private void OnDone(object sender, ProgressArgs e)
         {
             this.ProgressPercentage = 100;
-        }
-
-        private void OnCompletedAllLoad(object sender, RunWorkerCompletedEventArgs e)
-        {
             IOHandler.OpenPath(Properties.Settings.Default.DownloadFolderPath);
+
         }
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
-            this.ProgressPercentage = 0;
-            adapter.OnLoaded   += this.OnCompleteLoadFile;
-            adapter.OnProgress += this.OnChangeLoadFile;
-
-            List<SoundModelView> soundModelList = new List<SoundModelView>();
-            soundModelList.AddRange(Sounds);
-            adapter.SyncFolderWithList<SoundModelView>(soundModelList,
-                                                       Properties.Settings.Default.DownloadFolderPath);
+            adapter = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath);
+            adapter.OnDone += this.OnDone; //new SynhronizeAdapter.DownloadProgressChangedEvent(this.OnDone);
+            adapter.OnProgress += this.OnProgress;//new SynhronizeAdapter.DownloadProgressChangedEvent(this.OnProgress);
+            IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
+            adapter.SyncFolderWithList<SoundModelView>(selected.ToList());
         }
         #endregion
 

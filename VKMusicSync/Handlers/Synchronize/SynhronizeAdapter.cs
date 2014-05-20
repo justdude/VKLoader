@@ -10,72 +10,111 @@ namespace VKMusicSync.Handlers.Synchronize
 {
     public class SynhronizeAdapter
     {
-        public int CurrentFileNumber { get; private set; }
+        public int CountLoadedFiles { get; private set; }
         public int FilesCount { get; private set; }
-        public string Path
-        { get; private set; }
-
-        public DownloadDataCompletedEventHandler OnLoaded { get; set; }
-        public DownloadProgressChangedEventHandler OnProgress { get; set; }
+        public int RemainCount { get; private set; }
+        public int CountThreads { get; private set; }
+        public string Path { get; private set; }
 
 
-        public void SyncFolderWithList<T>(List<T> items, string path) where T : IDownnloadedData
+        public delegate void DownloadProgressChangedEvent(Object sender, ProgressArgs e);
+
+        public DownloadProgressChangedEvent OnProgress
         {
-            this.Path = path;
-            Downloader downloader = new Downloader(Path);
-
-            if (!System.IO.File.Exists(path))
-                System.IO.Directory.CreateDirectory(path);
-
-            try
-            {
-                SyncFiles<T>(items, path, downloader);
-            }
-            catch (System.Exception ex)
-            {
-                //System.Windows.Forms.MessageBox.Show(ex.Message); //SPIKE!!!
-            }
+            get;
+            set;
         }
 
-        private void SyncFiles<T>(List<T> existData, string directory, Downloader downloader) where T : IDownnloadedData
+        public DownloadProgressChangedEvent OnDone
+        {
+            get;
+            set;
+        }
+
+        private ProgressArgs args
+        {
+            get;
+            set;
+        }
+
+
+        public SynhronizeAdapter(String path)
+        {
+            this.Path = path;
+            if (this.CountThreads <= 0) 
+                this.CountThreads = Environment.ProcessorCount * 2;
+        }
+
+        public void SyncFolderWithList<T>(List<T> items) where T : IDownnloadedData
+        {
+            if (!System.IO.File.Exists(Path))
+                System.IO.Directory.CreateDirectory(Path);
+
+            Download<T>(items, Path);
+        }
+
+
+        private void Download<T>(List<T> existData, string directory) where T : IDownnloadedData
         {
             IOSync<T> localSync = new IOSync<T>(directory);
             localSync.ComputeFileList(existData, AudioComparer);
             List<T> valuesToDownload = localSync.GetExist();
 
-            downloader.OnDownloadComplete += OnLoaded;
-            downloader.OnDownloadProgressChanged += OnProgress;
-            DownloadEachFile<T>(downloader, valuesToDownload);
+            FilesCount = valuesToDownload.Count;
+            DownloadEachFile<T>(valuesToDownload);
         }
 
-        private void DownloadEachFile<T>(Downloader downloader, List<T> valuesToDownload) where T : IDownnloadedData
-        {
-            FilesCount = valuesToDownload.Count;
-            ThreadPool.SetMaxThreads(4, 3);
 
+
+        private void DownloadEachFile<T>(List<T> valuesToDownload) where T : IDownnloadedData
+        {
+            RemainCount = 0;
             for (int i = 0; i < valuesToDownload.Count; i++)
             {
-                CurrentFileNumber = i;
-                Process<T>(valuesToDownload[i]);   
-                /*ThreadPool.QueueUserWorkItem( new WaitCallback( (object arg)=>{
-                    int n = (int)arg;
-                    CurrentFileNumber = n;
-                    Process<T>(valuesToDownload[n]);
-                }));*/
-
-                //WaitHandle.WaitAll()
+                while (RemainCount>= CountThreads)
+                { 
+                }
+                 DownloadFile(valuesToDownload[i]);
+                 RemainCount++;
+                 
             }
+            while (RemainCount >= CountThreads)
+            { }
+            if (OnDone != null)
+                OnDone(this, new ProgressArgs(100, 100, 0, null));
         }
 
-        private void Process<T>(T value) where T : IDownnloadedData
+        private void DownloadFile(object data) 
         {
+            IDownnloadedData value = (IDownnloadedData)data;
             value.SyncState = true;
             var downloader = new Downloader(this.Path);
-            downloader.Download(value.GetUrl(),
+            downloader.OnDownloadProgressChanged += (r, e)=>
+            {
+                if (value.SyncState!=true)
+                    value.SyncState = true;
+            };
+            WebClient cl = new WebClient();
+            
+            downloader.OnDownloadComplete += (r, e) =>
+            {
+                value.SyncState = false;
+                RemainCount--;
+                this.CountLoadedFiles++;
+                if (this.OnProgress != null)
+                    OnProgress(this, new ProgressArgs(1, CountLoadedFiles/(double)FilesCount, 0, null));
+            };
+            downloader.DownloadAsync(value.GetUrl(),
                                 value.GenerateFileName() + value.GenerateFileExtention()
-                              );
-            value.SyncState = false;
+                               );
+            
         }
+
+        public void Stop()
+        {
+
+        }
+
 
         private bool AudioComparer<T>(System.IO.FileInfo[] files, T value) where T : IDownnloadedData
         {
