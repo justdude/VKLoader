@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ namespace VKMusicSync.Handlers.Synchronize
         public int CountThreads { get; private set; }
         public string Path { get; private set; }
 
+        private ArrayList downloaders = new ArrayList();
 
         public delegate void DownloadProgressChangedEvent(Object sender, ProgressArgs e);
 
@@ -30,13 +32,6 @@ namespace VKMusicSync.Handlers.Synchronize
             get;
             set;
         }
-
-        private ProgressArgs args
-        {
-            get;
-            set;
-        }
-
 
         public SynhronizeAdapter(String path)
         {
@@ -65,12 +60,16 @@ namespace VKMusicSync.Handlers.Synchronize
         }
 
 
-
+        private bool controlDownloading = false;
         private void DownloadEachFile<T>(List<T> valuesToDownload) where T : IDownnloadedData
         {
+            controlDownloading = false;
             RemainCount = 0;
+
             for (int i = 0; i < valuesToDownload.Count; i++)
             {
+                if (controlDownloading == true)
+                    break;
                 while (RemainCount>= CountThreads)
                 { 
                 }
@@ -78,41 +77,65 @@ namespace VKMusicSync.Handlers.Synchronize
                  RemainCount++;
                  
             }
-            while (RemainCount >= CountThreads)
+            while (RemainCount > 0)
             { }
             if (OnDone != null)
                 OnDone(this, new ProgressArgs(100, 100, 0, null));
         }
 
+        public void CancelDownloading()
+        {
+            controlDownloading = true;
+            /*while (RemainCount >= CountThreads)
+            { }*/
+            for (int i = 0; i < downloaders.Count; i++)
+            {
+                var target = (Downloader)downloaders[i];
+                target.CancelAsync();
+                downloaders.Remove(target);
+                target = null;
+            }
+        }
+
+        
+
         private void DownloadFile(object data) 
         {
             IDownnloadedData value = (IDownnloadedData)data;
+            var songItem = (VKMusicSync.ModelView.SoundModelView)data;
+
+
             value.SyncState = true;
             var downloader = new Downloader(this.Path);
+            downloaders.Add(downloader);
+
             downloader.OnDownloadProgressChanged += (r, e)=>
             {
                 if (value.SyncState!=true)
                     value.SyncState = true;
+                if (songItem.Checked == false)
+                    songItem.Checked = true;
+                if (this.OnProgress != null)
+                    OnProgress(this, new ProgressArgs(1, CountLoadedFiles / (double)FilesCount, 0, null));
             };
-            WebClient cl = new WebClient();
-            
+
             downloader.OnDownloadComplete += (r, e) =>
             {
-                value.SyncState = false;
+                
                 RemainCount--;
-                this.CountLoadedFiles++;
+                CountLoadedFiles++;
+                downloaders.Remove(downloader);
+
+                songItem.Checked = false;
+                value.SyncState = false;
+
                 if (this.OnProgress != null)
                     OnProgress(this, new ProgressArgs(1, CountLoadedFiles/(double)FilesCount, 0, null));
             };
+
             downloader.DownloadAsync(value.GetUrl(),
                                 value.GenerateFileName() + value.GenerateFileExtention()
                                );
-            
-        }
-
-        public void Stop()
-        {
-
         }
 
 

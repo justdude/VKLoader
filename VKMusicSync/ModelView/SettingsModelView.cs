@@ -5,6 +5,7 @@ using System.Text;
 using MVVM;
 using VKMusicSync.Model;
 using System.Windows.Input;
+using System.Net;
 
 namespace VKMusicSync.ModelView
 {
@@ -50,6 +51,47 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("BackgroundPath");
             }
         }
+
+        private WebProxy proxy;
+        public WebProxy Proxy
+        {
+            get
+            {
+                if (proxy == null)
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAdress, 
+                                         int.Parse(Properties.Settings.Default.ProxyPort));
+                    proxy.Credentials = Credential;
+                    OnPropertyChanged("Proxy");
+                }
+                return proxy;
+            }
+            set
+            {
+                proxy = value;
+                OnPropertyChanged("Proxy");
+            }
+        }
+        private NetworkCredential credential;
+        public NetworkCredential Credential
+        {
+            get
+            {
+                if (credential == null)
+                {
+                    credential = new NetworkCredential(Properties.Settings.Default.ProxyName, 
+                                                       Properties.Settings.Default.ProxyPassword);
+                    OnPropertyChanged("Credential");
+                }
+                return credential;
+            }
+            set
+            {
+                credential = value;
+                OnPropertyChanged("Credential");
+            }
+        }
+
 
         private DelegateCommand selectDownloadFolderClick;
         public ICommand SelectDownloadFolderClick
@@ -162,7 +204,7 @@ namespace VKMusicSync.ModelView
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
             dialog.ShowDialog();
             if (System.IO.Directory.Exists(dialog.SelectedPath)==true)
-                this.DownloadFolderPath = dialog.SelectedPath+@"\Audio";
+                this.DownloadFolderPath = dialog.SelectedPath+@"\Audio\";
         }
 
 

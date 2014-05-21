@@ -46,5 +46,65 @@ namespace VKMusicSync.Properties {
                 this["DownloadFolderPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProxyAdress {
+            get {
+                return ((string)(this["ProxyAdress"]));
+            }
+            set {
+                this["ProxyAdress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProxyPort {
+            get {
+                return ((string)(this["ProxyPort"]));
+            }
+            set {
+                this["ProxyPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProxyName {
+            get {
+                return ((string)(this["ProxyName"]));
+            }
+            set {
+                this["ProxyName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProxyPassword {
+            get {
+                return ((string)(this["ProxyPassword"]));
+            }
+            set {
+                this["ProxyPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UseProxy {
+            get {
+                return ((string)(this["UseProxy"]));
+            }
+            set {
+                this["UseProxy"] = value;
+            }
+        }
     }
 }

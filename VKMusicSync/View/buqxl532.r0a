@@ -8,7 +8,7 @@
         x:Class="VKMusicSync.MusicSync"
         Title="MusicSync" Height="300" Width="496.241"
         WindowStartupLocation="CenterScreen"
-        params:Design.Theme="Light"
+        params:Design.Theme="Dark"
         params:Manager.Theme="Light" 
         params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}"
         params:Manager.ContrastBrush="White" Loaded="Window_Loaded"
@@ -49,7 +49,7 @@
             </StackPanel>
 
         </StackPanel>-->
-        <Rectangle Grid.Row="0" Fill="#FF017BCD"/>
+        <Rectangle Grid.Row="0" Fill="#FF3E464B"/>
 
         <StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,0,0,0">
             <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,2,0,0"></Image>

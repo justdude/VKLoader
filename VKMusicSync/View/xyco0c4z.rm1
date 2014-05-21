@@ -8,8 +8,8 @@
         x:Class="VKMusicSync.MusicSync"
         Title="MusicSync" Height="300" Width="496.241"
         WindowStartupLocation="CenterScreen"
-        params:Design.Theme="Light"
-        params:Manager.Theme="Light" 
+        params:Design.Theme="Dark"
+        params:Manager.Theme="Dark" 
         params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}"
         params:Manager.ContrastBrush="White" Loaded="Window_Loaded"
 

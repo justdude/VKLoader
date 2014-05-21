@@ -32,7 +32,8 @@ namespace VKMusicSync.ModelView
             }
             set
             {
-                if (ischecked!=value && FreezeClick == false)
+                //if (FreezeClick == false)
+                if (ischecked!=value)
                 {
                     ischecked = value;
                     OnPropertyChanged("Checked");

@@ -39,10 +39,16 @@
                                 <Label  Content="Пользователь:" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="27" Width="129"/>
                                 <TextBlock Text="{Binding UserFullName}" HorizontalAlignment="Center" Height="25" MinWidth="140"  ></TextBlock>
 
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  >
-                                    <Button   Command="{Binding LoginClick}" Content="Войти"  Height="32" Width="83"/>
-                                    <Button   Command="{Binding ExitClick}" Content="Выйти"  Height="32" Width="83"/>
-                                </StackPanel>
+                                <Grid HorizontalAlignment="Stretch"  >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="84*"/>
+                                        <ColumnDefinition Width="84*"/>
+                                        <ColumnDefinition Width="84*"/>
+                                        <ColumnDefinition Width="84*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="1"  Command="{Binding LoginClick}" Content="Войти"  Height="32" Width="83"/>
+                                    <Button Grid.Column="2"   Command="{Binding ExitClick}" Content="Выйти"  Height="32" Width="83"/>
+                                </Grid>
                             </StackPanel>
                         </Grid>
 
@@ -64,15 +70,24 @@
                                 <ColumnDefinition Width="319*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="36*"/>
-                                <RowDefinition Height="71*"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="1" Content="Папка для загрузок:" HorizontalAlignment="Left" Margin="30.842,11,0,0" VerticalAlignment="Top" Height="27" Width="129"/>
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
 
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0.01,0,-0.03"  >
-                                <TextBlock Text="{Binding DownloadFolderPath}" HorizontalAlignment="Left" Height="26" Margin="0,0,8,0" Width="240"  />
-                                <Button   Command="{Binding SelectDownloadFolderClick}" Content="Обзор..."  Height="26" Padding="0" Width="83"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="1" Content="Папка для загрузок:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="129"/>
+                            <Label Grid.Row="2" Grid.Column="1" Content="Количество одновременных загрузок:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="223"/>
+                            <Label Grid.Row="4" Grid.Column="1" Content="Сворачивать в трей:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="223"/>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1"  >
+                                <TextBlock Text="{Binding DownloadFolderPath}" HorizontalAlignment="Left" Height="26"  Width="240"  />
+                                <Button   Command="{Binding SelectDownloadFolderClick}" Content="Обзор..."  Height="32" Width="83"/>
                             </StackPanel>
+                            <Slider Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="138" />
+                            <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
                         </Grid>
 
                     </Grid>
@@ -84,7 +99,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="120*"/>
-                            <RowDefinition Height="276*"/>
+                            <RowDefinition Height="120*"/>
 
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
@@ -93,19 +108,59 @@
                                 <ColumnDefinition Width="319*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="36*"/>
-                                <RowDefinition Height="71*"/>
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="1" Content="Выбор подложки:" HorizontalAlignment="Left" Margin="31,11,0,0" VerticalAlignment="Top" Height="23" Width="120" Grid.ColumnSpan="2"/>
+                            <Label Grid.Row="0" Grid.Column="1" Content="Выбор подложки:" HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                            <Label Grid.Row="2" Grid.Column="1" Content="Настройка цвета панели:" HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.ColumnSpan="2"/>
 
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,-70"  >
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal"  >
                                 <TextBlock Text="{Binding BackgroundPath}" HorizontalAlignment="Left" Height="26" Margin="0,0,8,0" Width="240"  />
                                 <Button   Command="{Binding SelectBackgroundPathClick}" Content="Обзор..."  Height="26" Padding="0" Width="83"/>
                             </StackPanel>
+
                         </Grid>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
+
+            <TabItem Header="Прокси">
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="120*"/>
+                            <RowDefinition Height="120*"/>
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="11*"/>
+                                <ColumnDefinition Width="171*"/>
+                                <ColumnDefinition Width="172*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
+                                <RowDefinition Height="59*"/>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="1" Content="Адресс" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0.24,0,0,0"/>
+                            <Label Grid.Row="0" Grid.Column="2" Content="Порт" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0.24,0,0,0"/>
+                            <Label Grid.Row="1" Grid.Column="1" Content="Логин" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0.24,55.253,0,0" Grid.RowSpan="2"/>
+                            <Label Grid.Row="1" Grid.Column="2" Content="Пароль" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0.24,55.253,0,0" Grid.RowSpan="2"/>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0.24,0.253,0,0.25"  >
+                                <TextBlock Text="{Binding BackgroundPath}" HorizontalAlignment="Left" Height="26" Margin="0,15,8,14.503" Width="137"  />
+                            </StackPanel>
+
+                        </Grid>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+
         </TabControl>
     </Grid>
 

@@ -71,7 +71,6 @@ namespace VKMusicSync.Handlers
             set;
         }
 
-
         /*public delegate void DownloadProgressChangedEvent(Object sender, ProgressArgs e);
 
         public DownloadProgressChangedEvent OnDownloadProgressChanged
@@ -126,6 +125,7 @@ namespace VKMusicSync.Handlers
             {
                 web.DownloadProgressChanged += OnDownloadProgressChanged;
                 web.DownloadFileCompleted += OnDownloadComplete;
+                
                 web.DownloadFileAsync(new Uri(uri), Path + filename);
                /* while (true)
                 {
@@ -141,7 +141,12 @@ namespace VKMusicSync.Handlers
             }
         }
 
-        public void Cancel()
+        public void CancelAsync()
+        {
+            web.CancelAsync();
+        }
+
+        ~ Downloader()
         {
             this.web.Dispose();
         }

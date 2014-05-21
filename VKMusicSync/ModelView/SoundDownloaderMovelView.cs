@@ -67,6 +67,18 @@ namespace VKMusicSync.ModelView
             }
         }
 
+        private string status;
+        public string Status
+        {
+            get
+            { return status; }
+            set
+            {
+                status = value;
+                OnPropertyChanged("Status");
+            }
+        }
+
         public string UserFullName
         {
             get
@@ -133,7 +145,7 @@ namespace VKMusicSync.ModelView
         }
 
 
-        private string loadButtonText = "Загрузка";
+        private string loadButtonText = "Синхронизация";
 
         public string LoadButtonText
         {
@@ -143,7 +155,7 @@ namespace VKMusicSync.ModelView
             }
             set
             {
-                checkedText = value;
+                loadButtonText = value;
                 OnPropertyChanged("LoadButtonText");
             }
         }
@@ -315,6 +327,7 @@ namespace VKMusicSync.ModelView
                 this.Sounds.Add(new SoundModelView(sounds[i]));
             SetSounds(sounds);
             this.ProgressPercentage = 100;
+            Status = "" + this.Sounds.Count;
         }
 
         #endregion
@@ -377,13 +390,15 @@ namespace VKMusicSync.ModelView
 
         #region Load audio
 
-        private SynhronizeAdapter adapter;
+        private SynhronizeAdapter SoundHandler;
         private bool IsDownloading = false;
         private void OnDownloadFiles()
         {
             if (!IsDownloading)
             {
+                LoadButtonText = "Отмена";
                 IsDownloading = true;
+                VKMusicSync.ModelView.SoundModelView.FreezeClick = true;
                 BackgroundWorker backgroundWorker = new BackgroundWorker();
                 backgroundWorker.DoWork += this.DoWork;
                 backgroundWorker.RunWorkerCompleted += delegate (object s,RunWorkerCompletedEventArgs e) 
@@ -392,19 +407,25 @@ namespace VKMusicSync.ModelView
             }
             else
             {
-                adapter.Stop();
+                SoundHandler.CancelDownloading();
+                this.ProgressPercentage = 101;
+                SoundHandler.CancelDownloading();
                 IsDownloading = false;
+                LoadButtonText = "Синхронизация";
             }
             
         }
 
         private void OnProgress(object sender, ProgressArgs e)
         {
+            Status = SoundHandler.CountLoadedFiles + "/" + this.Sounds.Count;  
             this.ProgressPercentage = (e.ProgressPercentage * 100.0);
+
         }
 
         private void OnDone(object sender, ProgressArgs e)
         {
+            Status = SoundHandler.CountLoadedFiles + "/" + this.Sounds.Count;  
             this.ProgressPercentage = 100;
             IOHandler.OpenPath(Properties.Settings.Default.DownloadFolderPath);
 
@@ -412,11 +433,11 @@ namespace VKMusicSync.ModelView
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
-            adapter = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath);
-            adapter.OnDone += this.OnDone; //new SynhronizeAdapter.DownloadProgressChangedEvent(this.OnDone);
-            adapter.OnProgress += this.OnProgress;//new SynhronizeAdapter.DownloadProgressChangedEvent(this.OnProgress);
+            SoundHandler = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath);
+            SoundHandler.OnDone += this.OnDone; //new SynhronizeAdapter.DownloadProgressChangedEvent(this.OnDone);
+            SoundHandler.OnProgress += this.OnProgress;//new SynhronizeAdapter.DownloadProgressChangedEvent(this.OnProgress);
             IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
-            adapter.SyncFolderWithList<SoundModelView>(selected.ToList());
+            SoundHandler.SyncFolderWithList<SoundModelView>(selected.ToList());
         }
         #endregion
 
