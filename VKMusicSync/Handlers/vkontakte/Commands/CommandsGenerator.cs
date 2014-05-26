@@ -97,11 +97,11 @@ namespace vkontakte
             unescapeStr = unescapeStr.Replace(@"\n", "");
             unescapeStr = Uri.EscapeDataString(unescapeStr);
 
-            Params.Add("audio", Uri.EscapeDataString(info.Audio));
+            Params.Add("audio", info.Audio);
             Params.Add("hash", info.Hash);
             Params.Add("title", "title");
             Params.Add("artist", "artist");
-            Params.Add("v", "5.21");
+            //Params.Add("v", "5.21");
             CommandName = "audio.save";
             return new AudioUploadComman(CommandName, Params);
         }
