@@ -1,0 +1,142 @@
+﻿<Controls:Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
+        xmlns:metro="http://schemas.codeplex.com/elysium"
+        xmlns:params="http://schemas.codeplex.com/elysium/params"
+        
+        x:Class="VKMusicSync.MusicSync"
+        Title="MusicSync" Height="300" Width="496.241"
+        WindowStartupLocation="CenterScreen"
+        params:Design.Theme="Light"
+        params:Manager.Theme="Light" 
+        params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}"
+        params:Manager.ContrastBrush="White" Loaded="Window_Loaded"
+
+    >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58" ></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="8" ></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--<StackPanel Grid.Row="0" Margin="5,5,0,0" HorizontalAlignment="Right" Height="45" Width="auto" Orientation="Horizontal">
+        
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" Click="Sync_Click" >
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Синхронизация"/>
+            </StackPanel>
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="PhotosFormAc" Click="PhotosFormAc_Click" >
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Фото"/>
+            </StackPanel>
+
+            <StackPanel Width="90" Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="Audio" Click="Audio_Click" >
+                </Button>
+                <TextBlock  HorizontalAlignment="Center" Text="Аудио"/>
+            </StackPanel>
+
+            <StackPanel Width="90"  Orientation="Vertical" >
+                <Button Width="25" Height="Auto" x:Name="ShowSetteng" Click="ShowSetteng_Click" >
+                </Button>
+                <TextBlock HorizontalAlignment="Center" Text="Настройки" />
+            </StackPanel>
+
+        </StackPanel>-->
+        <Rectangle Grid.Row="0" Fill="#FF017BCD"/>
+
+        <StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,0,0,0">
+            <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,2,0,0"></Image>
+            <TextBlock Text="{Binding UserFullName}" HorizontalAlignment="Center"  ></TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <!--<Button Content="Закачать" Command="{Binding DownloadFiles}" />-->
+            <!--<Button Content="Синронизировать" Command="{Binding SyncClick}" />-->
+            <Button Content="{Binding LoadButtonText}" Command="{Binding DownloadFiles}" />
+            <Button  Content="{Binding CheckedText}" Command="{Binding CheckAll}" ></Button>
+            <!--Content="{Binding SelectButtonState}"  Command="{Binding ButtonStateClick}" />-->
+            <Button Content="Настройки"  Command="{Binding SettingsClick}" />
+
+        </StackPanel>
+
+        <Controls:ProgressBar x:Name="progressBar" Grid.Row="2"  Value="{Binding ProgressPercentage}" Minimum="0" Maximum="100" Visibility="{Binding ProgressVisibility}" Margin="5,0,5,0" HorizontalAlignment="Stretch" Height="auto" />
+
+
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding TabSelectedIndex}">
+            <TabItem Header="Download">
+                <Grid>
+                    <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding Sounds}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="2" HorizontalAlignment="Stretch"    BorderThickness=".8"  Margin="2" Padding="2.5"  Background="#66F8F8FF" BorderBrush="Silver" >
+                                    <Grid  HorizontalAlignment="Stretch" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40"></ColumnDefinition>
+                                            <ColumnDefinition Width="220"></ColumnDefinition>
+                                            <ColumnDefinition Width="220*"></ColumnDefinition>
+                                            <ColumnDefinition Width="140"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding Checked, Mode=TwoWay}" HorizontalAlignment="Center"></CheckBox>
+                                        <StackPanel Grid.Column="1"  Orientation="Vertical" HorizontalAlignment="Stretch" Width="220">
+                                            <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
+                                            <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
+                                        </StackPanel>
+                                        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="45" Margin="8,0,0,0">
+                                            <TextBlock Text="2.31 seconds" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
+                                            <TextBlock Text="192 kb/s" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+                                        </StackPanel>-->
+                                        <Controls:ProgressRing Grid.Column="3" State="Busy" Visibility="{Binding CurrentProgressVisibility}" HorizontalAlignment="Stretch" MinWidth="120" MaxWidth="280" Height="auto" />
+
+                                        <!--<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="8,0,0,0">
+                                            <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+                                        </StackPanel>-->
+
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Upload">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        
+
+        <StatusBar Grid.Row="3" DockPanel.Dock="Bottom" Height="20" Margin="0,10,0,0">
+            <StatusBarItem>
+                <TextBlock  Text="{Binding Status}" MinWidth="29" MaxWidth="100" />
+            </StatusBarItem>
+        </StatusBar>
+       
+    </Grid>
+    <metro:Window.TitleBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+             Content="?"
+             Click="HelpClick"
+            Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"/>
+        </Grid>
+    </metro:Window.TitleBar>
+</Controls:Window>

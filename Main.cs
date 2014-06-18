@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace VK
+namespace VKMusicSync
 {
     public partial class Main : Form
     {
@@ -16,6 +16,8 @@ namespace VK
         {
             InitializeComponent();
         }
+
+        public static Main instance = null;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -104,7 +106,7 @@ namespace VK
         Logoff form1;
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.LogOff();
+            LogOff(this,this.OnLoggOff);
         }
 
         private void OnLoggOff(object sender, WebBrowserDocumentCompletedEventArgs e) {
@@ -119,17 +121,18 @@ namespace VK
 
         private void button5_Click(object sender, EventArgs e)
         {
-            this.LogOff();
+            LogOff(this,OnLoggOff);
         }
 
-        private void LogOff()
+        public static void LogOff(Object sender, WebBrowserDocumentCompletedEventHandler e)
         {
             //this.Close();
-            form1 = new Logoff();
-            form1.webBrowser1.Navigate("http://vk.com/login.php?op=logout");
-            form1.webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(OnLoggOff);
-            form1.Close();
-            Application.Exit();
+            //Logoff form1 = new Logoff();
+
+            WebBrowser browser = new WebBrowser();
+            browser.Navigate("http://vk.com/login.php?op=logout");
+            browser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(e);
+            
         }
 
     }//class

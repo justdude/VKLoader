@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace VK
+namespace VKMusicSync
 {
     public partial class Logoff : Form
     {
         public Logoff()
         {
             InitializeComponent();
+        }
+
+        private void Logoff_Load(object sender, EventArgs e)
+        {
+
         }
 
 

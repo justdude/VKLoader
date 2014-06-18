@@ -7,11 +7,26 @@
     <ProjectGuid>{3DF72532-5B40-45AB-BB58-08AE6A192733}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VK</RootNamespace>
+    <RootNamespace>VKMusicSync</RootNamespace>
     <AssemblyName>VK</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <PublishUrl>опубликовать\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +46,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 32|AnyCPU'">
+    <OutputPath>bin\Release 32\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon_picture.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -56,18 +83,19 @@
     <Compile Include="Albums.Designer.cs">
       <DependentUpon>Albums.cs</DependentUpon>
     </Compile>
-    <Compile Include="ContainerHandlers.cs" />
-    <Compile Include="Downloader.cs" />
-    <Compile Include="IOHandler.cs" />
+    <Compile Include="Handlers\ContainerHandlers.cs" />
+    <Compile Include="Handlers\Downloader.cs" />
+    <Compile Include="Handlers\DownloadProgressChanged.cs" />
+    <Compile Include="Handlers\IOHandler.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters.cs" />
-    <Compile Include="DataTypes.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="Converters\Converters.cs" />
+    <Compile Include="Data\DataTypes.cs" />
+    <Compile Include="Handlers\Helpers.cs" />
     <Compile Include="Logoff.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,8 +119,11 @@
     <Compile Include="AudioForm.xaml.cs">
       <DependentUpon>AudioForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Uploader.cs" />
-    <Compile Include="VKApi.cs" />
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Uploader.cs" />
+    <Compile Include="Handlers\VKApi.cs" />
     <Compile Include="Wall.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,8 +199,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>Клиентский профиль .NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

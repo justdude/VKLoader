@@ -1,4 +1,4 @@
-﻿namespace VK
+﻿namespace VKMusicSync
 {
     partial class Main
     {
