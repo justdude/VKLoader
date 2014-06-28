@@ -86,7 +86,25 @@
                                 <TextBlock Text="{Binding DownloadFolderPath}" HorizontalAlignment="Left" Height="26"  Width="240"  />
                                 <Button   Command="{Binding SelectDownloadFolderClick}" Content="Обзор..."  Height="32" Width="83"/>
                             </StackPanel>
-                            <Slider Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="138" />
+                            <StackPanel 
+                                Grid.Row="3" 
+                                Grid.Column="1" 
+                                Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Slider 
+                                        Name="slider1"
+                                        LargeChange="1"
+                                        Minimum="1"
+                                        Maximum="{Binding ThreadMax}"
+                                        Value="{Binding ThreadCountToUse, Mode=TwoWay}"
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"  
+                                        Width="138" />
+                                    <TextBlock 
+                                        Text="{Binding ElementName=slider1, Path=Value}"
+                                        Margin="10,0,0,0" 
+                                        Width="49"></TextBlock>
+                            </StackPanel>
+ 
                             <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
                         </Grid>
 

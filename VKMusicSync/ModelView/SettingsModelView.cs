@@ -24,6 +24,32 @@ namespace VKMusicSync.ModelView
             }
         }
 
+
+
+        public int ThreadMax
+        {
+            get
+            {
+                return System.Environment.ProcessorCount * 4;
+            }
+        }
+
+        public int ThreadCountToUse
+        {
+            get
+            {
+                return Properties.Settings.Default.ThreadCountToUse;
+            }
+            set
+            {
+                Properties.Settings.Default.ThreadCountToUse = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("ThreadCountToUse");
+            }
+        }
+
+
+
         public string DownloadFolderPath
         {
             get

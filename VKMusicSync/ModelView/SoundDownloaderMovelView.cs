@@ -432,11 +432,10 @@ namespace VKMusicSync.ModelView
                 IsSyncing = true;
                 VKMusicSync.ModelView.SoundModelView.FreezeClick = true;
                 backgroundWorker = new BackgroundWorker();
-                backgroundWorker.WorkerReportsProgress = true;
+                //backgroundWorker.WorkerReportsProgress = true;
                 backgroundWorker.WorkerSupportsCancellation = true;
                 backgroundWorker.DoWork += DoWork;
                 backgroundWorker.RunWorkerAsync(sounds);
-            
         }
 
         private void CancelSync()
@@ -463,9 +462,9 @@ namespace VKMusicSync.ModelView
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
-            SoundHandler = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath);
-            SoundHandler.OnDone += this.OnDone; 
-            SoundHandler.OnProgress += this.OnProgress;
+            SoundHandler = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath, Properties.Settings.Default.ThreadCountToUse);
+            SoundHandler.OnDone += OnDone; 
+            SoundHandler.OnProgress += OnProgress;
             IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
             SoundHandler.SyncFolderWithList<SoundModelView>(selected.ToList());
         }

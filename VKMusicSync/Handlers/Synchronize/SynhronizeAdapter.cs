@@ -33,11 +33,10 @@ namespace VKMusicSync.Handlers.Synchronize
             set;
         }
 
-        public SynhronizeAdapter(String path)
+        public SynhronizeAdapter(String path, int threadsCount)
         {
             this.Path = path;
-            if (this.CountThreads <= 0) 
-                this.CountThreads = Environment.ProcessorCount * 2;
+            this.CountThreads = threadsCount;
         }
 
         public void SyncFolderWithList<T>(List<T> items) where T : IDownnloadedData

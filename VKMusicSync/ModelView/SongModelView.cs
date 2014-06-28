@@ -50,8 +50,11 @@ namespace VKMusicSync.ModelView
             }
             set
             {
-                currentProgressVisibility = value;
-                OnPropertyChanged("CurrentProgressVisibility");
+                if (currentProgressVisibility!=value)
+                {
+                    currentProgressVisibility = value;
+                    OnPropertyChanged("CurrentProgressVisibility");
+                }
             }
 
         }
@@ -121,14 +124,17 @@ namespace VKMusicSync.ModelView
             get { return Sound.SyncState; }
             set
             {
-                Sound.SyncState = value;
-                OnPropertyChanged("SyncState");
+                if (Sound.SyncState != value)
+                {
+                    Sound.SyncState = value;
+                    OnPropertyChanged("SyncState");
 
-                if (Sound.SyncState==false)
-                    CurrentProgressVisibility = false;
-                else
-                    CurrentProgressVisibility = true;
-                VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
+                    if (Sound.SyncState == false)
+                        CurrentProgressVisibility = false;
+                    else
+                        CurrentProgressVisibility = true;
+                    VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
+                }
             }
         }
 
@@ -136,9 +142,6 @@ namespace VKMusicSync.ModelView
         {
             this.Sound = sound;
         }
-
-
-
 
         public string GenerateFileName()
         {
