@@ -35,8 +35,8 @@ namespace VKMusicSync.ModelView
 
         #region Binding variables
 
-        private System.Windows.Visibility progressVisibility = System.Windows.Visibility.Hidden;
-        public System.Windows.Visibility ProgressVisibility
+        private bool progressVisibility = false;
+        public bool ProgressVisibility
         {
             get
             {
@@ -46,6 +46,23 @@ namespace VKMusicSync.ModelView
             {
                 progressVisibility = value;
                 OnPropertyChanged("ProgressVisibility");
+            }
+        }
+
+        private bool isSyncing = false;
+        public bool IsSyncing
+        {
+            get
+            {
+                return isSyncing;
+            }
+            set
+            {
+                if (isSyncing!=value)
+                {
+                    isSyncing = value;
+                    OnPropertyChanged("IsSyncing");
+                }
             }
         }
 
@@ -115,16 +132,16 @@ namespace VKMusicSync.ModelView
             set
             {
                 progressPercentage = value;
-                OnPropertyChanged("ProgressPercentage");
                 if (progressPercentage>=100)
                 {
-                    ProgressVisibility = System.Windows.Visibility.Hidden;
+                    ProgressVisibility = false;
                 }
                 else
                 {
-                    if (progressVisibility == System.Windows.Visibility.Hidden)
-                        ProgressVisibility = System.Windows.Visibility.Visible;
+                    if (progressVisibility==false)
+                        ProgressVisibility = true;
                 }
+                OnPropertyChanged("ProgressPercentage");
             }
         }
 
@@ -195,6 +212,22 @@ namespace VKMusicSync.ModelView
             }
 
         }
+
+        private DelegateCommand cancelProcess;
+        public ICommand CancelProcess
+        {
+            get
+            {
+                if (cancelProcess == null)
+                {
+                    cancelProcess = new DelegateCommand(CancelSync);
+                }
+                return cancelProcess;
+            }
+
+        }
+
+        
 
         private DelegateCommand settings;
         public ICommand SettingsClick
@@ -390,30 +423,32 @@ namespace VKMusicSync.ModelView
 
         #region Load audio
 
+        
         private SynhronizeAdapter SoundHandler;
-        private bool IsDownloading = false;
+        BackgroundWorker backgroundWorker;
+
         private void OnDownloadFiles()
         {
-            if (!IsDownloading)
-            {
-                LoadButtonText = "Отмена";
-                IsDownloading = true;
+                IsSyncing = true;
                 VKMusicSync.ModelView.SoundModelView.FreezeClick = true;
-                BackgroundWorker backgroundWorker = new BackgroundWorker();
+                backgroundWorker = new BackgroundWorker();
+                backgroundWorker.WorkerReportsProgress = true;
+                backgroundWorker.WorkerSupportsCancellation = true;
                 backgroundWorker.DoWork += this.DoWork;
-                backgroundWorker.RunWorkerCompleted += delegate (object s,RunWorkerCompletedEventArgs e) 
-                                                                { IsDownloading = false; };
+                backgroundWorker.RunWorkerCompleted += delegate (object s,RunWorkerCompletedEventArgs e)
+                { IsSyncing = false; };
                 backgroundWorker.RunWorkerAsync(sounds);
-            }
-            else
-            {
-                SoundHandler.CancelDownloading();
-                this.ProgressPercentage = 101;
-                SoundHandler.CancelDownloading();
-                IsDownloading = false;
-                LoadButtonText = "Синхронизация";
-            }
             
+        }
+
+        private void CancelSync()
+        {
+            SoundHandler.CancelDownloading();
+            backgroundWorker.CancelAsync();
+            
+            this.ProgressPercentage = 101;
+            IsSyncing = false;
+            OnDone(this, null);
         }
 
         private void OnProgress(object sender, ProgressArgs e)

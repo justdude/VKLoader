@@ -41,8 +41,8 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        private System.Windows.Visibility currentProgressVisibility = System.Windows.Visibility.Hidden;
-        public System.Windows.Visibility CurrentProgressVisibility
+        private bool currentProgressVisibility = false;
+        public bool CurrentProgressVisibility
         {
             get
             {
@@ -125,9 +125,9 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("SyncState");
 
                 if (Sound.SyncState==false)
-                    CurrentProgressVisibility = System.Windows.Visibility.Hidden;
+                    CurrentProgressVisibility = false;
                 else
-                    CurrentProgressVisibility = System.Windows.Visibility.Visible;
+                    CurrentProgressVisibility = true;
                 VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
             }
         }

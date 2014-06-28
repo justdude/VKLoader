@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\VisibilityToBoolConverter.cs" />
     <Compile Include="Handlers\Network\HttpUtility.cs" />
     <Compile Include="Handlers\ProgramManager.cs" />
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />

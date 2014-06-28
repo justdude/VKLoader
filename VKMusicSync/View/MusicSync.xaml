@@ -4,6 +4,8 @@
         xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
         xmlns:metro="http://schemas.codeplex.com/elysium"
         xmlns:params="http://schemas.codeplex.com/elysium/params"
+        xmlns:converters ="clr-namespace:VKMusicSync.Converters"
+        xmlns:local="clr-namespace:vkontakte"
         
         x:Class="VKMusicSync.MusicSync"
         Title="MusicSync" Height="300" Width="496.241"
@@ -11,9 +13,34 @@
         params:Design.Theme="Light"
         params:Manager.Theme="Light" 
         params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}"
-        params:Manager.ContrastBrush="White" Loaded="Window_Loaded"
+        params:Manager.ContrastBrush="White" Loaded="Window_Loaded">
+    <Window.Resources>
 
-    >
+        <Style x:Key="NameText" TargetType="TextBlock">
+            <Setter Property="FontStyle" Value="Normal"></Setter>
+            <Setter Property="FontStretch" Value="Normal"></Setter>
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="FontWeight" Value="Normal"></Setter>
+        </Style>
+
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="White"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="CornerRadius" Value="0"></Setter>
+            <Setter Property="Margin" Value="4"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property = "RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                        </Setter.Value>
+                    </Setter> 
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -52,27 +79,63 @@
         <Rectangle Grid.Row="0" Fill="#FF017BCD"/>
 
         <StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,0,0,0">
-            <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,2,0,0"></Image>
-            <TextBlock Text="{Binding UserFullName}" HorizontalAlignment="Center"  ></TextBlock>
+            <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,1,0,0"></Image>
+            <TextBlock Text="{Binding UserFullName}" Style="{StaticResource NameText}" HorizontalAlignment="Center" ></TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
             <!--<Button Content="Закачать" Command="{Binding DownloadFiles}" />-->
             <!--<Button Content="Синронизировать" Command="{Binding SyncClick}" />-->
-            <Button Content="{Binding LoadButtonText}" Command="{Binding DownloadFiles}" />
-            <Button  Content="{Binding CheckedText}" Command="{Binding CheckAll}" ></Button>
+            <Border Style="{DynamicResource BorderStyle}">
+                <Grid>
+                    <Button
+                        Grid.Row="0"
+                        Content="Загрузка"
+                        Command="{Binding DownloadFiles}" 
+                        Visibility="{Binding IsSyncing, Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Invert'}"
+                        />
+                    
+                    <Button 
+                        Grid.Row="0"
+                        Content="Отмена" 
+                        Command="{Binding CancelProcess}" 
+                        Visibility="{Binding IsSyncing, Converter={StaticResource VisibilityToBoolConverter}}"
+                        />
+
+                </Grid>
+            </Border>
+            <Border Style="{DynamicResource BorderStyle}">
+                <Button  Content="{Binding CheckedText}" Command="{Binding CheckAll}" ></Button>
+            </Border>
             <!--Content="{Binding SelectButtonState}"  Command="{Binding ButtonStateClick}" />-->
-            <Button Content="Настройки"  Command="{Binding SettingsClick}" />
+            <Border Style="{DynamicResource BorderStyle}">
+                <Button Content="Настройки"  Command="{Binding SettingsClick}" />
+            </Border>
 
         </StackPanel>
 
-        <Controls:ProgressBar x:Name="progressBar" Grid.Row="2"  Value="{Binding ProgressPercentage}" Minimum="0" Maximum="100" Visibility="{Binding ProgressVisibility}" Margin="5,0,5,0" HorizontalAlignment="Stretch" Height="auto" />
+        <Controls:ProgressBar x:Name="progressBar" 
+                              Grid.Row="2"  
+                              Value="{Binding ProgressPercentage}" 
+                              Minimum="0" 
+                              Maximum="100" 
+                              Visibility="{Binding ProgressVisibility,Converter={StaticResource VisibilityToBoolConverter}}" 
+                              Margin="5,0,5,0" HorizontalAlignment="Stretch" Height="auto" />
 
 
-        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding TabSelectedIndex}">
+        <TabControl Grid.Row="1" 
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch" 
+                    SelectedIndex="{Binding TabSelectedIndex}">
             <TabItem Header="Download">
                 <Grid>
-                    <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding Sounds}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <ListBox 
+                        Grid.Row="1" 
+                        Grid.RowSpan="2" 
+                        Margin="5" 
+                        ItemsSource="{Binding Sounds}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" >
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
@@ -80,7 +143,14 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border CornerRadius="2" HorizontalAlignment="Stretch"    BorderThickness=".8"  Margin="2" Padding="2.5"  Background="#66F8F8FF" BorderBrush="Silver" >
+                                <Border CornerRadius="2" 
+                                        HorizontalAlignment="Stretch"    
+                                        BorderThickness=".8"  
+                                        Margin="2" 
+                                        Padding="2.5"  
+                                        Background="#66F8F8FF" 
+                                        BorderBrush="Silver" >
+                                    
                                     <Grid  HorizontalAlignment="Stretch" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="40"></ColumnDefinition>
@@ -88,7 +158,9 @@
                                             <ColumnDefinition Width="220*"></ColumnDefinition>
                                             <ColumnDefinition Width="140"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Grid.Column="0" IsChecked="{Binding Checked, Mode=TwoWay}" HorizontalAlignment="Center"></CheckBox>
+                                        <CheckBox Grid.Column="0" 
+                                                  IsChecked="{Binding Checked, Mode=TwoWay}" 
+                                                  HorizontalAlignment="Center"></CheckBox>
                                         <StackPanel Grid.Column="1"  Orientation="Vertical" HorizontalAlignment="Stretch" Width="220">
                                             <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
                                             <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
@@ -97,7 +169,7 @@
                                             <TextBlock Text="2.31 seconds" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
                                             <TextBlock Text="192 kb/s" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
                                         </StackPanel>-->
-                                        <Controls:ProgressRing Grid.Column="3" State="Busy" Visibility="{Binding CurrentProgressVisibility}" HorizontalAlignment="Stretch" MinWidth="120" MaxWidth="280" Height="auto" />
+                                        <Controls:ProgressRing Grid.Column="3" State="Busy" Visibility="{Binding CurrentProgressVisibility, Converter={StaticResource VisibilityToBoolConverter}}" HorizontalAlignment="Stretch" MinWidth="120" MaxWidth="280" Height="auto" />
 
                                         <!--<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="8,0,0,0">
                                             <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
