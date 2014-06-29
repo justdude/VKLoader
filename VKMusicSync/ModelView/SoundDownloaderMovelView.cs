@@ -243,6 +243,20 @@ namespace VKMusicSync.ModelView
 
         }
 
+        private DelegateCommand shareClick;
+        public ICommand ShareClick
+        {
+            get
+            {
+                if (shareClick == null)
+                {
+                    shareClick = new DelegateCommand(OnShareClick);
+                }
+                return shareClick;
+            }
+
+        }
+
         private DelegateCommand sync;
         public ICommand SyncClick
         {
@@ -283,6 +297,11 @@ namespace VKMusicSync.ModelView
         private void OnSyncClick()
         {
             UpdateDataFromProfile();
+        }
+
+        private void OnShareClick()
+        {
+
         }
 
         private void OnSettingsClick()
@@ -397,6 +416,16 @@ namespace VKMusicSync.ModelView
 
             this.UserFullName = APIManager.Profile.last_name;
         }
+        #endregion
+
+        #region Share
+
+        public void ShareInfo()
+        {
+            AudioCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+            profCommand.ExecuteNonQuery();
+        }
+
         #endregion
 
         private void OnUploadClick()

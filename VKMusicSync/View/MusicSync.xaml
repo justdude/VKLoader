@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:vkontakte"
         
         x:Class="VKMusicSync.MusicSync"
-        Title="MusicSync" Height="300" Width="496.241"
+        Title="MusicSync" Height="300" Width="496.241" MinWidth="350"
         WindowStartupLocation="CenterScreen"
         params:Design.Theme="Light"
         params:Manager.Theme="Light" 
@@ -109,6 +109,9 @@
             </Border>
             <!--Content="{Binding SelectButtonState}"  Command="{Binding ButtonStateClick}" />-->
             <Border Style="{DynamicResource BorderStyle}">
+                <Button Content="Поделиться"  Command="{Binding ShareClick}" />
+            </Border>
+            <Border Style="{DynamicResource BorderStyle}">
                 <Button Content="Настройки"  Command="{Binding SettingsClick}" />
             </Border>
 
@@ -139,6 +142,14 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="WhiteSmoke" />
+                                        <Setter Property="Foreground" Value="Blue" />
+                                    </Trigger>
+                                </Style.Triggers>
+
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
