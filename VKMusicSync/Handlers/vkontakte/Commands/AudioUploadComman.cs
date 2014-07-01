@@ -22,22 +22,6 @@ namespace vkontakte
         {
         }
 
-        public override List<Sound> ExecuteForList()
-        {
-            base.ExecuteCommand();
-            return this.Bind(base.Result);
-        }
-
-        public override object Execute()
-        {
-            base.ExecuteCommand();
-            return null;
-        }
-
-        public override void ExecuteNonQuery()
-        {
-            base.ExecuteCommand();
-        }
 
         public string ServerPath
         {
@@ -45,8 +29,8 @@ namespace vkontakte
             {
                 try
                 {
-                     System.Xml.XmlNodeList nodes = base.Result["response"].ChildNodes;
-                     return base.Result["response"].FirstChild.InnerText;//["upload_url"].Value;//XMLNodeHelper.TryParse(nodes[0],"upload_url");
+                     System.Xml.XmlNodeList nodes = base.xmlRes["response"].ChildNodes;
+                     return base.xmlRes["response"].FirstChild.InnerText;//["upload_url"].Value;//XMLNodeHelper.TryParse(nodes[0],"upload_url");
                 }
                
                 catch (Exception)
@@ -89,6 +73,8 @@ namespace vkontakte
             }
             return sounds;
         }
+
+     
 
     }
 }

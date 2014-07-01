@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dotLastFm">
+      <HintPath>..\packages\dotLastFm.1.0.4.0\lib\Net40\dotLastFm.dll</HintPath>
+    </Reference>
     <Reference Include="Elysium, Version=2.0.976.4, Culture=neutral, PublicKeyToken=afa220db249e5b15, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Elysium.Theme.2.0.4\lib\net40-client\Elysium.dll</HintPath>
@@ -42,6 +45,9 @@
     <Reference Include="Elysium.Notifications, Version=2.0.62.4, Culture=neutral, PublicKeyToken=afa220db249e5b15, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\Elysium SDK\.NET Framework 4\2.0\Elysium.Notifications.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -65,11 +71,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\VisibilityToBoolConverter.cs" />
+    <Compile Include="Handlers\AudioHelper.cs" />
+    <Compile Include="Handlers\LastFmHandler.cs" />
     <Compile Include="Handlers\Network\HttpUtility.cs" />
     <Compile Include="Handlers\ProgramManager.cs" />
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
     <Compile Include="Handlers\Synchronize\IOSync.cs" />
     <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
+    <Compile Include="Handlers\TestLastFmConfig.cs" />
     <Compile Include="Handlers\vkontakte\AcessData.cs" />
     <Compile Include="Handlers\vkontakte\Commands\AudioCommand.cs" />
     <Compile Include="Handlers\vkontakte\Commands\AudioUploadComman.cs" />

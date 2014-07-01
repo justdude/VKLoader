@@ -18,6 +18,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace VKMusicSync.ModelView
 {
@@ -29,11 +30,38 @@ namespace VKMusicSync.ModelView
 
         #region Private variables
 
-        private List<Sound> sounds = new List<Sound>();
+        private object lock0 = new object();
+        private List<Sound> cachedSounds = new List<Sound>();
+        private List<Sound> CachedSounds
+        {
+            get
+            {
+                lock(lock0)
+                {
+                    return cachedSounds;
+                }
+            }
+            set
+            {
+                lock(lock0)
+                {
+                    cachedSounds = value;
+                }
+            }
+        }
 
         #endregion
 
         #region Binding variables
+
+        public string BackgroundPath
+        {
+            get
+            {
+                return Properties.Settings.Default.BackgroundPath;
+            }
+        }
+
 
         private bool progressVisibility = false;
         public bool ProgressVisibility
@@ -67,7 +95,24 @@ namespace VKMusicSync.ModelView
         }
 
 
-        public ObservableCollection<SoundModelView> Sounds { get; set; }
+        private object lock1 = new object();
+        private ObservableCollection<SoundModelView> sound;
+        public ObservableCollection<SoundModelView> Sounds { 
+            get
+            {
+                lock(lock1)
+                {
+                    return sound;
+                }
+            }
+            set
+            {
+                lock (lock1)
+                {
+                    sound = value;
+                }
+            }
+        }
 
 
         private int tabSelectedIndex = 0;
@@ -84,15 +129,25 @@ namespace VKMusicSync.ModelView
             }
         }
 
+        object lock2 = new object();
+
         private string status;
         public string Status
         {
             get
-            { return status; }
+            {
+                lock (lock2)
+                {
+                    return status; 
+                }
+            }
             set
             {
-                status = value;
-                OnPropertyChanged("Status");
+                lock(lock2)
+                {
+                    status = value;
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
@@ -282,7 +337,7 @@ namespace VKMusicSync.ModelView
         public SoundDownloaderMovelView()
         {
             Instance = this;
-            sounds = new List<Sound>();
+            CachedSounds = new List<Sound>();
             this.Sounds = new ObservableCollection<SoundModelView>();
         }
 
@@ -296,11 +351,14 @@ namespace VKMusicSync.ModelView
 
         private void OnSyncClick()
         {
-            UpdateDataFromProfile();
+            UpdateDataFromProfile(null);
         }
 
         private void OnShareClick()
         {
+            var t = Sounds;
+            var info = LastFmHandler.Api.Track.GetInfo("Moby", "Porcelain");
+            var res = LastFmHandler.Api.Artist.GetInfo("Moby");
 
         }
 
@@ -346,25 +404,84 @@ namespace VKMusicSync.ModelView
         public void Window_Loaded()
         {
             OnAuthClick();
-            UpdateDataFromProfile();
+            UpdateDataFromProfile(null);
+            //Thread thread = new Thread( new ParameterizedThreadStart( ));
+            //thread.Start();
         }
 
         #endregion
 
         #region Process vk data to forms
 
-        private void UpdateDataFromProfile()
+        private void UpdateDataFromProfile(object obj)
         {
-            BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += this.Init;
-            backgroundWorker.RunWorkerCompleted += this.InitDone;
-            backgroundWorker.RunWorkerAsync();
+
+
+            var worker = new BackgroundWorker();
+            worker.WorkerSupportsCancellation = true;
+            
+            worker.DoWork += (p,arg)=>{
+                Thread act1 = new Thread(() =>
+                {
+                    Status = "Загрузка профиля";
+                    LoadProfileInfo();
+                });
+                Thread act2 = new Thread(() =>
+                {
+                    Status = "Загрузка треков";
+                    LoadAudioInfo();
+                });
+
+                Thread act3 = new Thread(() =>
+                {
+                    Status = "Загрузка информации о треках с Last.Fm";
+                    Handlers.ItemHelper.FillLastInfo(CachedSounds, LastFmHandler.Api);
+                });
+
+                Thread act4 = new Thread(() =>
+                {
+                    Status = "Размер файла";
+                    Handlers.ItemHelper.FillDataInfo(CachedSounds);
+                });
+
+                Thread act5 = new Thread(() =>
+                {
+                    InitDone(null, null);
+                });
+
+                act1.Start();
+                act1.Join();
+                act2.Start();
+                act2.Join();
+                act3.Start();
+                act3.Join();
+                //act4.Start();
+                //act4.Join();
+                act5.Start();
+            
+            };
+            worker.RunWorkerAsync();
+            ProgressVisibility = true;
+            //BackgroundWorker backgroundWorker = new BackgroundWorker();
+            //backgroundWorker.DoWork += this.Init;
+            //backgroundWorker.RunWorkerCompleted += this.InitDone;
+            //backgroundWorker.RunWorkerAsync();
+            //while(backgroundWorker.IsBusy)
+            //{
+
+            //}
         }
 
         private void Init(object sender, DoWorkEventArgs e)
         {
+            Status = "Загрузка профиля";
             LoadProfileInfo();
+            Status = "Загрузка треков";
             LoadAudioInfo();
+            Status = "Загрузка информации о треках с Last.Fm";
+            Handlers.ItemHelper.FillLastInfo(CachedSounds, LastFmHandler.Api);
+            Status = "Размер файла";
+            Handlers.ItemHelper.FillDataInfo(CachedSounds);
         }
 
         private void OnCommandLoading(Object sender, DownloadProgressChangedEventArgs e)
@@ -374,12 +491,16 @@ namespace VKMusicSync.ModelView
 
         private void InitDone(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.Sounds.Clear();
-            for(int i=0; i<sounds.Count; i++)
-                this.Sounds.Add(new SoundModelView(sounds[i]));
-            SetSounds(sounds);
+            var s = CachedSounds;
+            System.Windows.Application.Current.Dispatcher.Invoke(new Action(
+                ()=>{
+                        this.Sounds.Clear();
+                        for(int i=0; i<CachedSounds.Count; i++)
+                            this.Sounds.Add(new SoundModelView(CachedSounds[i]));
+                        Status = "Загружено информацию о " +this.Sounds.Count + " трэках";
+                }),new object[]{});
             this.ProgressPercentage = 100;
-            Status = "" + this.Sounds.Count;
+            ProgressVisibility = false;
         }
 
         #endregion
@@ -387,30 +508,24 @@ namespace VKMusicSync.ModelView
         #region Information
         public void LoadAudioInfo()
         {
-            int count = int.Parse(APIManager.vk.GetAudioCountFromUser(APIManager.vk.UserId,
-                                                          false).SelectSingleNode("response")
-                                                                .InnerText);
+            int count = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
 
             if (count > 0)
             {
-                AudioCommand command = vkontakte.CommandsGenerator.GetAudioFromUser(APIManager.vk.UserId, false, 0, count);
-                command.OnCommandExecuting += OnCommandLoading;
-                sounds = command.ExecuteForList();
+                CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
+
+                CachedSounds = CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.vk.UserId, false, 0, count);
+
+                //SetSounds(CachedSounds);
             }
         }
 
         public void LoadProfileInfo()
         {
-            ProfileCommand profCommand = vkontakte.CommandsGenerator.GetUsers(APIManager.AccessData.UserId);
-            APIManager.Profile = profCommand.ExecuteForList().FirstOrDefault();
+            APIManager.Profile = CommandsGenerator.ProfileCommands.GetUser(APIManager.AccessData.UserId);
             var paths = (new List<string>() { APIManager.Profile.photo, APIManager.Profile.photoMedium, APIManager.Profile.photoBig });
-            var path = string.Empty;
-            foreach (var p in paths)
-                if (p.Count() > 0)
-                {
-                    path = p;
-                    break;
-                }
+            var leng = paths.Max(p => p.Length);
+            string path = paths.FirstOrDefault(p => p.Length == leng);
             if (path != string.Empty)
                 Avatar = path;
 
@@ -422,32 +537,37 @@ namespace VKMusicSync.ModelView
 
         public void ShareInfo()
         {
-            AudioCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
-            profCommand.ExecuteNonQuery();
+            
+            /*AudiosCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+            profCommand.ExecuteNonQuery();*/
         }
 
         #endregion
 
         private void OnUploadClick()
         {
-            AudioUploadComman comm = CommandsGenerator.GetUploadServer();
-            comm.Execute();
-            var info = comm.UploadAudio(@"D:\Musik\", @"myzuka.ru_08_nobody_but_me.mp3");
+            //AudioUploadComman comm = CommandsGenerator.GetUploadServer();
+            //comm.ExecuteCommand();
+            //var info = comm.UploadAudio(@"D:\Musik\", @"myzuka.ru_08_nobody_but_me.mp3");
 
-
+            #region FOR TESTS
             /*var audio = "%7B%22audio%22%3A%222e26475e89%22%2C%22time%22%3A138%2C%22artist%22%3A%22The+Human+Beinz%22%2C%22title%22%3A%22Nobody+But+Me%22%2C%22genre%22%3A24%2C%22album%22%3A%22The+Departed%22%2C%22bitrate%22%3A320%2C%22md5%22%3A%2292c8c6fdcd25c6998b3b86a1deaa99fa%22%2C%22kad%22%3A%2212005fec2aabe7208a349f46b98e96ff%5Cn%22%7D";
             audio = DecodeUrlString(audio);
 
             var info = new AudioUploadedInfo("536214", audio, "a71d783bad416ff57f703438eeaacf37");*/
+            #endregion
 
-            AudioUploadComman audioCommand = CommandsGenerator.SaveAudio(info);
-            var fullstr = audioCommand.QueryString;
-            var paramsAndtoken = @"" + audioCommand.GetParamsWithToken();
+            //AudioUploadComman audioCommand = CommandsGenerator.SaveAudio(info);
+            //var fullstr = audioCommand.QueryString;
+            //var paramsAndtoken = @"" + audioCommand.GetParamsWithToken();
+
+            #region FOR TESTS1
             //paramsAndtoken = @"?uid=15852307&fields=uid, first_name, last_name, nickname, sex, bdate, city, countryphoto, photo_medium, photo_big&access_token=f734a0848b5e7843e423e3acf72fd35736dfcff1e87b0e8aa5d22ddafd778c95c784dd8995b454d6e6b48";
             //paramsAndtoken = @"?server=536518&audio=%7B%22audio%22%3A%22a0e144777d%22%2C%22time%22%3A138%2C%22artist%22%3A%22The+Human+Beinz%22%2C%22title%22%3A%22Nobody+But+Me%22%2C%22genre%22%3A24%2C%22album%22%3A%22The+Departed%22%2C%22bitrate%22%3A320%2C%22md5%22%3A%2292c8c6fdcd25c6998b3b86a1deaa99fa%22%2C%22kad%22%3A%2212005fec2aabe7208a349f46b98e96ff%5Cn%22%7D&hash=21f7deda067d8930bf963f0159308348&artist=artist&title=title&access_token=69fedfbf0e43a0e942c5e1bf7158f25204224349a0e005890a9db1b63c181c9a69bc40ef3043b0ca1585a";
             //paramsAndtoken = System.IO.File.ReadAllText("file.txt");
-            string asnwer = Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
-            //audioCommand.Execute();
+            #endregion
+
+            //string asnwer = Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
         }
 
         #region Load audio
@@ -464,7 +584,7 @@ namespace VKMusicSync.ModelView
                 //backgroundWorker.WorkerReportsProgress = true;
                 backgroundWorker.WorkerSupportsCancellation = true;
                 backgroundWorker.DoWork += DoWork;
-                backgroundWorker.RunWorkerAsync(sounds);
+                backgroundWorker.RunWorkerAsync(CachedSounds);
         }
 
         private void CancelSync()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MVVM;
 using VKMusicSync.Model;
+using DotLastFm;
 
 namespace VKMusicSync.ModelView
 {
@@ -81,7 +82,9 @@ namespace VKMusicSync.ModelView
 
         public int Duration
         {
-            get { return Sound.duration; }
+            get { 
+                return Sound.duration; 
+            }
             set
             {
                 Sound.duration = value;
@@ -118,6 +121,25 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("LoadedSize");
             }
         }
+
+
+
+        public string PhotoPath
+        {
+            get 
+            {
+                return Sound.authorPhotoPath; 
+            }
+            set
+            {
+                if (value!=Sound.authorPhotoPath)
+                {
+                    Sound.authorPhotoPath = value;
+                    OnPropertyChanged("PhotoPath");
+                }
+            }
+        }
+        
 
         public bool SyncState
         {

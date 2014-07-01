@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>dotLastFm</id>
+    <version>1.0.4.0</version>
+    <authors>Tomáš Pastorek</authors>
+    <owners>Tomáš Pastorek</owners>
+    <licenseUrl>https://github.com/topas/dotLastFm/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://topas.github.com/dotLastFm/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple .NET wrapper for Last.fm API</description>
+    <summary>Simple .NET wrapper for Last.fm API</summary>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="RestSharp" />
+    </dependencies>
+  </metadata>
+</package>

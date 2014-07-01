@@ -34,7 +34,7 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            /*var sounds = new List<Sound>()
+            /*var SoundsRes = new List<Sound>()
             {
                 new Sound("Var Hamer","Song1"),
                 new Sound("Armin Van Buuren","Song2"),

@@ -46,7 +46,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="58" ></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="8" ></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <!--<StackPanel Grid.Row="0" Margin="5,5,0,0" HorizontalAlignment="Right" Height="45" Width="auto" Orientation="Horizontal">
@@ -117,13 +116,7 @@
 
         </StackPanel>
 
-        <Controls:ProgressBar x:Name="progressBar" 
-                              Grid.Row="2"  
-                              Value="{Binding ProgressPercentage}" 
-                              Minimum="0" 
-                              Maximum="100" 
-                              Visibility="{Binding ProgressVisibility,Converter={StaticResource VisibilityToBoolConverter}}" 
-                              Margin="5,0,5,0" HorizontalAlignment="Stretch" Height="auto" />
+
 
 
         <TabControl Grid.Row="1" 
@@ -133,6 +126,7 @@
             <TabItem Header="Download">
                 <Grid>
                     <ListBox 
+                        
                         Grid.Row="1" 
                         Grid.RowSpan="2" 
                         Margin="5" 
@@ -172,14 +166,20 @@
                                         <CheckBox Grid.Column="0" 
                                                   IsChecked="{Binding Checked, Mode=TwoWay}" 
                                                   HorizontalAlignment="Center"></CheckBox>
-                                        <StackPanel Grid.Column="1"  Orientation="Vertical" HorizontalAlignment="Stretch" Width="220">
-                                            <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
-                                            <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
+
+                                        <StackPanel
+                                            VirtualizingStackPanel.IsVirtualizing="True"
+                                            Grid.Column="1"  Orientation="Horizontal" HorizontalAlignment="Stretch" Width="220">
+                                            <Image Source="{Binding PhotoPath}"  Height="58" Width="75"></Image>
+                                            <StackPanel Orientation="Vertical" Margin="0,0,5,0">
+                                                <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
+                                                <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
+                                            </StackPanel>
                                         </StackPanel>
-                                        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="45" Margin="8,0,0,0">
-                                            <TextBlock Text="2.31 seconds" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
-                                            <TextBlock Text="192 kb/s" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
-                                        </StackPanel>-->
+                                        <StackPanel Grid.Column="2"  Orientation="Vertical" HorizontalAlignment="Stretch" MinWidth="45" Margin="8,0,0,0">
+                                            <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
+                                            <TextBlock Text="{Binding Duration}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+                                        </StackPanel>
                                         <Controls:ProgressRing Grid.Column="3" State="Busy" Visibility="{Binding CurrentProgressVisibility, Converter={StaticResource VisibilityToBoolConverter}}" HorizontalAlignment="Stretch" MinWidth="120" MaxWidth="280" Height="auto" />
 
                                         <!--<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="8,0,0,0">
@@ -201,11 +201,17 @@
             </TabItem>
         </TabControl>
 
-        
-
-        <StatusBar Grid.Row="3" DockPanel.Dock="Bottom" Height="20" Margin="0,10,0,0">
+        <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <TextBlock  Text="{Binding Status}" MinWidth="29" MaxWidth="100" />
+                <StackPanel Orientation="Horizontal">
+                    <Controls:ProgressRing x:Name="progressBar" 
+                              State="Busy"
+                              Visibility="{Binding ProgressVisibility,Converter={StaticResource VisibilityToBoolConverter}}" 
+                              Height="26"
+                              Width="26"
+                               />
+                    <TextBlock  Text="{Binding Status}" MinWidth="29" MaxWidth="250" />
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
        

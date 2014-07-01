@@ -16,6 +16,9 @@ namespace VKMusicSync.Model
         public string lyrics_id { get; set; }
         public string genre_id { get; set; }
 
+
+        public string authorPhotoPath { get; set; }
+
         public double Size { get; set; }
         public double LoadedSize { get; set; }
         public bool SyncState { get; set; }

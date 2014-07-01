@@ -4,37 +4,56 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Xml;
-
+using System.Net;
+using VKMusicSync.Model;
 
 namespace vkontakte
 {
-    class CommandsGenerator
+
+
+    public class ProfileCommands
     {
         #region Profile
-        public static ProfileCommand GetUsers(int uid)
+        public Profile GetUser(int uid)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
-            Params.Add("uid",uid.ToString());
-            Params.Add("fields","uid, first_name, last_name, nickname, sex, bdate, city, country" +
+            Params.Add("uid", uid.ToString());
+            Params.Add("fields", "uid, first_name, last_name, nickname, sex, bdate, city, country" +
                            "photo, photo_medium, photo_big");
             CommandName = "users.get";
-            return new ProfileCommand(CommandName, Params);
+
+            var command = new ProfileCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.Fill().FirstOrDefault<Profile>();
         }
         #endregion
+    }
+
+
+    public class AudioCommands
+    {
+        public DownloadProgressChangedEventHandler OnCommandExecuting
+        {
+            get;
+            set;
+        }
 
         #region Audio
-        public static AudioCommand GetAudioCountFromUser(int uid, bool isGroup)
+        public int GetAudioCount(int uid, bool isGroup)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
             Params.Add("owner_id", ((isGroup) ? "-" : "") + uid);
             Params.Add("fields", "uid,aid");
             CommandName = "audio.getCount";
-            return new AudioCommand(CommandName, Params);
+            var command = new AudiosCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.GetCount();
+
         }
 
-        public static AudioCommand GetAudioFromUser(int uid, bool isGroup, int offset, int counts)
+        public List<Sound> GetAudioFromUser(int uid, bool isGroup, int offset, int counts)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -43,10 +62,31 @@ namespace vkontakte
             Params.Add("count", counts.ToString());
             Params.Add("fields", "owner_id,offset,count");
             CommandName = "audio.get";
-            return new AudioCommand(CommandName, Params);
+            var command = new AudiosCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.Fill();
         }
 
-        public static AudioCommand SendAudioToUserWall(int ownerId, int audioId)
+        /*public List<Sound> GetAudioFromUserWithLast(int uid, bool isGroup, int offset, int counts, DotLastFm.LastFmApi api)
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+            Params.Add("owner_id", ((isGroup) ? "-" : "") + uid);
+            Params.Add("offset", offset.ToString());
+            Params.Add("count", counts.ToString());
+            Params.Add("fields", "owner_id,offset,count");
+            CommandName = "audio.get";
+            var command = new AudiosCommand(CommandName, Params);
+            if (OnCommandExecuting!=null)
+                command.OnCommandExecuting += OnCommandExecuting;
+            command.ExecuteCommand();
+            var res = command.FillWithAddons(api);
+            return res;
+        }*/
+
+
+        #region UNWORKED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public AudiosCommand SendAudioToUserWall(int ownerId, int audioId)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -54,10 +94,10 @@ namespace vkontakte
             Params.Add("audio_id", audioId.ToString());
             Params.Add("fields", "owner_id,audio_id");
             CommandName = "audio.get";
-            return new AudioCommand(CommandName, Params);
+            return new AudiosCommand(CommandName, Params);
         }
 
-        public static AudioCommand SendAudioToGroupWall(int groupId, int audioId)
+        public AudiosCommand SendAudioToGroupWall(int groupId, int audioId)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -65,10 +105,13 @@ namespace vkontakte
             Params.Add("audio_id", audioId.ToString());
             Params.Add("fields", "owner_id,audio_id");
             CommandName = "audio.get";
-            return new AudioCommand(CommandName, Params);
+            return new AudiosCommand(CommandName, Params);
         }
 
-        public static AudioCommand GetAudioRecomendation(int uid, bool isGroup, int offset, int counts)
+        #endregion
+
+
+        public List<Sound> GetAudioRecomendation(int uid, bool isGroup, int offset, int counts)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -77,10 +120,13 @@ namespace vkontakte
             Params.Add("count", counts.ToString());
             Params.Add("fields", "uid,aid");
             CommandName = "audio.getRecommendations";
-            return new AudioCommand(CommandName, Params);
+
+            var command = new AudiosCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.Fill();
         }
 
-        public static AudioUploadComman GetUploadServer()
+        public AudioUploadComman GetUploadServer()
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -88,7 +134,7 @@ namespace vkontakte
             return new AudioUploadComman(CommandName, Params);
         }
 
-        public static AudioUploadComman SaveAudio(VKMusicSync.Model.AudioUploadedInfo info)
+        public AudioUploadComman SaveAudio(VKMusicSync.Model.AudioUploadedInfo info)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -118,5 +164,40 @@ namespace vkontakte
             return new AudioUploadComman(CommandName, Params);
         }*/
         #endregion
+
+    }
+
+    public class CommandsGenerator
+    {
+        private static ProfileCommands profileCommands;
+        public static ProfileCommands ProfileCommands
+        {
+            get
+            {
+                if (profileCommands == null) profileCommands = new ProfileCommands();
+                return profileCommands;
+            }
+            set
+            {
+                profileCommands = value;
+            }
+        }
+
+        private static AudioCommands audioCommands;
+        public static AudioCommands AudioCommands
+        {
+            get
+            {
+                if (audioCommands == null) audioCommands = new AudioCommands();
+                return audioCommands;
+            }
+            set
+            {
+                audioCommands = value;
+            }
+        }
+
+
+      
     }
 }

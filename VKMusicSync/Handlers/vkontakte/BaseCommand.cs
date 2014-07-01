@@ -15,7 +15,7 @@ namespace vkontakte
         public AccessData AccessData {get; set;}
         public string CommandName {get; set;}
         public NameValueCollection Params {get; set;}
-        protected XmlDocument Result {get; set;}
+        protected XmlDocument xmlRes {get; set;}
         
         public DownloadProgressChangedEventHandler OnCommandExecuting{get; set;}
 
@@ -77,9 +77,9 @@ namespace vkontakte
             return str.ToArray();
         }
 
-        protected void ExecuteCommand()
+        public virtual void ExecuteCommand()
         {
-            this.Result = new XmlDocument();
+            this.xmlRes = new XmlDocument();
             System.Net.WebClient downloader = new System.Net.WebClient();
 
             queryString = MakeQueryString(CommandName, AccessData.AccessToken, Params);
@@ -91,18 +91,11 @@ namespace vkontakte
                 if (!downloader.IsBusy) break;
             FileStream fileStream = new FileStream(CommandName, FileMode.Open, FileAccess.Read);
             
-            Result.Load(fileStream);
+            xmlRes.Load(fileStream);
 
             downloader.DownloadProgressChanged -= OnCommandExecuting;
             downloader.Dispose();
             fileStream.Dispose();
         }
-
-
-        public abstract List<T> ExecuteForList();
-
-        public abstract object Execute();
-
-        public abstract void ExecuteNonQuery();
     }
 }

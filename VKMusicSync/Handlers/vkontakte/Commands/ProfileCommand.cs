@@ -10,11 +10,10 @@ namespace vkontakte
     public class ProfileCommand : BaseCommand<Profile>
     {
 
-        public Profile Profile { get; private set; }
-
         public ProfileCommand(string CommandName, NameValueCollection Params)
             : base(CommandName, Params)
         {
+
         }
 
         public ProfileCommand(AccessData AccessData, string CommandName, NameValueCollection Params)
@@ -24,25 +23,10 @@ namespace vkontakte
         {
         }
 
-        public override List<Profile> ExecuteForList()
-        {
-            base.ExecuteCommand();
-            return this.BindItems(base.Result);
-        }
 
-        public override object Execute()
+        public List<Profile> Fill()
         {
-            base.ExecuteCommand();
-            return null;
-        }
-
-        public override void ExecuteNonQuery()
-        {
-            base.ExecuteCommand();
-        }
-
-        private List<Profile> BindItems(XmlDocument doc)
-        {
+            XmlDocument doc = base.xmlRes;
             List<Profile> data = new List<Profile>();
             var item = new Profile();
             System.Xml.XmlNodeList nodes = doc["response"].ChildNodes;

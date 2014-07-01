@@ -18,8 +18,8 @@ namespace VKMusicSync.Converters
             if (uri == null)
                 return null;
 
-           // var Result = new BitmapImage( new Uri(uri.ImagePath));
-           // return Result;
+           // var xmlRes = new BitmapImage( new Uri(uri.ImagePath));
+           // return xmlRes;
             return null;
         }
 
