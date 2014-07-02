@@ -15,16 +15,23 @@ namespace VKMusicSync.Converters
             var visibility = (bool)value;
             var param = parameter as string;
             var target = Visibility.Hidden;
+            if (param == "Collapsed")
+                target = Visibility.Collapsed;
 
             if (visibility)
             {
                 if (param == "Invert")
                     return Visibility.Hidden;
+                if (param == "InvertCollapsed")
+                    return Visibility.Collapsed;
                 return Visibility.Visible;
             }
 
             if (param == "Invert")
                 return Visibility.Visible;
+            if (param == "InvertCollapsed")
+                return Visibility.Collapsed;
+
             return Visibility.Hidden;
         }
 

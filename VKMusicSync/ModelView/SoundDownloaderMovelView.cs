@@ -54,6 +54,20 @@ namespace VKMusicSync.ModelView
 
         #region Binding variables
 
+        public bool LoadInfoFromLast
+        {
+            get
+            {
+                return Properties.Settings.Default.LoadInfoFromLastFm;
+            }
+            set
+            {
+                Properties.Settings.Default.LoadInfoFromLastFm = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+
         public string BackgroundPath
         {
             get
@@ -416,7 +430,6 @@ namespace VKMusicSync.ModelView
         private void UpdateDataFromProfile(object obj)
         {
 
-
             var worker = new BackgroundWorker();
             worker.WorkerSupportsCancellation = true;
             
@@ -458,7 +471,26 @@ namespace VKMusicSync.ModelView
                 //act4.Start();
                 //act4.Join();
                 act5.Start();
-            
+                act5.Join();
+                //Status = "ДоЗагрузка информации о треках с Last.Fm";
+
+                //Handlers.AsyncTaskManager<SoundModelView> manager = new AsyncTaskManager<SoundModelView>(
+                //    new AsyncTaskManager<SoundModelView>.ExecuteWork(
+                //    (sound) =>
+                //    {
+                //        try
+                //        {
+                //            var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.Artist);
+                //            sound.PhotoPath = artist.Images[3].Value; // little spike 
+                //        }
+                //        catch (DotLastFm.Api.Rest.LastFmApiException ex)
+                //        {
+
+                //        }
+                //    }), Sounds, Properties.Settings.Default.ThreadCountToUse);
+                //manager.Start();
+                //Status = "Готово";
+
             };
             worker.RunWorkerAsync();
             ProgressVisibility = true;

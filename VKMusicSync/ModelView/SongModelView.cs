@@ -8,7 +8,7 @@ using DotLastFm;
 
 namespace VKMusicSync.ModelView
 {
-    class SoundModelView : ViewModelBase, IDownnloadedData
+    public class SoundModelView : ViewModelBase, IDownnloadedData
     {
         public Sound Sound { get; set; }
         /*

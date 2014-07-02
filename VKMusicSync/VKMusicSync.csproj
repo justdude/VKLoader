@@ -71,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\VisibilityToBoolConverter.cs" />
+    <Compile Include="Handlers\AsyncTaskManager.cs" />
     <Compile Include="Handlers\AudioHelper.cs" />
     <Compile Include="Handlers\LastFmHandler.cs" />
     <Compile Include="Handlers\Network\HttpUtility.cs" />

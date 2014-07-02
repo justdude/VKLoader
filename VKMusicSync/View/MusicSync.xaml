@@ -170,7 +170,11 @@
                                         <StackPanel
                                             VirtualizingStackPanel.IsVirtualizing="True"
                                             Grid.Column="1"  Orientation="Horizontal" HorizontalAlignment="Stretch" Width="220">
-                                            <Image Source="{Binding PhotoPath}"  Height="58" Width="75"></Image>
+                                            <Image 
+                                                Visibility="{Binding LoadInfoFromLast, Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Collapsed'}"
+                                                Source="{Binding PhotoPath}"  
+                                                Height="58" 
+                                                Width="75"></Image>
                                             <StackPanel Orientation="Vertical" Margin="0,0,5,0">
                                                 <TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
                                                 <TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
@@ -180,6 +184,23 @@
                                             <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>
                                             <TextBlock Text="{Binding Duration}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
                                         </StackPanel>
+                                        <ListBox Grid.Column="3" 
+                                                Visibility="{Binding LoadInfoFromLast, Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Collapsed'}"
+                                                 DataContext="{Binding SimilarArtist}"
+                                                 HorizontalAlignment="Stretch" 
+                                                 MinWidth="45" 
+                                                 Margin="8,0,0,0">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel IsItemsHost="True"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
                                         <Controls:ProgressRing Grid.Column="3" State="Busy" Visibility="{Binding CurrentProgressVisibility, Converter={StaticResource VisibilityToBoolConverter}}" HorizontalAlignment="Stretch" MinWidth="120" MaxWidth="280" Height="auto" />
 
                                         <!--<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="8,0,0,0">
