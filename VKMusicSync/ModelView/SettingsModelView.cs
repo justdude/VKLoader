@@ -118,6 +118,68 @@ namespace VKMusicSync.ModelView
             }
         }
 
+        public bool UseProxy()
+        {
+            return true;
+        }
+
+
+        public string Adress
+        {
+            get
+            {
+                return Properties.Settings.Default.ProxyAdress;
+            }
+            set
+            {
+                Properties.Settings.Default.ProxyAdress = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("Adress");
+            }
+        }
+
+        public string Port
+        {
+            get
+            {
+                return Properties.Settings.Default.ProxyPort;
+            }
+            set
+            {
+                Properties.Settings.Default.ProxyPort = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("Port");
+            }
+        }
+
+        public string Login
+        {
+            get
+            {
+                return Properties.Settings.Default.ProxyName;
+            }
+            set
+            {
+                Properties.Settings.Default.ProxyName = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("Login");
+            }
+        }
+
+
+        public string Password
+        {
+            get
+            {
+                return Properties.Settings.Default.ProxyPassword;
+            }
+            set
+            {
+                Properties.Settings.Default.ProxyPassword = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("Password");
+            }
+        }
 
         private DelegateCommand selectDownloadFolderClick;
         public ICommand SelectDownloadFolderClick
