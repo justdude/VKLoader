@@ -540,7 +540,7 @@ namespace VKMusicSync.ModelView
         #region Information
         public void LoadAudioInfo()
         {
-            int count = 50;//CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
+            int count = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
 
             if (count > 0)
             {
