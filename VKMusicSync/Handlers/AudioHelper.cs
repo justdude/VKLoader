@@ -15,13 +15,12 @@ namespace VKMusicSync.Handlers
                 try
                 {
                     var artist = lastFmApi.Artist.GetInfo(item.artist);
-                    item.authorPhotoPath = artist.Images[3].Value; // little spike 
+                    item.authorPhotoPath = artist.Images[2].Value; // little spike 
                 }
                 catch(DotLastFm.Api.Rest.LastFmApiException ex)
                 {
 
                 }
-
             }
         }
 

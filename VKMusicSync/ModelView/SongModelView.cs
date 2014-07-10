@@ -159,6 +159,21 @@ namespace VKMusicSync.ModelView
                 }
             }
         }
+        //SimilarArtist
+
+
+        public List<string> SimilarArtist
+        {
+            get { return Sound.similarArtists; }
+            set
+            {
+                if (Sound.similarArtists != value)
+                {
+                    Sound.similarArtists = value;
+                    OnPropertyChanged("SimilarArtist");
+                }
+            }
+        }
 
         public SoundModelView(Sound sound)
         {

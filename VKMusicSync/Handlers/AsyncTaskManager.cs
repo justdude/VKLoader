@@ -53,16 +53,20 @@ namespace VKMusicSync.Handlers
         }
 
         public delegate void ExecuteWork(T item);
-        private ExecuteWork Execute { get; set; }
+        public ExecuteWork Execute { get; set; }
         private List<T> toProcess;
         private ManualResetEvent[] endEvents;
 
 
-        public AsyncTaskManager(ExecuteWork del, IList<T> parametrs, int maxThreadsCount)
+        public AsyncTaskManager(ExecuteWork del)
         {
-            this.Execute = del;
-            this.toProcess = parametrs.ToList();
-            this.ExecutedTaskCount = maxThreadsCount;
+            this.Execute += del;
+            this.endEvents = new ManualResetEvent[1];
+            ThreadPool.SetMaxThreads(executedTaskCount, executedTaskCount);
+        }
+
+        public AsyncTaskManager()
+        {
             this.endEvents = new ManualResetEvent[1];
             ThreadPool.SetMaxThreads(executedTaskCount, executedTaskCount);
         }
@@ -76,16 +80,21 @@ namespace VKMusicSync.Handlers
                 pack.endEvent.Set();
         }
 
-        public void Start()
+        public bool Start(IList<T> parametrs, int maxThreadsCount)
         {
+            if (Execute == null) return false;
+            this.toProcess = parametrs.ToList();
+            this.ExecutedTaskCount = maxThreadsCount;
+
             endEvents[0] = new ManualResetEvent(false);
+            
             for (int i = 0; i < toProcess.Count; i++)
             {
-                Pack<T> pack = new Pack<T>(endEvents[0], toProcess[i]);
+                Pack<T> pack = new Pack<T>(endEvents[0], toProcess[0]);
+                pack.value = toProcess[i];
                 ThreadPool.QueueUserWorkItem(new WaitCallback(DoTask), pack);
             }
-            WaitHandle.WaitAll(endEvents);
-
+            return WaitHandle.WaitAll(endEvents);
         }
 
     }

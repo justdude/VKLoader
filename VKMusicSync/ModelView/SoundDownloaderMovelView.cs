@@ -257,7 +257,7 @@ namespace VKMusicSync.ModelView
             {
                 if (checkAll == null)
                 {
-                    checkAll = new DelegateCommand(OnCheckedAllClick);
+                    checkAll = new DelegateCommand(OnCheckedAllClick, CheckIsLoaded);
                 }
                 return checkAll;
             }
@@ -268,6 +268,15 @@ namespace VKMusicSync.ModelView
 
         }
 
+        private bool CheckIsLoaded()
+        {
+            if (this.Sounds != null)
+                if (this.Sounds.Count > 0)
+                    return true;
+            return false;
+        }
+
+
         private DelegateCommand downloadFiles;
         public ICommand DownloadFiles
         {
@@ -275,7 +284,7 @@ namespace VKMusicSync.ModelView
             {
                 if (downloadFiles == null)
                 {
-                    downloadFiles = new DelegateCommand(OnDownloadFiles);
+                    downloadFiles = new DelegateCommand(OnDownloadFiles, CheckIsLoaded);
                 }
                 return downloadFiles;
             }
@@ -289,7 +298,7 @@ namespace VKMusicSync.ModelView
             {
                 if (cancelProcess == null)
                 {
-                    cancelProcess = new DelegateCommand(CancelSync);
+                    cancelProcess = new DelegateCommand(CancelSync, CheckIsLoaded);
                 }
                 return cancelProcess;
             }
@@ -445,51 +454,42 @@ namespace VKMusicSync.ModelView
                     LoadAudioInfo();
                 });
 
-                Thread act3 = new Thread(() =>
-                {
-                    Status = "Загрузка информации о треках с Last.Fm";
-                    Handlers.ItemHelper.FillLastInfo(CachedSounds, LastFmHandler.Api);
-                });
-
-                Thread act4 = new Thread(() =>
-                {
-                    Status = "Размер файла";
-                    Handlers.ItemHelper.FillDataInfo(CachedSounds);
-                });
-
                 Thread act5 = new Thread(() =>
                 {
                     InitDone(null, null);
                 });
 
+
+
+                act1.IsBackground = true;
+                act2.IsBackground = true;
+                act5.IsBackground = true;
                 act1.Start();
                 act1.Join();
                 act2.Start();
                 act2.Join();
-                act3.Start();
-                act3.Join();
-                //act4.Start();
-                //act4.Join();
+
+                var manager = new AsyncTaskManager<Sound>();
+                manager.Execute = new AsyncTaskManager<Sound>.ExecuteWork(
+                (sound) =>
+                {
+                    try
+                    {
+                        Status = "Загружаем информацию о треках..." + sound.artist;
+                        var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
+                        sound.authorPhotoPath = artist.Images[2].Value; // little spike 
+                        sound.similarArtists = artist.SimilarArtists.Select( el => el.Name).ToList<string>();
+
+                    }
+                    catch (DotLastFm.Api.Rest.LastFmApiException ex)
+                    {
+
+                    }
+                });
+
+                manager.Start(CachedSounds, Properties.Settings.Default.ThreadCountToUse);
                 act5.Start();
                 act5.Join();
-                //Status = "ДоЗагрузка информации о треках с Last.Fm";
-
-                //Handlers.AsyncTaskManager<SoundModelView> manager = new AsyncTaskManager<SoundModelView>(
-                //    new AsyncTaskManager<SoundModelView>.ExecuteWork(
-                //    (sound) =>
-                //    {
-                //        try
-                //        {
-                //            var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.Artist);
-                //            sound.PhotoPath = artist.Images[3].Value; // little spike 
-                //        }
-                //        catch (DotLastFm.Api.Rest.LastFmApiException ex)
-                //        {
-
-                //        }
-                //    }), Sounds, Properties.Settings.Default.ThreadCountToUse);
-                //manager.Start();
-                //Status = "Готово";
 
             };
             worker.RunWorkerAsync();
@@ -540,14 +540,12 @@ namespace VKMusicSync.ModelView
         #region Information
         public void LoadAudioInfo()
         {
-            int count = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
+            int count = 50;//CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
 
             if (count > 0)
             {
                 CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
-
                 CachedSounds = CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.vk.UserId, false, 0, count);
-
                 //SetSounds(CachedSounds);
             }
         }

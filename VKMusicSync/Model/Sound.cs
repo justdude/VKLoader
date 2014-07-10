@@ -18,6 +18,7 @@ namespace VKMusicSync.Model
 
 
         public string authorPhotoPath { get; set; }
+        public List<string> similarArtists { get; set; }
 
         public double Size { get; set; }
         public double LoadedSize { get; set; }
