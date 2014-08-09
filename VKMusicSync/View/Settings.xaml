@@ -10,6 +10,7 @@
         WindowStartupLocation="CenterScreen"
         params:Design.Theme="Light"
         params:Manager.Theme="Light" 
+        params:Design.AccentBrush="Black"
     >
     <Window.Resources>
         <converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
@@ -61,7 +62,7 @@
                 </TabItem.Content>
             </TabItem>
 
-            <TabItem Header="Синхр.">
+            <TabItem Header="Синхр." Height="76" VerticalAlignment="Top">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -133,10 +134,10 @@
                                 <ColumnDefinition Width="319*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="59*"/>
-                                <RowDefinition Height="100*"/>
-                                <RowDefinition Height="59*"/>
-                                <RowDefinition Height="100*"/>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="180*"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Grid.Column="1" Content="Выбор подложки:" HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                             <Label Grid.Row="2" Grid.Column="1" Content="Настройка цвета панели:" HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.ColumnSpan="2"/>
@@ -145,6 +146,29 @@
                                 <TextBlock Text="{Binding BackgroundPath}" HorizontalAlignment="Left" Height="26" Margin="0,0,8,0" Width="240"  />
                                 <Button   Command="{Binding SelectBackgroundPathClick}" Content="Обзор..."  Height="26" Padding="0" Width="83"/>
                             </StackPanel>
+
+                            
+                            <ListBox Grid.Row="3" 
+                                     Grid.Column="1"
+                                     Width="300"
+
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Center"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ItemsSource="{Binding ColorsScheme}"
+                                    ScrollViewer.CanContentScroll="False"
+                                    Margin="0,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Rectangle Width="25" Height="25" Fill="{Binding}" ></Rectangle>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                </ListBox>
 
                         </Grid>
                     </Grid>
@@ -161,16 +185,26 @@
                             <RowDefinition Height="25"/>
                             <RowDefinition Height="25"/>
                             <RowDefinition Height="25"/>
-                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="180"/>
                         </Grid.RowDefinitions>
-
-                        <CheckBox 
+                        <StackPanel HorizontalAlignment="Left" Grid.Row="2" Orientation="Horizontal">
+                            <CheckBox 
                                   Name="UseProxy"
                                   Content="Использовать прокси"
-                                  IsChecked="{Binding UseProxy,Mode=TwoWay, ConverterParameter='Collapsed', FallbackValue=True}"
+                                  IsChecked="{Binding UseProxy, FallbackValue=False}"
                                   Grid.Row="2"
                                   MinWidth="30" 
                                   Height="30"></CheckBox>
+                            <CheckBox 
+                            	Content="Авторизация"
+                                IsEnabled="{Binding  ElementName=UseProxy, Path=IsChecked}"
+                            	IsChecked="{Binding UseCredintial, FallbackValue=False}"
+                                  
+                            	MinWidth="30" 
+                            	Height="30" Margin="20,0,0,0"/>
+                        </StackPanel>
+
+                        
                         <Border 
                             Visibility="{Binding Path=IsChecked, 
                             ElementName=UseProxy,
@@ -178,7 +212,7 @@
                             Grid.Row="3"
                             BorderBrush="Azure" 
                             BorderThickness="2">
-                            <Grid>
+                            <StackPanel>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="11"/>
@@ -188,17 +222,13 @@
                                     <Grid.RowDefinitions>
 
                                         <RowDefinition Height="25"/>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="25"/>
-                                        <RowDefinition Height="50"/>
+                                        <RowDefinition Height="35"/>
                                     </Grid.RowDefinitions>
 
 
                                     <Label Grid.Row="0" Grid.Column="1" Content="Адресс" HorizontalAlignment="Left"  VerticalAlignment="Top" />
                                     <Label Grid.Row="0" Grid.Column="2" Content="Порт" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-                                    <Label Grid.Row="2" Grid.Column="1" Content="Логин" HorizontalAlignment="Left"  VerticalAlignment="Top" />
-                                    <Label Grid.Row="2" Grid.Column="2" Content="Пароль" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-
+                                   
                                     <TextBlock Text="{Binding BackgroundPath}" HorizontalAlignment="Left" Height="26" Margin="0,15,8,14.503" Width="137"  />
 
                                     <TextBox Grid.Row="1" 
@@ -206,23 +236,41 @@
                                      Text="{Binding Adress}"
                                      Height="28"
                                      Width="160"></TextBox>
-                                    <TextBox Grid.Row="3" 
-                                     Grid.Column="1"
-                                     Text="{Binding Login}"
-                                     Height="28"
-                                     Width="160"></TextBox>
                                     <TextBox Grid.Row="1" 
                                      Grid.Column="2"
                                      Text="{Binding Port}"
                                      Height="28"
                                      Width="160"></TextBox>
-                                    <TextBox Grid.Row="3" 
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="11"/>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="180"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+
+                                        <RowDefinition Height="25"/>
+                                        <RowDefinition Height="35"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="1" Content="Логин" HorizontalAlignment="Left"  VerticalAlignment="Top" />
+                                    <Label Grid.Row="0" Grid.Column="2" Content="Пароль" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                                    <TextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     IsEnabled="{Binding UseCredintial}"
+                                     Text="{Binding Login}"
+                                     Height="28"
+                                     Width="160"></TextBox>
+                                    <TextBox Grid.Row="1" 
                                      Grid.Column="2"
+                                     IsEnabled="{Binding UseCredintial}"
                                      Text="{Binding Password}"
                                      Height="28"
                                      Width="160"></TextBox>
                                 </Grid>
-                            </Grid>
+                            </StackPanel>
                         </Border>
                         
                     </Grid>

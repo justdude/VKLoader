@@ -252,6 +252,11 @@
                     <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                 </Grid>
             </TabItem>
+            <TabItem Header="Recomendation">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                </Grid>
+            </TabItem>
         </TabControl>
 
         <StatusBar Grid.Row="2">

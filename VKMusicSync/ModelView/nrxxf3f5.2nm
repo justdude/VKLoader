@@ -586,17 +586,9 @@ namespace VKMusicSync.ModelView
 
         private void OnUploadClick()
         {
-            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.ShowDialog();
 
-            if (dialog.FileName.Count() > 0 && dialog.CheckPathExists)
-            {
-                AudioUploadedInfo info = CommandsGenerator.AudioCommands.GetUploadServer(Path.GetDirectoryName(dialog.FileName), Path.GetFileName(dialog.FileName));
-                //AudioUploadedInfo info = CommandsGenerator.AudioCommands.GetUploadServer(@"D:\Musik\", @"myzuka.ru_08_nobody_but_me.mp3");
-                string answer = CommandsGenerator.AudioCommands.SaveAudio(info);
-            }
-
-
+            AudioUploadedInfo info = CommandsGenerator.AudioCommands.GetUploadServer(@"D:\Musik\", @"myzuka.ru_08_nobody_but_me.mp3");
+            string answer = CommandsGenerator.AudioCommands.SaveAudio(info);
         }
 
         #region Load audio

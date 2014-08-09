@@ -31,7 +31,7 @@ namespace VKMusicSync.Handlers
         }
 
         /// <summary>
-        /// Post метод
+        /// GetPostAnswer метод
         /// </summary>
         /// <param name="upload_url">Адрес запроса</param>
         /// <param name="sendingData">Обьект который отправляем</param>

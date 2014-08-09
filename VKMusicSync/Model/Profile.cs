@@ -19,6 +19,14 @@ namespace VKMusicSync.Model
         public string photoMedium { get; set; }
         public string photoBig { get; set; }
 
+       public string FullName
+        {
+           get
+            {
+                return first_name + " " + last_name;
+            }
+        }
+
         public Profile()
         { 
         }

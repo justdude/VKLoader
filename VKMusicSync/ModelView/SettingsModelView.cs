@@ -6,6 +6,7 @@ using MVVM;
 using VKMusicSync.Model;
 using System.Windows.Input;
 using System.Net;
+using System.Collections.ObjectModel;
 
 namespace VKMusicSync.ModelView
 {
@@ -78,6 +79,7 @@ namespace VKMusicSync.ModelView
             }
         }
 
+        #region Proxy
         private WebProxy proxy;
         public WebProxy Proxy
         {
@@ -87,7 +89,10 @@ namespace VKMusicSync.ModelView
                 {
                     proxy = new WebProxy(Properties.Settings.Default.ProxyAdress, 
                                          int.Parse(Properties.Settings.Default.ProxyPort));
-                    proxy.Credentials = Credential;
+                    if (Properties.Settings.Default.UseProxyCredintial)
+                    {
+                        proxy.Credentials = Credential;
+                    }
                     OnPropertyChanged("Proxy");
                 }
                 return proxy;
@@ -98,6 +103,35 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("Proxy");
             }
         }
+
+        public bool UseCredintial
+        {
+            get
+            {
+                return Properties.Settings.Default.UseProxyCredintial;
+            }
+            set
+            {
+                Properties.Settings.Default.UseProxyCredintial = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("UseCredintial");
+            }
+        }
+
+        public bool UseProxy
+        {
+            get
+            {
+                return Properties.Settings.Default.UseProxy;
+            }
+            set
+            {
+                Properties.Settings.Default.UseProxy = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged("UseProxy");
+            }
+        }
+
         private NetworkCredential credential;
         public NetworkCredential Credential
         {
@@ -116,11 +150,6 @@ namespace VKMusicSync.ModelView
                 credential = value;
                 OnPropertyChanged("Credential");
             }
-        }
-
-        public bool UseProxy()
-        {
-            return true;
         }
 
 
@@ -180,7 +209,18 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("Password");
             }
         }
+        #endregion
 
+
+        public List<System.Windows.Media.SolidColorBrush> ColorsScheme
+        {
+            get
+            {
+                return VKMusicSync.Handlers.ColorJam.AllCollors;
+            }
+        }
+
+        #region Commands
         private DelegateCommand selectDownloadFolderClick;
         public ICommand SelectDownloadFolderClick
         {
@@ -246,7 +286,10 @@ namespace VKMusicSync.ModelView
                 return exitClick;
             }
         }
+        #endregion
 
+
+        #region Checkers
         private bool CanLogin()
         {
             return vkontakte.APIManager.AccessData == null;
@@ -256,6 +299,7 @@ namespace VKMusicSync.ModelView
         {
             return vkontakte.APIManager.AccessData != null;
         }
+        #endregion
 
         private void OnExitClick()
         {
