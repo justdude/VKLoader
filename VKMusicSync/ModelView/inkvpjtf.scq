@@ -218,6 +218,10 @@ namespace VKMusicSync.ModelView
         public SoundModelView(Sound sound)
         {
             this.Sound = sound;
+            this.SyncState_ = new SyncState();
+
+            this.IsNeedUpload = true;
+
         }
 
         public string GenerateFileName()

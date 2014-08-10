@@ -505,7 +505,7 @@ namespace VKMusicSync.ModelView
             worker.RunWorkerAsync();
             ProgressVisibility = true;
             //BackgroundWorker backgroundWorker = new BackgroundWorker();
-            //backgroundWorker.SyncFolderWithVKAsync += this.Init;
+            //backgroundWorker.DoWork += this.Init;
             //backgroundWorker.RunWorkerCompleted += this.InitDone;
             //backgroundWorker.RunWorkerAsync();
             //while(backgroundWorker.IsBusy)
@@ -612,7 +612,7 @@ namespace VKMusicSync.ModelView
                 backgroundWorker = new BackgroundWorker();
                 //backgroundWorker.WorkerReportsProgress = true;
                 backgroundWorker.WorkerSupportsCancellation = true;
-                backgroundWorker.DoWork += SyncFolderWithVKAsync;
+                backgroundWorker.DoWork += DoWork;
                 backgroundWorker.RunWorkerAsync(CachedSounds);
         }
 
@@ -622,24 +622,14 @@ namespace VKMusicSync.ModelView
             backgroundWorker.CancelAsync();
         }
 
-        private void SyncFolderWithVKAsync(object sender, DoWorkEventArgs e)
-        {
-            SoundHandler = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath, Properties.Settings.Default.ThreadCountToUse);
-            SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
-            SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;
-            IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
-            //SoundHandler.
-            SoundHandler.SyncFolderWithList<SoundModelView>(selected.ToList());
-        }
-
-        private void AdapterSyncFolderWithVKAsyncOnProgress(object sender, ProgressArgs e)
+        private void OnProgress(object sender, ProgressArgs e)
         {
             Status = SoundHandler.CountLoadedFiles + "/" + this.Sounds.Count;  
             this.ProgressPercentage = (e.ProgressPercentage * 100.0);
 
         }
 
-        private void AdapterSyncFolderWithVKAsyncDone(object sender, ProgressArgs e)
+        private void OnDone(object sender, ProgressArgs e)
         {
             Status = SoundHandler.CountLoadedFiles + "/" + this.Sounds.Count;  
             this.ProgressPercentage = 100;
@@ -648,6 +638,14 @@ namespace VKMusicSync.ModelView
 
         }
 
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            SoundHandler = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath, Properties.Settings.Default.ThreadCountToUse);
+            SoundHandler.OnDone += OnDone; 
+            SoundHandler.OnProgress += OnProgress;
+            IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
+            SoundHandler.SyncFolderWithList<SoundModelView>(selected.ToList());
+        }
         #endregion
 
 

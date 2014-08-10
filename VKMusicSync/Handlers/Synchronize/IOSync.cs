@@ -8,39 +8,51 @@ namespace VKMusicSync.Handlers.Synchronize
 {
     class IOSync<T>
     {
-        private List<T> existFiles;
         private List<T> skippedFiles;
-
-        private FileInfo[] folderFiles;
         private DirectoryInfo dir;
+
+        private FileInfo[] mvFolderFiles;
+        public FileInfo[] FolderFiles
+        {
+            get
+            {
+                if (mvFolderFiles == null)
+                {
+                    UpdateFolderFiles();
+                }
+                return mvFolderFiles;
+            }
+            private set
+            {
+                mvFolderFiles = value;
+            }
+        }
+
+        public List<T> ExistFiles
+        {
+            get;
+            private set;
+        }
+
+
 
         public IOSync(string dir)
         {
-            if (Directory.Exists(dir))
-            {
-                this.existFiles = new List<T>();
-                this.dir = new DirectoryInfo(dir);
-                this.skippedFiles = new List<T>();
-            }
-            else
-            {
-                throw new Exception("Folder doesnt exist");
-            }
+            this.ExistFiles = new List<T>();
+            this.dir = new DirectoryInfo(dir);
+            this.skippedFiles = new List<T>();
         }
 
-
-        public void ComputeFileList(List<T> containValues, Func<FileInfo[], T, bool> Check)
+        private void UpdateFolderFiles()
         {
-            folderFiles = dir.GetFiles();
+            mvFolderFiles = dir.GetFiles();
+        }
+
+        public void CompareFolderFiles(List<T> containValues, Func<FileInfo[], T, bool> Check)
+        {
             for (int i = 0; i < containValues.Count; i++)
-                if (!Check(folderFiles, containValues[i]) && !existFiles.Contains(containValues[i]))
-                    existFiles.Add(containValues[i]);
-        }
-
-
-        public List<T> GetExist()
-        {
-            return existFiles;
+                if (!Check(FolderFiles, containValues[i]) && !ExistFiles.Contains(containValues[i]))
+                    ExistFiles.Add(containValues[i]);
         }
 
     }

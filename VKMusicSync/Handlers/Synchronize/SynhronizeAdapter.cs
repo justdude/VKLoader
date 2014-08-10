@@ -47,12 +47,13 @@ namespace VKMusicSync.Handlers.Synchronize
             Download<T>(items, Path);
         }
 
-
+        
+        
         private void Download<T>(List<T> existData, string directory) where T : IDownnloadedData
         {
             IOSync<T> localSync = new IOSync<T>(directory);
-            localSync.ComputeFileList(existData, AudioComparer);
-            List<T> valuesToDownload = localSync.GetExist();
+            localSync.CompareFolderFiles(existData, AudioComparer);
+            List<T> valuesToDownload = localSync.ExistFiles;
 
             FilesCount = valuesToDownload.Count;
             DownloadEachFile<T>(valuesToDownload);
