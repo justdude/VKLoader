@@ -24,25 +24,25 @@ namespace VKMusicSync.Handlers
             }
         }
 
-        public static void FillLastInfo(SoundModelView sound, DotLastFm.LastFmApi lastFmApi)
+        /*public static void FillLastInfo(SoundModelView mvSounds, DotLastFm.LastFmApi lastFmApi)
         {
                 try
                 {
-                    var artist = lastFmApi.Artist.GetInfo(sound.Artist);
-                    sound.PhotoPath = artist.Images[3].Value;// little spike 
+                    var artist = lastFmApi.Artist.GetInfo(mvSounds.Artist);
+                    mvSounds.PhotoPath = artist.Images[3].Value;// little spike 
                 }
                 catch (DotLastFm.Api.Rest.LastFmApiException ex)
                 {
 
                 }
-        }
+        }*/
 
 
         public static void FillDataInfo(List<VKMusicSync.Model.Sound> items)
         {
             double coef = 1024 * 1024;
             foreach (var item in items)
-                item.Size = ComputeSize(item.GetUrl()) / coef;
+                item.Size = ComputeSize(item.Path) / coef;
             var res = items;
         }
 

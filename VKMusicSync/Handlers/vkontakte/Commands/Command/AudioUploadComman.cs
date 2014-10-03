@@ -47,6 +47,7 @@ namespace vkontakte
             string fullPath = path +@"\" + fileName;
             //var test = System.IO.File.Exists(fullPath); 
             byte[] bytes = System.IO.File.ReadAllBytes(fullPath);
+            
             string answer = Reqeust.Post(ServerPath, bytes, fileName);
             
             string[] parsed = answer.Split(',');

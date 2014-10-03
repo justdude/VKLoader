@@ -51,7 +51,7 @@ namespace VKMusicSync
             modelView.Window_Loaded();
             //this.Hide();
             //this.Show();
-            //var data = this.DataContext as SoundDownloaderMovelView;
+            //var value = this.DataContext as SoundDownloaderMovelView;
         }
 
         private Auth authWindow;

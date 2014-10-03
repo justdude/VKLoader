@@ -303,9 +303,9 @@ namespace VKMusicSync.ModelView
 
         private void OnExitClick()
         {
+            //http://api.vk.com/oauth/logout
             vkontakte.APIManager.AccessData = null;
             vkontakte.APIManager.Profile = null;
-            
         }
 
         private void OnLoginClick()

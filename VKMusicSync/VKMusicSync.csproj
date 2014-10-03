@@ -80,6 +80,10 @@
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\Elysium SDK\.NET Framework 4\2.0\Elysium.Notifications.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Id3, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -104,18 +108,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Comparers\GenericComparer.cs" />
     <Compile Include="Converters\StateToVisibilityConverter.cs" />
     <Compile Include="Converters\VisibilityToBoolConverter.cs" />
+    <Compile Include="Delegates\ActionsDelegates.cs" />
+    <Compile Include="Delegates\Arguments.cs" />
     <Compile Include="Handlers\AsyncTaskManager.cs" />
     <Compile Include="Handlers\AudioHelper.cs" />
     <Compile Include="Handlers\ColorJam.cs" />
+    <Compile Include="Handlers\DataHelper.cs" />
     <Compile Include="Handlers\LastFmHandler.cs" />
     <Compile Include="Handlers\Network\HttpUtility.cs" />
+    <Compile Include="Handlers\Network\ProgressArgs.cs" />
     <Compile Include="Handlers\ProgramManager.cs" />
+    <Compile Include="Handlers\Synchronize\SynhronizerBase.cs" />
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
     <Compile Include="Handlers\Synchronize\IOSync.cs" />
     <Compile Include="Handlers\Synchronize\SyncState.cs" />
     <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
+    <Compile Include="Handlers\TagsHandler.cs" />
     <Compile Include="Handlers\TestLastFmConfig.cs" />
     <Compile Include="Handlers\toclean\ContainerHandlers.cs" />
     <Compile Include="Handlers\vkontakte\AcessData.cs" />
@@ -134,6 +145,7 @@
     <Compile Include="ModelView\SettingsModelView.cs" />
     <Compile Include="Model\AudioUploadedInfo.cs" />
     <Compile Include="Model\Profile.cs" />
+    <Compile Include="MVVM\Collections\AsyncObservableCollection.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

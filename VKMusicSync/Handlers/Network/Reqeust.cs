@@ -43,7 +43,7 @@ namespace VKMusicSync.Handlers
             Stream requstedStream;
 
             string boundary = String.Format("----WebKitFormBoundary{0}", GetMD5(sendingData));
-            string templateFile = "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n";
+            string templateFile = "--{0}\r\nContent-Disposition: form-value; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n";
             string templateEnd = "--{0}--\r\n\r\n";
             string Name = "file";
 

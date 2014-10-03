@@ -7,7 +7,7 @@ namespace MVVM
     /// <summary>
     /// This class facilitates associating a key binding in XAML markup to a command
     /// defined in a View Model by exposing a Command dependency property.
-    /// The class derives from Freezable to work around a limitation in WPF when data-binding from XAML.
+    /// The class derives from Freezable to work around a limitation in WPF when value-binding from XAML.
     /// </summary>
     public class CommandReference : Freezable, ICommand
     {

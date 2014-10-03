@@ -10,62 +10,14 @@ using System.ComponentModel;
 namespace VKMusicSync.Handlers
 {
 
-    public class ProgressArgs
-    {
-        /// <summary>
-        /// Возвращает максимальное число полученных байтов.
-        /// </summary>
-       public double BytesReceived	
-       {
-           get;
-           private set;
-       }
-        /// <summary>
-        /// Возвращает процент выполнения асинхронной задачи
-        /// </summary>
-        public double ProgressPercentage
-        {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// bозвращает общее количество байтов в операции по загрузке данных
-        /// </summary>
-        public double TotalBytesToReceive
-        {
-            get;
-            private set;
-        }
-
-        public object UserState
-        {
-            get;
-            private set;
-        }
-
-        public ProgressArgs()
-        {
-
-        }
-
-        public ProgressArgs(double received, double progressPercentage, double totalBytes, object userState)
-        {
-            this.BytesReceived = received;
-            this.ProgressPercentage = progressPercentage;
-            this.TotalBytesToReceive = totalBytes;
-            this.UserState = userState;
-        }
-
-    }
-
-    public class Downloader
+    public class DataLoader
     {
         public string Path
         {
             get;
             private set;
         }
-        private WebClient web
+        private WebClient modLoader
         {
             get;
             set;
@@ -95,10 +47,21 @@ namespace VKMusicSync.Handlers
             set;
         }
 
-        public Downloader(string path)
+        public UploadProgressChangedEventHandler OnUploadProgressChanged
+        {
+            get;
+            set;
+        }
+        public UploadFileCompletedEventHandler OnUploadComplete
+        {
+            get;
+            set;
+        }
+
+        public DataLoader(string path)
         {
             this.Path = path;
-            web = new WebClient();
+            modLoader = new WebClient();
         }
 
 
@@ -106,12 +69,12 @@ namespace VKMusicSync.Handlers
         {
             try
             {
-                web.DownloadProgressChanged += OnDownloadProgressChanged;
-                web.DownloadFileCompleted   += OnDownloadComplete;
-                web.DownloadFile(new Uri(uri), Path + filename);
+                modLoader.DownloadProgressChanged += OnDownloadProgressChanged;
+                modLoader.DownloadFileCompleted   += OnDownloadComplete;
+                modLoader.DownloadFile(new Uri(uri), Path + filename);
                 
-                web.DownloadProgressChanged -= OnDownloadProgressChanged;
-                //web.DownloadDataCompleted -= OnDownloadComplete;
+                modLoader.DownloadProgressChanged -= OnDownloadProgressChanged;
+                //modLoader.DownloadDataCompleted -= OnDownloadCompleteActions;
             }
             catch (WebException ex)
             {
@@ -123,17 +86,17 @@ namespace VKMusicSync.Handlers
         {
             try
             {
-                web.DownloadProgressChanged += OnDownloadProgressChanged;
-                web.DownloadFileCompleted += OnDownloadComplete;
+                modLoader.DownloadProgressChanged += OnDownloadProgressChanged;
+                modLoader.DownloadFileCompleted += OnDownloadComplete;
                 
-                web.DownloadFileAsync(new Uri(uri), Path + filename);
+                modLoader.DownloadFileAsync(new Uri(uri), Path + filename);
                /* while (true)
                 {
-                    if (!web.IsBusy) break;
+                    if (!modLoader.IsBusy) break;
                 }*/
 
-                //web.DownloadProgressChanged -= OnDownloadProgressChanged;
-                //web.DownloadDataCompleted -= OnDownloadComplete;
+                //modLoader.DownloadProgressChanged -= OnDownloadProgressChanged;
+                //modLoader.DownloadDataCompleted -= OnDownloadCompleteActions;
             }
             catch (WebException ex)
             {
@@ -141,14 +104,48 @@ namespace VKMusicSync.Handlers
             }
         }
 
-        public void CancelAsync()
+
+        public void Upload(string uri, string filename)
         {
-            web.CancelAsync();
+            try
+            {
+                modLoader.UploadProgressChanged += OnUploadProgressChanged;
+                modLoader.UploadFileCompleted += OnUploadComplete;
+                modLoader.UploadFile(new Uri(uri), Path + filename);
+
+                modLoader.DownloadProgressChanged -= OnDownloadProgressChanged;
+                //modLoader.DownloadDataCompleted -= OnDownloadCompleteActions;
+            }
+            catch (WebException ex)
+            {
+                //System.Windows.Forms.MessageBox.Show(""+ex.Message); //SPIKE!!!!!!!
+            }
         }
 
-        ~ Downloader()
+        public void UploadAsync(string uri, string filename)
         {
-            this.web.Dispose();
+            try
+            {
+                modLoader.UploadProgressChanged += OnUploadProgressChanged;
+                modLoader.UploadFileCompleted += OnUploadComplete;
+
+                modLoader.UploadFileAsync(new Uri(uri), Path + filename);
+            }
+            catch (WebException ex)
+            {
+                //System.Windows.Forms.MessageBox.Show(""+ex.Message); //SPIKE!!!!!!!
+            }
+        }
+
+
+        public void CancelAsync()
+        {
+            modLoader.CancelAsync();
+        }
+
+        ~ DataLoader()
+        {
+            this.modLoader.Dispose();
         }
 
 

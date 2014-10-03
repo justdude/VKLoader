@@ -7,10 +7,21 @@ using VKMusicSync.Model;
 using DotLastFm;
 using System.Windows.Media.Imaging;
 using VKMusicSync.Handlers.Synchronize;
+using VKMusicSync.Delegates;
+using System.Threading;
 namespace VKMusicSync.ModelView
 {
-    public class SoundModelView : ViewModelBase, IDownnloadedData
+    public class SoundModelView : ViewModelBase, IDownnloadedData, IStateChanged
     {
+
+        public IStateChanged InstanceWithEvents
+        {
+            get
+            {
+                return this;
+            }
+        }
+
         public Sound Sound { get; set; }
         /*
          public string UserId { get; set; }
@@ -22,17 +33,16 @@ namespace VKMusicSync.ModelView
         public string genre_id { get; set; }
          */
 
-        #region Sync States 
-        private SyncStates state = SyncStates.IsNeedDownload;
+        #region Sync States
         public SyncStates State
         {
             get
             {
-                return state;
+                return Sound.State;
             }
             set
             {
-                state = value;
+                Sound.State = value;
                 OnPropertyChanged("State");
             }
         }
@@ -51,7 +61,7 @@ namespace VKMusicSync.ModelView
             set
             {
                 //if (FreezeClick == false)
-                if (ischecked!=value)
+                if (ischecked != value)
                 {
                     ischecked = value;
                     OnPropertyChanged("Checked");
@@ -68,7 +78,7 @@ namespace VKMusicSync.ModelView
             }
             set
             {
-                if (currentProgressVisibility!=value)
+                if (currentProgressVisibility != value)
                 {
                     currentProgressVisibility = value;
                     OnPropertyChanged("CurrentProgressVisibility");
@@ -77,6 +87,7 @@ namespace VKMusicSync.ModelView
 
         }
 
+        #region Sound
         public string Artist
         {
             get { return Sound.artist; }
@@ -99,8 +110,9 @@ namespace VKMusicSync.ModelView
 
         public int Duration
         {
-            get { 
-                return Sound.duration; 
+            get
+            {
+                return Sound.duration;
             }
             set
             {
@@ -141,21 +153,21 @@ namespace VKMusicSync.ModelView
 
 
 
-        public string PhotoPath
-        {
-            get 
-            {
-                return Sound.authorPhotoPath; 
-            }
-            set
-            {
-                if (value!=Sound.authorPhotoPath)
-                {
-                    Sound.authorPhotoPath = value;
-                    OnPropertyChanged("PhotoPath");
-                }
-            }
-        }
+        /* public string PhotoPath
+         {
+             get 
+             {
+                 return Sound.authorPhotoPath; 
+             }
+             set
+             {
+                 if (value!=Sound.authorPhotoPath)
+                 {
+                     Sound.authorPhotoPath = value;
+                     OnPropertyChanged("PhotoPath");
+                 }
+             }
+         }*/
 
 
         private BitmapImage mvImage = null;
@@ -166,7 +178,7 @@ namespace VKMusicSync.ModelView
             {
                 if (mvImage == null)
                 {
-                    if (Sound.authorPhotoPath.Length > 0)
+                    if (Sound.authorPhotoPath != null && Sound.authorPhotoPath.Length > 0)
                         mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath));
                 }
                 return mvImage;
@@ -175,27 +187,23 @@ namespace VKMusicSync.ModelView
             {
                 if (value != mvImage)
                 {
-                    mvImage= value;
+                    mvImage = value;
                     OnPropertyChanged("Photo");
                 }
             }
         }
 
-        public bool SyncState
+        public bool IsLoadedToDisk
         {
-            get { return Sound.SyncState; }
+            get { return Sound.IsLoadedToDisk; }
             set
             {
-                if (Sound.SyncState != value)
+                if (Sound.IsLoadedToDisk != value)
                 {
-                    Sound.SyncState = value;
-                    OnPropertyChanged("SyncState");
+                    Sound.IsLoadedToDisk = value;
+                    OnPropertyChanged("IsLoadedToDisk");
 
-                    if (Sound.SyncState == false)
-                        CurrentProgressVisibility = false;
-                    else
-                        CurrentProgressVisibility = true;
-                    VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
+                    // VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
                 }
             }
         }
@@ -214,13 +222,14 @@ namespace VKMusicSync.ModelView
                 }
             }
         }
+        #endregion
 
         public SoundModelView(Sound sound)
         {
             this.Sound = sound;
         }
 
-        public string GenerateFileName()
+        /*public string GenerateFileName()
         {
             return this.Sound.GenerateFileName();
         }
@@ -233,6 +242,114 @@ namespace VKMusicSync.ModelView
         public string GetUrl()
         {
             return this.Sound.GetUrl();
+        }*/
+
+
+        #region file fields
+
+        public string PathWithFileName
+        {
+            get { return Sound.PathWithFileName; }
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return Sound.FileName;
+            }
+            set
+            {
+                Sound.FileName = value;
+            }
+        }
+
+        public string FileExtention
+        {
+            get
+            {
+                return Sound.FileExtention;
+            }
+        }
+
+        public string Path
+        {
+            get
+            {
+                return Sound.Path;
+            }
+            set
+            {
+                Sound.Path = value;
+            }
+        }
+
+        public string MD5
+        {
+            get
+            {
+                return Sound.MD5;
+            }
+            set
+            {
+                Sound.MD5 = value;
+            }
+        }
+
+        #endregion
+
+
+        public void OnLoadStarted(object sender, Argument state)
+        {
+            if (!FreezeClick)
+                FreezeClick = true;
+
+            CurrentProgressVisibility = true;
+        }
+
+        public void OnProgresChanged(object sender, Argument state)
+        {
+
+        }
+
+        public void OnLoadEnded(object sender, Argument state)
+        {
+            CurrentProgressVisibility = false;
+
+            bool result = (bool)state.result;
+            if (result)
+            {
+                State = SyncStates.IsSynced;
+            }
+
+            this.Checked = !((bool)state.result);
+            this.IsLoadedToDisk = (bool)state.result;
+
+            System.Threading.ThreadPool.QueueUserWorkItem( new WaitCallback(LoadTagsFromLast), Sound);
+
+        }
+
+        public void OnRaiseError(object sender, Argument state)
+        {
+
+        }
+
+        private void LoadTagsFromLast(object SoundObj)
+        {
+            var sound = SoundObj as Sound;
+            if (sound == null) return;
+
+            System.Threading.Thread.Sleep(400);
+
+            var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
+            sound.authorPhotoPath = artist.Images[2].Value; // little spike 
+            sound.similarArtists = artist.SimilarArtists.Select(el => el.Name).ToList<string>();
+        }
+
+
+        public bool IsEqual(IDownnloadedData data)
+        {
+            return Sound.IsEqual(data);
         }
     }
 }

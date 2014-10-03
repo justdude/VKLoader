@@ -111,7 +111,7 @@
       <DependentUpon>Albums.cs</DependentUpon>
     </Compile>
     <Compile Include="Handlers\ContainerHandlers.cs" />
-    <Compile Include="Handlers\Downloader.cs" />
+    <Compile Include="Handlers\DataLoader.cs" />
     <Compile Include="Handlers\DownloadProgressChanged.cs" />
     <Compile Include="Handlers\IOHandler.cs" />
     <Compile Include="Login.cs">

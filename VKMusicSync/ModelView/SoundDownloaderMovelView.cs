@@ -19,6 +19,8 @@ using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using VKMusicSync.MVVM.Collections;
+using System.Windows;
 
 namespace VKMusicSync.ModelView
 {
@@ -108,23 +110,37 @@ namespace VKMusicSync.ModelView
             }
         }
 
-
         private object lock1 = new object();
-        private ObservableCollection<SoundModelView> sound;
-        public ObservableCollection<SoundModelView> Sounds { 
+        private List<Sound> modSoundsData;
+        public List<Sound> SoundsData
+        {
             get
             {
-                lock(lock1)
+                lock (lock1)
                 {
-                    return sound;
+                    return modSoundsData;
                 }
             }
             set
             {
                 lock (lock1)
                 {
-                    sound = value;
+                    modSoundsData = value;
                 }
+            }
+        }
+
+       
+        private ObservableCollection<SoundModelView> mvSounds = new ObservableCollection<SoundModelView>();
+        public ObservableCollection<SoundModelView> Sounds 
+        { 
+            get
+            {
+                return mvSounds;
+            }
+            set
+            {
+                mvSounds = value;
             }
         }
 
@@ -168,7 +184,10 @@ namespace VKMusicSync.ModelView
         public string UserFullName
         {
             get
-            { return APIManager.Profile.ToString(); }
+            {
+                if (APIManager.Profile == null)
+                    return "";
+                return APIManager.Profile.ToString(); }
             set
             {
                 OnPropertyChanged("UserFullName");
@@ -176,7 +195,7 @@ namespace VKMusicSync.ModelView
         }
 
         //private System.Windows.Media.Imaging.BitmapFrame avatar;
-        private string avatar;
+        private string avatar = @"http://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Flag_of_None.svg/225px-Flag_of_None.svg.png";
        // public System.Windows.Media.Imaging.BitmapFrame Avatar
         public string Avatar 
         {
@@ -361,12 +380,12 @@ namespace VKMusicSync.ModelView
         {
             Instance = this;
             CachedSounds = new List<Sound>();
-            this.Sounds = new ObservableCollection<SoundModelView>();
+            this.Sounds = new AsyncObservableCollection<SoundModelView>();
         }
 
         private void SetSounds(List<Sound> sounds)
         {
-            Sounds = new ObservableCollection<SoundModelView>(sounds.Select(s => new SoundModelView(s)));
+            Sounds = new AsyncObservableCollection<SoundModelView>(sounds.Select(s => new SoundModelView(s)));
         }
         #endregion
 
@@ -443,7 +462,7 @@ namespace VKMusicSync.ModelView
 
         #endregion
 
-        #region Process vk data to forms
+        #region Process vk value to forms
 
         private void UpdateDataFromProfile(object obj)
         {
@@ -457,10 +476,30 @@ namespace VKMusicSync.ModelView
                     Status = "Загрузка профиля";
                     LoadProfileInfo();
                 });
+
                 Thread act2 = new Thread(() =>
                 {
                     Status = "Загрузка треков";
                     LoadAudioInfo();
+                });
+
+                var manager = new AsyncTaskManager<Sound>();
+                manager.Execute = new AsyncTaskManager<Sound>.ExecuteWork(
+                (sound) =>
+                {
+                    try
+                    {
+                        Status = "Загружаем информацию о треках..." + sound.artist;
+                        var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
+                        sound.authorPhotoPath = artist.Images[2].Value; // little spike 
+                        sound.similarArtists = artist.SimilarArtists.Select(el => el.Name).ToList<string>();
+
+                    }
+                    //catch (DotLastFm.Api.Rest.LastFmApiException ex)
+                    catch (Exception ex)
+                    {
+
+                    }
                 });
 
                 Thread act5 = new Thread(() =>
@@ -478,26 +517,7 @@ namespace VKMusicSync.ModelView
                 act2.Start();
                 act2.Join();
 
-                var manager = new AsyncTaskManager<Sound>();
-                manager.Execute = new AsyncTaskManager<Sound>.ExecuteWork(
-                (sound) =>
-                {
-                    try
-                    {
-                        Status = "Загружаем информацию о треках..." + sound.artist;
-                        var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
-                        sound.authorPhotoPath = artist.Images[2].Value; // little spike 
-                        sound.similarArtists = artist.SimilarArtists.Select( el => el.Name).ToList<string>();
-
-                    }
-                    //catch (DotLastFm.Api.Rest.LastFmApiException ex)
-                    catch (Exception ex)
-                    {
-
-                    }
-                });
-
-                manager.Start(CachedSounds, Properties.Settings.Default.ThreadCountToUse);
+                //manager.Start(CachedSounds, Properties.Settings.Default.ThreadCountToUse);
                 act5.Start();
                 act5.Join();
 
@@ -533,32 +553,93 @@ namespace VKMusicSync.ModelView
 
         private void InitDone(object sender, RunWorkerCompletedEventArgs e)
         {
-            var s = CachedSounds;
-            System.Windows.Application.Current.Dispatcher.Invoke(new Action(
-                ()=>{
-                        this.Sounds.Clear();
-                        for(int i=0; i<CachedSounds.Count; i++)
-                            this.Sounds.Add(new SoundModelView(CachedSounds[i]));
-                        Status = "Загружено информацию о " +this.Sounds.Count + " трэках";
-                }),new object[]{});
+            //var s = mvSounds;
+
+            //this.Sounds.Clear();
+            //for (int i = 0; i < mvSounds.Count; i++)
+            //    this.Sounds.Add(mvSounds[i]);
+            Status = "Загружено информацию о " + this.Sounds.Count + " трэках";
+
+            //System.Windows.Application.Current.Dispatcher.Invoke(new Action(
+            //    ()=>{
+            //            this.Sounds.Clear();
+            //            for(int i=0; i<CachedSounds.Count; i++)
+            //                this.Sounds.Add(new SoundModelView(CachedSounds[i]));
+            //            Status = "Загружено информацию о " +this.Sounds.Count + " трэках";
+            //    }),new object[]{});
             this.ProgressPercentage = 100;
             ProgressVisibility = false;
         }
 
         #endregion
 
-        #region Information
+        #region Items info load
         public void LoadAudioInfo()
         {
-            int count = 2;//CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
 
-            if (count > 0)
+            SoundHandler = new SynhronizeAdapter<Sound>(Properties.Settings.Default.DownloadFolderPath,
+                                                        "*.mp3",
+                                                        Properties.Settings.Default.ThreadCountToUse);
+            
+
+            //SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
+            //SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;
+
+
+            SoundHandler.OnReadDataInfoEvent += FilFromDiskItem;
+
+            Func<Sound> Creator = () => { return new Sound(); };
+
+            SoundHandler.ComputeModList(Creator, DownloadProcces);
+
+            SoundsData = new List<Sound>();
+            foreach (var item in SoundHandler.ComputedFileList)
             {
-                CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
-                CachedSounds = CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.vk.UserId, false, 0, count);
-                //SetSounds(CachedSounds);
+                SoundsData.Add(item);
+            }
+
+
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                FillFromData(SoundsData);
+
+            }), new object[] { });
+
+        }
+
+        private void FilFromDiskItem(IDownnloadedData item)
+        {
+            var sound = item as Sound;
+            if (sound != null)
+                Handlers.TagReader.Read(item.PathWithFileName, sound);
+        }
+
+        private void FillFromData(List<Sound> soundsData)
+        {
+            Converter<Sound, SoundModelView> converter = new Converter<Sound, SoundModelView>(c => new SoundModelView(c));
+            var cached = new ObservableCollection<SoundModelView>(soundsData.ConvertAll<SoundModelView>(converter));
+            Sounds.Clear();
+            foreach (var item in cached)
+            {
+                Sounds.Add(item);
             }
         }
+
+        private List<Sound> DownloadProcces()
+            {
+                int count_ = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
+
+                if (count_ > 0)
+                {
+                    CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
+                    return CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.vk.UserId, false, 0, count_);
+                };
+                return new List<Sound>();
+        }
+
+        #endregion
+
+        #region Profile
 
         public void LoadProfileInfo()
         {
@@ -577,12 +658,14 @@ namespace VKMusicSync.ModelView
 
         public void ShareInfo()
         {
-            
+            OnUploadClick();
             /*AudiosCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
             profCommand.ExecuteNonQuery();*/
         }
 
         #endregion
+
+        #region Upload
 
         private void OnUploadClick()
         {
@@ -599,10 +682,11 @@ namespace VKMusicSync.ModelView
 
         }
 
-        #region Load audio
+        #endregion
 
-        
-        private SynhronizeAdapter SoundHandler;
+        #region Sync audio
+
+        private SynhronizeAdapter<Sound> SoundHandler;
         BackgroundWorker backgroundWorker;
 
         private void OnDownloadFiles()
@@ -616,19 +700,38 @@ namespace VKMusicSync.ModelView
                 backgroundWorker.RunWorkerAsync(CachedSounds);
         }
 
+
         private void CancelSync()
         {
             SoundHandler.CancelDownloading();
             backgroundWorker.CancelAsync();
         }
 
+
+        private void UploadItem(IDownnloadedData data)
+        {
+            UploadItem(data.Path, data.FileName + data.FileExtention);
+        }
+
+        private void UploadItem(string sourceFolderPath, string fileName)
+        {
+            AudioUploadedInfo info = CommandsGenerator.AudioCommands.GetUploadServer(sourceFolderPath, fileName);
+            string answer = CommandsGenerator.AudioCommands.SaveAudio(info);
+        }
+
         private void SyncFolderWithVKAsync(object sender, DoWorkEventArgs e)
         {
-            SoundHandler = new SynhronizeAdapter(Properties.Settings.Default.DownloadFolderPath, Properties.Settings.Default.ThreadCountToUse);
+            SoundHandler = new SynhronizeAdapter<Sound>(Properties.Settings.Default.DownloadFolderPath,
+                                                        "*.mp3",
+                                                        Properties.Settings.Default.ThreadCountToUse);
+
             SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
             SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;
+            SoundHandler.OnReadDataInfoEvent += new SynhronizerBase.HandleDataEvent(FilFromDiskItem);
+            SoundHandler.OnUploadAction += new SynhronizerBase.HandleDataEvent(UploadItem);
+
             IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
-            //SoundHandler.
+
             SoundHandler.SyncFolderWithList<SoundModelView>(selected.ToList());
         }
 
@@ -645,7 +748,6 @@ namespace VKMusicSync.ModelView
             this.ProgressPercentage = 100;
             IOHandler.OpenPath(Properties.Settings.Default.DownloadFolderPath);
             IsSyncing = false;
-
         }
 
         #endregion
