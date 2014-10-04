@@ -9,8 +9,34 @@ using VKMusicSync.Model;
 
 namespace vkontakte
 {
+    public enum Genre
+    {
+        Rock = 1,
+        Pop = 2,
+        RapHip_Hop = 3,
+        EasyListening = 4,
+        DanceHouse = 5,
+        Instrumental = 6,
+        Metal = 7,
+        Alternative = 8,
+        Dubstep = 9,
+        JazzBlues = 10,
+        DrumBass = 11,
+        Trance = 12,
+        Chanson = 13,
+        Ethnic = 14,
+        AcousticVocal = 15,
+        Reggae = 16,
+        Classical = 17,
+        IndiePop = 18,
+        Speech = 19,
+        ElectropopDisco = 20,
+        Other = 21
+    }
+
     public class AudioCommands
     {
+
         public DownloadProgressChangedEventHandler OnCommandExecuting
         {
             get;
@@ -45,13 +71,69 @@ namespace vkontakte
             return command.Fill();
         }
 
-        /*public List<Sound> GetAudioFromUserWithLast(int uid, bool isGroup, int offset, int counts, DotLastFm.LastFmApi api)
+        public List<Sound> GetAudioRecomendation(int user_id, int audioId,  int offset, bool isShuflem, int count)
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+
+            string target_audio = user_id.ToString() + "_" + audioId;
+            Params.Add("target_audio", target_audio);
+            Params.Add("offset", offset.ToString());
+            Params.Add("count", count.ToString());
+            Params.Add("shuffle", (isShuflem) ? "1" : "0");
+
+            Params.Add("fields", "target_audio,offset,count,shuffle");
+            CommandName = "audio.getRecommendations";
+
+            var command = new AudiosCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.Fill();
+        }
+
+
+        public List<Sound> GetAudioRecomendation(int user_id, int offset, bool isShuflem, int count)
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+
+            Params.Add("user_id", user_id.ToString());
+            Params.Add("offset", offset.ToString());
+            Params.Add("count", count.ToString());
+            Params.Add("shuffle", (isShuflem) ? "1" : "0");
+
+            Params.Add("fields", "user_id,offset,count,shuffle");
+            CommandName = "audio.getRecommendations";
+
+            var command = new AudiosCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.Fill();
+        }
+
+        public List<Sound> GetAudioPopular(bool isOnly_eng, int genre_id, int offset, int count)
+        {
+            NameValueCollection Params = new NameValueCollection();
+            string CommandName;
+
+            Params.Add("only_eng", (isOnly_eng) ? "1" : "0");
+            Params.Add("genre_id", genre_id.ToString());
+            Params.Add("offset", offset.ToString());
+            Params.Add("count", count.ToString());
+
+            Params.Add("fields", "only_eng,genre_id,offset,count");
+            CommandName = "audio.getPopular";
+
+            var command = new AudiosCommand(CommandName, Params);
+            command.ExecuteCommand();
+            return command.Fill();
+        }
+
+        /*public List<Sound> GetAudioFromUserWithLast(int uid, bool isGroup, int offset, int count, DotLastFm.LastFmApi api)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
             Params.Add("owner_id", ((isGroup) ? "-" : "") + uid);
             Params.Add("offset", offset.ToString());
-            Params.Add("count", counts.ToString());
+            Params.Add("count", count.ToString());
             Params.Add("fields", "owner_id,offset,count");
             CommandName = "audio.get";
             var command = new AudiosCommand(CommandName, Params);
@@ -88,22 +170,6 @@ namespace vkontakte
 
         #endregion
 
-
-        public List<Sound> GetAudioRecomendation(int uid, bool isGroup, int offset, int counts)
-        {
-            NameValueCollection Params = new NameValueCollection();
-            string CommandName;
-            Params.Add("owner_id", ((isGroup) ? "-" : "") + uid.ToString());
-            Params.Add("offset", offset.ToString());
-            Params.Add("count", counts.ToString());
-            Params.Add("fields", "uid,aid");
-            CommandName = "audio.getRecommendations";
-
-            var command = new AudiosCommand(CommandName, Params);
-            command.ExecuteCommand();
-            return command.Fill();
-        }
-
         public AudioUploadedInfo GetUploadServer(string path, string fileName)
         {
             NameValueCollection Params = new NameValueCollection();
@@ -132,17 +198,6 @@ namespace vkontakte
             return VKMusicSync.Handlers.Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
         }
 
-        /*public static AudioUploadComman SaveAudio(string server, string audio, string hash)
-        {
-            NameValueCollection Params = new NameValueCollection();
-            string CommandName;
-            Params.Add("server", server.ToString());
-            Params.Add("audio", audio);
-            Params.Add("hash", hash);
-            //Params.Add("fields", "audio,hash,server");
-            CommandName = "audio.save";
-            return new AudioUploadComman(CommandName, Params);
-        }*/
         #endregion
 
     }

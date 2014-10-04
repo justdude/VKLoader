@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response list="true">
+ <user>
+  <uid>15852307</uid>
+  <first_name>Ваня</first_name>
+  <last_name>Москатов</last_name>
+  <sex>2</sex>
+  <nickname/>
+  <bdate>2.2.1993</bdate>
+  <city>0</city>
+  <photo_medium>http://cs616231.vk.me/v616231307/1a465/YxfxR8zbKi0.jpg</photo_medium>
+  <photo_big>http://cs616231.vk.me/v616231307/1a462/BOzjP3bmdCM.jpg</photo_big>
+ </user>
+</response>

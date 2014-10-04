@@ -152,7 +152,11 @@
     <Compile Include="View\TestVectorImages.xaml.cs">
       <DependentUpon>TestVectorImages.xaml</DependentUpon>
     </Compile>
-    <Page Include="ResourceDictionary1.xaml">
+    <Page Include="ResourceDictionarys\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionarys\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
