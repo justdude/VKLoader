@@ -13,6 +13,24 @@ namespace MVVM
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+				private bool mvIsBusy;
+				public bool IsBusy
+				{ 
+					get
+					{
+						return mvIsBusy;
+					} 
+					protected set
+					{
+						if (mvIsBusy == value)
+							return;
+
+						mvIsBusy = value;
+
+						OnPropertyChanged("IsBusy");
+					}
+				}
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -24,6 +42,14 @@ namespace MVVM
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+				public void Execute(Action act)
+				{
+					if (act == null)
+						return;
+
+					Application.Current.Dispatcher.Invoke(act, new object[] { });
+				}
 
 
     }

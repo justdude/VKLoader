@@ -139,14 +139,12 @@ namespace VKMusicSync.ModelView
       public int TabSelectedIndex
       {
           get
-          { 
-						return tabSelectedIndex; 
-					}
+          { return tabSelectedIndex; }
           set
           {
               //System.Windows.Forms.MessageBox.Show(tabSelectedIndex.ToString());
-            tabSelectedIndex = value;
-            OnPropertyChanged("TabSelectedIndex");
+              tabSelectedIndex = value;
+              OnPropertyChanged("TabSelectedIndex");
           }
       }
 
@@ -297,11 +295,6 @@ namespace VKMusicSync.ModelView
 
         }
 
-				private void OnDownloadFiles()
-				{
-					throw new NotImplementedException();
-				}
-
         public ICommand CancelProcess
         {
             get
@@ -314,11 +307,6 @@ namespace VKMusicSync.ModelView
             }
 
         }
-
-				private void CancelSync()
-				{
-					throw new NotImplementedException();
-				}
 
         
 
@@ -379,6 +367,7 @@ namespace VKMusicSync.ModelView
 
         private void OnSyncClick()
         {
+            UpdateDataFromProfile(null);
         }
 
         private void OnShareClick()
@@ -436,20 +425,32 @@ namespace VKMusicSync.ModelView
         public void Window_Loaded()
         {
             OnAuthClick();
-            var task = UpdateDataFromProfile();
-						task.Start();
+            UpdateDataFromProfile(null);
         }
 
         #endregion
 
         #region Process vk value to forms
 
-        private Task UpdateDataFromProfile()
+        private void UpdateDataFromProfile(object obj)
         {
-					Task tast = new Task(()=> LoadProfileInfo());
-					ProgressVisibility = true;
-					
-					return tast;
+
+            var worker = new BackgroundWorker();
+            worker.WorkerSupportsCancellation = true;
+            
+            worker.DoWork += (p,arg)=>{
+                Thread act1 = new Thread(() =>
+                {
+                    Status = "Загрузка профиля";
+                    LoadProfileInfo();
+                });
+                act1.IsBackground = true;
+                act1.Start();
+
+
+            };
+            worker.RunWorkerAsync();
+            ProgressVisibility = true;
         }
 
         private void OnCommandLoading(Object sender, DownloadProgressChangedEventArgs e)

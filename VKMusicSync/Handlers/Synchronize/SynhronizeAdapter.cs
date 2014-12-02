@@ -11,7 +11,7 @@ using VKMusicSync.Model;
 
 namespace VKMusicSync.Handlers.Synchronize
 {
-    public class SynhronizeAdapter<T> : SynhronizerBase where T : IDownnloadedData, IEqualityComparer<T>
+    public class SynhronizeProcessor<T> : SynhronizerBase where T : IDownnloadedData, IEqualityComparer<T>
     {
         private ArrayList downloaders = new ArrayList();
         private IOSync<T> handler = null;
@@ -28,7 +28,7 @@ namespace VKMusicSync.Handlers.Synchronize
         }
 
 
-        public SynhronizeAdapter(String path, string fileExtension, int threadsCount) 
+        public SynhronizeProcessor(String path, string fileExtension, int threadsCount) 
         {
             base.Path = path;
             base.CountThreads = threadsCount;
