@@ -21,6 +21,9 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKMusicSync.MVVM.Collections;
 using System.Windows;
+using VKMusicSync.Interfaces;
+using VKMusicSync.SoundBuilders;
+using VKMusicSync.ModelView.Tabs;
 
 namespace VKMusicSync.ModelView
 {
@@ -30,13 +33,7 @@ namespace VKMusicSync.ModelView
         public static SoundDownloaderMovelView Instance
         { get; private set; }
 
-        #region Private variables
-
-
-        #endregion
-
-        #region Binding variables
-
+        #region Fields
 				private string checkedText = "Отменить все";
 				private bool allChecked = true;
 				private string loadButtonText = "Синхронизация";
@@ -49,6 +46,10 @@ namespace VKMusicSync.ModelView
 				private object lock1 = new object();
 				private List<Sound> modSoundsData;
 				private ObservableCollection<SoundModelView> mvSounds = new ObservableCollection<SoundModelView>();
+
+        #endregion
+
+        #region Binding Properties
 
 
         public bool LoadInfoFromLast
@@ -63,8 +64,6 @@ namespace VKMusicSync.ModelView
                 Properties.Settings.Default.Save();
             }
         }
-
-
         public string BackgroundPath
         {
             get
@@ -72,8 +71,6 @@ namespace VKMusicSync.ModelView
                 return Properties.Settings.Default.BackgroundPath;
             }
         }
-
-
         public bool ProgressVisibility
         {
             get
@@ -91,7 +88,6 @@ namespace VKMusicSync.ModelView
             }
         }
 
-
         public bool IsSyncing
         {
             get
@@ -108,8 +104,6 @@ namespace VKMusicSync.ModelView
               OnPropertyChanged("IsSyncing");
             }
         }
-
-
         public List<Sound> SoundsData
         {
           get
@@ -121,8 +115,6 @@ namespace VKMusicSync.ModelView
               modSoundsData = value;
           }
         }
-
-       
         public ObservableCollection<SoundModelView> Sounds 
         { 
             get
@@ -134,23 +126,7 @@ namespace VKMusicSync.ModelView
                 mvSounds = value;
             }
         }
-
-
-      public int TabSelectedIndex
-      {
-          get
-          { 
-						return tabSelectedIndex; 
-					}
-          set
-          {
-              //System.Windows.Forms.MessageBox.Show(tabSelectedIndex.ToString());
-            tabSelectedIndex = value;
-            OnPropertyChanged("TabSelectedIndex");
-          }
-      }
-
-			
+				
         public string Status
         {
 					get
@@ -168,7 +144,6 @@ namespace VKMusicSync.ModelView
                 
 					}
         }
-
         public string UserFullName
         {
             get
@@ -182,7 +157,6 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        
         public string Avatar 
         {
             get
@@ -195,8 +169,6 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("Avatar");
             }
         }
-
-        
         public double ProgressPercentage
         {
             get
@@ -223,10 +195,6 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("ProgressPercentage");
             }
         }
-
-        
-        
-
         public string CheckedText
         {
             get
@@ -254,6 +222,21 @@ namespace VKMusicSync.ModelView
         }
 
         #endregion
+
+				public ObservableCollection<TabModelView> TabItems { get; private set; }
+				public int TabSelectedIndex
+				{
+					get
+					{
+						return tabSelectedIndex;
+					}
+					set
+					{
+						//System.Windows.Forms.MessageBox.Show(tabSelectedIndex.ToString());
+						tabSelectedIndex = value;
+						OnPropertyChanged("TabSelectedIndex");
+					}
+				}
 
         #region Click Commands
 				private DelegateCommand downloadFiles;
@@ -370,6 +353,17 @@ namespace VKMusicSync.ModelView
         public SoundDownloaderMovelView()
         {
             Instance = this;
+						TabItems = new ObservableCollection<TabModelView>();
+						TabItems.Add(new TabModelView());
+						TabItems.Add(new TabModelView());
+						TabItems.Add(new TabModelView());
+						TabItems.Add(new TabModelView());
+						TabItems.Add(new VKAudioTabModelView());
+						//TabItems.Add( new TabModelView (ModelView.Tabs.Constants.VkAudio));
+						//TabItems.Add(new VKAudioTabModelView(ModelView.Tabs.Constants.VkRecommendations));
+						//TabItems.Add(new VKAudioTabModelView(ModelView.Tabs.Constants.VkAudio));
+
+						Window_Loaded();
         }
 
 
@@ -381,17 +375,48 @@ namespace VKMusicSync.ModelView
         {
         }
 
+				//public readonly Dictionary<string, SoundProccesorBuilder> Connections = new Dictionary<string, SoundProccesorBuilder>()
+				//{
+				//	{	"VKAUDIO", new VkListProccesorBuilder()},
+				//	{	"VKRECOMMENDATION", new VkListProccesorBuilder()},
+				//	{	"VKAUDIO", new VkListProccesorBuilder()}
+				//};
+
+				private void OnTabChanged(ISoundListModelView modelView, string type)
+				{
+					if (modelView == null)
+						return;
+
+					var processor = GetBuilderByType(type);
+
+					if (processor == null)
+						return;
+
+					modelView.Processor = processor;
+					modelView.UpdateList();
+
+				}
+
+				private SynhronizeProcessor<Sound> GetBuilderByType(string type)
+				{
+					SoundProccesorBuilder builder = new VkListProccesorBuilder();
+					Processor proccesor = new Processor(builder);
+
+					proccesor.Build();
+					return proccesor.GetResult();
+				}
+
         private void OnShareClick()
         {
             OnUploadClick();
-            return;
-            vkontakte.CommandsGenerator.WallCommands.Post(
-                +vkontakte.APIManager.AccessData.UserId,
-                "VK Loader API test...my name :"
-                + vkontakte.APIManager.Profile.FullName,
-                @"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
-                "",
-                "");
+
+						//vkontakte.CommandsGenerator.WallCommands.Post(
+						//		+vkontakte.APIManager.AccessData.UserId,
+						//		"VK Loader API test...my name :"
+						//		+ vkontakte.APIManager.Profile.FullName,
+						//		@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
+						//		"",
+						//		"");
             /*var t = Target;
             var info = LastFmHandler.Api.Track.GetInfo("Moby", "Porcelain");
             var res = LastFmHandler.Api.Artist.GetInfo("Moby");*/
@@ -438,6 +463,7 @@ namespace VKMusicSync.ModelView
             OnAuthClick();
             var task = UpdateDataFromProfile();
 						task.Start();
+						task.Wait();
         }
 
         #endregion

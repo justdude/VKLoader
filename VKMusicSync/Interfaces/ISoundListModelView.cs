@@ -9,7 +9,7 @@ using VKMusicSync.ModelView;
 
 namespace VKMusicSync.Interfaces
 {
-	interface ISoundListModelView
+	public interface ISoundListModelView
 	{
 		bool IsSyncing { get; }
 		List<Sound> SoundsData { get; }

@@ -10,11 +10,11 @@ using vkontakte;
 namespace VKMusicSync.SoundBuilders
 {
 
-	public class ProcessorBuilder
+	public class Processor
 	{ 
 		private SoundProccesorBuilder currentBuilder;
 
-		public ProcessorBuilder(SoundProccesorBuilder builder)
+		public Processor(SoundProccesorBuilder builder)
 		{
 			Set(builder);
 		}
@@ -81,7 +81,7 @@ namespace VKMusicSync.SoundBuilders
 	}
 
 
-	public class VkSoundProccesorBuilder : SoundProccesorBuilder
+	public class VkListProccesorBuilder : SoundProccesorBuilder
 	{
 
 		public override void CreateNew()
@@ -148,6 +148,45 @@ namespace VKMusicSync.SoundBuilders
 			return new List<Sound>();
 		}
 	}
+
+
+	public class VkPopularBuilder: VkListProccesorBuilder
+	{
+
+		public override void Process()
+		{
+			Func<Sound> Creator = () => { return new Sound(); };
+			Target.ComputeModList(Creator, GetAudioFromUser);
+
+		}
+
+		//SoundsData = CommandsGenerator.AudioCommands.GetAudioRecomendation(APIManager.vk.UserId, 0, false, 100);
+		private List<Sound> GetAudioFromUser()
+		{
+				//CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
+				return CommandsGenerator.AudioCommands.GetAudioPopular(false, 0, 0, 100);
+		}
+
+	}
+
+	public class VkReccomendationBuilder : VkListProccesorBuilder
+	{
+
+		public override void Process()
+		{
+			Func<Sound> Creator = () => { return new Sound(); };
+			Target.ComputeModList(Creator, GetAudioFromUser);
+
+		}
+
+		private List<Sound> GetAudioFromUser()
+		{
+			//CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
+			return CommandsGenerator.AudioCommands.GetAudioRecomendation(APIManager.vk.UserId, 0, false, 100);
+		}
+
+	}
+
 
 	public class SyncSoundProccesorBuilder : SoundProccesorBuilder
 	{

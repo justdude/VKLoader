@@ -49,7 +49,7 @@ namespace VKMusicSync.Handlers.Synchronize
             List<T> existData = handler.CastExistData(Creator);
 
             //read from tags
-            if (false && IsHandleDataAfterReadingFromDisk) //&& OnReadDataInfoEvent != null)
+            if (IsHandleDataAfterReadingFromDisk) //&& OnReadDataInfoEvent != null)
             {
                 foreach(var item in existData)
                 {

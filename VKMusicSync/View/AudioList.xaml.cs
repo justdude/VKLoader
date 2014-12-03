@@ -24,25 +24,25 @@ namespace VKMusicSync.View
 			InitializeComponent();
 		}
 
-		public static DependencyProperty TypeConstProperty = DependencyProperty.RegisterAttached("TypeConst",
-		typeof(string),
-		typeof(AudioList));
+		//public static DependencyProperty TypeConstProperty = DependencyProperty.RegisterAttached("TypeConst",
+		//typeof(string),
+		//typeof(AudioList));
 
-		public string TypeConst
-			{
-				get { return (string)GetValue(TypeConstProperty); }
-				set { SetValue(TypeConstProperty, value); }
-			}
+		//public string TypeConst
+		//	{
+		//		get { return (string)GetValue(TypeConstProperty); }
+		//		set { SetValue(TypeConstProperty, value); }
+		//	}
 
-		public static DependencyProperty TypeProperty = DependencyProperty.Register("Type", 
-			typeof(string), 
-			typeof(AudioList));
+		//public static DependencyProperty TypeProperty = DependencyProperty.Register("Type", 
+		//	typeof(string), 
+		//	typeof(AudioList));
 
-		public string Type
-    {
-			get { return (string)GetValue(TypeConstProperty); }
-			set { SetValue(TypeProperty, value); }
-    }
+		//public string Type
+		//{
+		//	get { return (string)GetValue(TypeConstProperty); }
+		//	set { SetValue(TypeProperty, value); }
+		//}
 
 	}
 }
