@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace VKMusicSync
+namespace VKSyncMusic
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

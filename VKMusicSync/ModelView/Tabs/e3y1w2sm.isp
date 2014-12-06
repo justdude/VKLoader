@@ -1,0 +1,97 @@
+﻿using MVVM;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using VKMusicSync.Interfaces;
+
+namespace VKMusicSync.ModelView.Tabs
+{
+
+	public static class Constants
+	{
+		public const string VOID = "VOID";
+		public const string VkAudio = "VkAudio";
+		public const string VkRecommendations = "VkRecommendations";
+		public const string VkPopular = "VkPopular";
+
+
+		public static readonly Dictionary<TabTypes, string> Tranclates = new Dictionary<TabTypes, string>()
+		{
+			{ TabTypes.VOID, "Пустая" },
+			{ TabTypes.VkAudio, "Аудиозаписи" },
+			{ TabTypes.VkRecommendations, "Рекомендации" },
+			{ TabTypes.VkPopular, "Популярные" }
+
+		};
+
+		public enum TabTypes
+		{
+			VOID,
+			VkAudio,
+			VkRecommendations,
+			VkPopular
+		}
+
+	}
+
+	public class TabModelView : ViewModelBase
+	{
+		public TabModelView View 
+		{ 
+			get {return this;}
+		}
+		public SoundListModelView SoundList { get; set; }
+
+		public Constants.TabTypes TypeName { get; set; }
+
+		public string Header
+		{
+			get
+			{
+				if (!Constants.Tranclates.ContainsKey(TypeName))
+					return "";
+
+				return Constants.Tranclates[TypeName];
+			}
+		}
+
+		
+
+
+		public TabModelView(): base()
+		{
+			TypeName = Constants.TabTypes.VOID;
+		}
+		public TabModelView(Constants.TabTypes type):base()
+		{
+			TypeName = type;
+		}
+
+		public override string ToString()
+		{
+			return Header;
+		}
+
+	}
+
+	public class VKAudioTabModelView: TabModelView
+	{
+		//public ISoundListModelView Child { get; set; }
+
+		public VKAudioTabModelView() : base()
+		{
+		//	Child = new SoundListModelView();
+		}
+
+		public VKAudioTabModelView(Constants.TabTypes type) : base(type)
+		{
+		//	Child = new SoundListModelView();
+		}
+	}
+
+
+
+}

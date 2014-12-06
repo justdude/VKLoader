@@ -25,6 +25,7 @@ using VKMusicSync.Interfaces;
 using VKMusicSync.SoundBuilders;
 using VKMusicSync.ModelView.Tabs;
 
+
 namespace VKMusicSync.ModelView
 {
     class SoundDownloaderMovelView: ViewModelBase
@@ -352,13 +353,18 @@ namespace VKMusicSync.ModelView
 
         public SoundDownloaderMovelView()
         {
+
+					//TabItems = new ObservableCollection<System.Windows.Controls.TabItem>();
+					//var item = new System.Windows.Controls.TabItem();
+					//item.Tag = new TabModelView();
+					//TabItems.Add(item);
             Instance = this;
 						TabItems = new ObservableCollection<TabModelView>();
 						TabItems.Add(new TabModelView());
-						TabItems.Add(new TabModelView());
-						TabItems.Add(new TabModelView());
-						TabItems.Add(new TabModelView());
-						TabItems.Add(new VKAudioTabModelView());
+						//TabItems.Add(new TabModelView());
+						//TabItems.Add(new TabModelView());
+						//TabItems.Add(new TabModelView());
+						//TabItems.Add(new VKAudioTabModelView());
 						//TabItems.Add( new TabModelView (ModelView.Tabs.Constants.VkAudio));
 						//TabItems.Add(new VKAudioTabModelView(ModelView.Tabs.Constants.VkRecommendations));
 						//TabItems.Add(new VKAudioTabModelView(ModelView.Tabs.Constants.VkAudio));

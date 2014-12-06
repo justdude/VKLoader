@@ -1,0 +1,57 @@
+﻿<Controls:Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
+        xmlns:params="http://schemas.codeplex.com/elysium/params" 
+        
+    x:Class="VKSyncMusic.MainWindow"
+        WindowStartupLocation="CenterScreen"
+        params:Design.Theme="Light"
+        params:Manager.Theme="Light" 
+    >
+    <Controls:Window.ApplicationBar>
+        <Controls:ApplicationBar>
+            <!-- Right Click on the UI to open Application Bar -->
+            <Controls:DropDownCommandButton  Header="THEME"/>
+        </Controls:ApplicationBar>
+    </Controls:Window.ApplicationBar>
+    <Grid>
+        <TabControl>
+            <TabItem Header="DASHBOARD">
+                <Grid>
+                    <TextBlock>The Metro UI Dashboard here.</TextBlock>
+                </Grid>
+            </TabItem>
+            <TabItem Header="SALES">
+                <Grid>
+                    <TextBlock>Sales Board here.</TextBlock>
+                    <Controls:ProgressRing State="Indeterminate" Width="64" Height="64"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="PRODUCTS">
+                <Grid>
+                    <TextBlock>Product Board here.</TextBlock>
+                    <Controls:ProgressRing State="Busy" Width="64" Height="64"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="SAMPLE">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0">Sample text.</TextBlock>
+                    <Button Grid.Row="1" Grid.Column="0">Sample text.</Button>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+</Controls:Window>
+    
+    
