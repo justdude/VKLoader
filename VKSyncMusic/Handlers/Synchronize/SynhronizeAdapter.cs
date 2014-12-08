@@ -27,6 +27,13 @@ namespace VKSyncMusic.Handlers.Synchronize
             }
         }
 
+				public static SynhronizeProcessor<T> Create()
+				{
+					return new SynhronizeProcessor<T>(Properties.Settings.Default.DownloadFolderPath,
+								".mp3",
+								Properties.Settings.Default.ThreadCountToUse);
+				}
+
 
         public SynhronizeProcessor(String path, string fileExtension, int threadsCount) 
         {

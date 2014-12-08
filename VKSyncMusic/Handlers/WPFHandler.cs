@@ -39,12 +39,29 @@ namespace VKSyncMusic.Handlers
 			return targetArray.ToArray();
 		}
 
-		public static T GetData<T>(this TabItem tab)where T : class, new()
+		//public static T GetData<T,R>(FrameworkElement element) where R: class, new(); where T: class, new()
+		//{
+		//	if (element == null)
+		//		return null;
+
+		//	var dataContext = element.GetDataContext<object>();
+
+		//}
+
+		public static T GetDataContext<T>(this FrameworkElement frameworkElement) where T : class, new()
 		{
-			if (tab == null)
+			if (frameworkElement == null)
 				return null;
 
-			 return tab.DataContext as T;
+			 return frameworkElement.DataContext as T;
+		}
+
+		public static T GetContent<T>(this ContentControl content) where T : class, new()
+		{
+			if (content == null)
+				return null;
+
+			return content.Content as T;
 		}
 
 		public static void SetData<T>(this TabItem tab, T data) where T : class, new()
@@ -96,7 +113,7 @@ namespace VKSyncMusic.Handlers
 			//{
 			//	Binding tabTitleBinding = new Binding { Path = new PropertyPath("TypeName"), Mode = BindingMode.TwoWay };
 			//	tabTitleBinding.Source = modelView;
-			//	tab.SetBinding(HeaderedContentControl.HeaderProperty, tabTitleBinding);
+			//	content.SetBinding(HeaderedContentControl.HeaderProperty, tabTitleBinding);
 			//}
 			
 			return tab;

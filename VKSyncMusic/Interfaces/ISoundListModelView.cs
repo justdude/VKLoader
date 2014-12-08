@@ -22,4 +22,7 @@ namespace VKSyncMusic.Interfaces
 		void CancelSync();
 		void CheckAll(bool state);
 	}
+
+
+
 }

@@ -25,6 +25,7 @@ using VKSyncMusic.Interfaces;
 using VKSyncMusic.SoundBuilders;
 using VKSyncMusic.ModelView.Tabs;
 using System.Windows.Controls;
+using VKSyncMusic.View;
 
 
 namespace VKSyncMusic.ModelView
@@ -358,8 +359,7 @@ namespace VKSyncMusic.ModelView
 					TabItems = new ObservableCollection<System.Windows.Controls.TabItem>();
 					InitialTabs = WPFExtension.GetConstantsContentElement("collTabs");
 
-					AddTab(Constants.TabTypes.VkAudio);
-					AddTab(Constants.TabTypes.VkPopular);
+
 					//new SoundListModelView();
           Instance = this;
 					Window_Loaded();
@@ -488,19 +488,22 @@ namespace VKSyncMusic.ModelView
             OnAuthClick();
             var task = UpdateDataFromProfile();
 						task.Start();
-						
+
+						AddTab(Constants.TabTypes.VkAudio);
+						AddTab(Constants.TabTypes.VkPopular);
 
 						foreach(var item in TabItems)
 						{
-							var modelView = item.GetData<TabModelView>();
 
-							SynhronizeProcessor<Sound> proc = new SynhronizeProcessor<Sound>(Properties.Settings.Default.DownloadFolderPath, 
-								".mp3", 
-								Properties.Settings.Default.ThreadCountToUse);
-							
-							var target = item.GetData<TabModelView>() as ISoundListModelView;
-							var target1333 = item.GetData<TabModelView>();
-							modelView.UpdateList(proc, target);
+							var tabDataContext = item.GetContent<View.AudioList>();
+							var modelView = tabDataContext.GetDataContext<SoundListModelView>() as ISoundListModelView;
+
+							if (modelView == null)
+								continue;
+
+							var process = SynhronizeProcessor<Sound>.Create();
+							modelView.Processor = process;
+							modelView.UpdateList();
 						}
         }
 
