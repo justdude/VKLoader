@@ -45,14 +45,14 @@ namespace VKSyncMusic.SoundBuilders
 
 		public SoundProccesorBuilder()
 		{
-			Target = null;
+			Target = new SynhronizeProcessor<Sound>(Properties.Settings.Default.DownloadFolderPath,
+															"*.mp3",
+															Properties.Settings.Default.ThreadCountToUse);
 		}
 
 		public virtual void CreateNew()
 		{
-			Target = new SynhronizeProcessor<Sound>(Properties.Settings.Default.DownloadFolderPath,
-																"*.mp3",
-																Properties.Settings.Default.ThreadCountToUse);
+
 		}
 
 		public SynhronizeProcessor<Sound> GetResult()
@@ -83,6 +83,9 @@ namespace VKSyncMusic.SoundBuilders
 
 	public class VkListProccesorBuilder : SoundProccesorBuilder
 	{
+
+		public VkListProccesorBuilder():base()
+		{ }
 
 		public override void CreateNew()
 		{

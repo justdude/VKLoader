@@ -171,15 +171,24 @@ namespace VKSyncMusic.ModelView
         {
 					Task task = new Task(() =>
 					{
-						SoundsData.Clear();
-
-						foreach (var item in Processor.ComputedFileList)
+						Execute(() =>
+							{
+								IsBusy = true;
+								SoundsData.Clear();
+							});
+						SoundBuilders.VkListProccesorBuilder builder = new SoundBuilders.VkListProccesorBuilder();
+						builder.Init();
+						builder.ReadDataFromDisk();
+						builder.ReadDataFromWeb();
+						var procc = builder.GetResult();
+						foreach (var item in procc.ComputedFileList)
 						{
 							SoundsData.Add(item);
 						}
 
 						Execute(() =>
 							FillFromData(SoundsData));
+							IsBusy = false;
 					});
 
 					task.Start();
@@ -272,9 +281,9 @@ namespace VKSyncMusic.ModelView
 					IsBusy = true;
 
 					var task1 = LoadAudioInfo();
-					task1.Start();
-
-					IsBusy = false;
+				
+					
+					
 				}
 
 				Task SyncTask = null;
