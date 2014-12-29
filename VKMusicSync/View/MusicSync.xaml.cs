@@ -22,6 +22,8 @@ namespace VKMusicSync
     /// </summary>
     public partial class MusicSync : Elysium.Controls.Window
     {
+				private Auth authWindow;
+
         public MusicSync()
         {
             //InitializeComponent();
@@ -34,27 +36,11 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            /*var SoundsRes = new List<Sound>()
-            {
-                new Sound("Var Hamer","Song1"),
-                new Sound("Armin Van Buuren","Song2"),
-                new Sound("Var Hamer","Song3"),
-                new Sound("Armin Van Buuren","Song4"),
-                new Sound("Var Hamer","Song5"),
-                new Sound("Armin Van Buuren","Song6"),
-                new Sound("Var Hamer","Song7"),
-                new Sound("Armin Van Buuren","Song8")
-            };*/
-
             SoundDownloaderMovelView modelView = new SoundDownloaderMovelView();
             this.DataContext = modelView;
-            modelView.Window_Loaded();
-            //this.Hide();
-            //this.Show();
-            //var value = this.DataContext as SoundDownloaderMovelView;
+
         }
 
-        private Auth authWindow;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

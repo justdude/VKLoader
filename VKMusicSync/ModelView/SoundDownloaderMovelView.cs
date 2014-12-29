@@ -24,37 +24,33 @@ using System.Windows;
 
 namespace VKMusicSync.ModelView
 {
-    class SoundDownloaderMovelView: ViewModelBase
+    public class SoundDownloaderMovelView: ViewModelBase
     {
-
-        public static SoundDownloaderMovelView Instance
-        { get; private set; }
 
         #region Private variables
 
-        private object lock0 = new object();
-        private List<Sound> cachedSounds = new List<Sound>();
-        private List<Sound> CachedSounds
-        {
-            get
-            {
-                lock(lock0)
-                {
-                    return cachedSounds;
-                }
-            }
-            set
-            {
-                lock(lock0)
-                {
-                    cachedSounds = value;
-                }
-            }
-        }
+				private List<Sound> modSoundsData;
+				private ObservableCollection<SoundModelView> mvSounds = new ObservableCollection<SoundModelView>();
+
+
+				//private List<Sound> cachedSounds = new List<Sound>();
+				//private List<Sound> CachedSounds
+				//{
+				//		get
+				//		{
+				//				return cachedSounds;
+				//		}
+				//		set
+				//		{
+				//				cachedSounds = value;
+				//		}
+				//}
 
         #endregion
 
         #region Binding variables
+
+
 
         public bool LoadInfoFromLast
         {
@@ -80,6 +76,13 @@ namespace VKMusicSync.ModelView
 
 
         private bool progressVisibility = false;
+				private bool isSyncing = false;
+				private string status;
+				private int tabSelectedIndex = 0;
+				private string avatar = Constants.Constants.DefaultAvatar;
+				private double progressPercentage = 0;
+
+
         public bool ProgressVisibility
         {
             get
@@ -92,8 +95,6 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("ProgressVisibility");
             }
         }
-
-        private bool isSyncing = false;
         public bool IsSyncing
         {
             get
@@ -109,29 +110,19 @@ namespace VKMusicSync.ModelView
                 }
             }
         }
-
-        private object lock1 = new object();
-        private List<Sound> modSoundsData;
+			
         public List<Sound> SoundsData
         {
             get
             {
-                lock (lock1)
-                {
-                    return modSoundsData;
-                }
+							return modSoundsData;
             }
             set
             {
-                lock (lock1)
-                {
-                    modSoundsData = value;
-                }
+							modSoundsData = value;
             }
         }
 
-       
-        private ObservableCollection<SoundModelView> mvSounds = new ObservableCollection<SoundModelView>();
         public ObservableCollection<SoundModelView> Sounds 
         { 
             get
@@ -143,9 +134,6 @@ namespace VKMusicSync.ModelView
                 mvSounds = value;
             }
         }
-
-
-        private int tabSelectedIndex = 0;
 
         public int TabSelectedIndex
         {
@@ -159,25 +147,20 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        object lock2 = new object();
-
-        private string status;
         public string Status
         {
             get
             {
-                lock (lock2)
-                {
-                    return status; 
-                }
+                return status; 
             }
             set
             {
-                lock(lock2)
-                {
-                    status = value;
-                    OnPropertyChanged("Status");
-                }
+								if (status == value)
+									return;
+
+                status = value;
+
+                OnPropertyChanged("Status");
             }
         }
 
@@ -194,9 +177,7 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        //private System.Windows.Media.Imaging.BitmapFrame avatar;
-        private string avatar = @"http://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Flag_of_None.svg/225px-Flag_of_None.svg.png";
-       // public System.Windows.Media.Imaging.BitmapFrame Avatar
+        
         public string Avatar 
         {
             get
@@ -205,12 +186,13 @@ namespace VKMusicSync.ModelView
             }
             set
             {
+								
+
                 avatar = value;
                 OnPropertyChanged("Avatar");
             }
         }
 
-        private double progressPercentage = 0;
         public double ProgressPercentage
         {
             get
@@ -248,7 +230,6 @@ namespace VKMusicSync.ModelView
                 OnPropertyChanged("CheckedText");
             }
         }
-
 
         private string loadButtonText = "Синхронизация";
 
@@ -372,15 +353,15 @@ namespace VKMusicSync.ModelView
         #region Constructor
         public SoundDownloaderMovelView(List<Sound> sounds)
         {
-            Instance = this;
             SetSounds(sounds);
         }
 
         public SoundDownloaderMovelView()
         {
-            Instance = this;
-            CachedSounds = new List<Sound>();
-            this.Sounds = new AsyncObservableCollection<SoundModelView>();
+            SoundsData = new List<Sound>();
+            Sounds = new AsyncObservableCollection<SoundModelView>();
+
+						FIll();
         }
 
         private void SetSounds(List<Sound> sounds)
@@ -452,7 +433,7 @@ namespace VKMusicSync.ModelView
             OnPropertyChanged("Sounds");
         }
 
-        public void Window_Loaded()
+        public void FIll()
         {
             OnAuthClick();
             UpdateDataFromProfile(null);
@@ -481,6 +462,7 @@ namespace VKMusicSync.ModelView
                 {
                     Status = "Загрузка треков";
                     LoadAudioInfo();
+										System.Threading.Thread.Sleep(1000 * 3);
                 });
 
                 var manager = new AsyncTaskManager<Sound>();
@@ -520,7 +502,7 @@ namespace VKMusicSync.ModelView
                 //manager.Start(CachedSounds, Properties.Settings.Default.ThreadCountToUse);
                 act5.Start();
                 act5.Join();
-								manager.Start(this.SoundsData, 10);
+								//manager.Start(this.SoundsData, 10);
 
             };
             worker.RunWorkerAsync();
@@ -599,12 +581,7 @@ namespace VKMusicSync.ModelView
                 SoundsData.Add(item);
             }
 
-
-            Application.Current.Dispatcher.Invoke(new Action(() =>
-            {
-                FillFromData(SoundsData);
-
-            }), new object[] { });
+            Execute(() => FillFromData(SoundsData));
 
         }
 
@@ -698,7 +675,7 @@ namespace VKMusicSync.ModelView
                 //backgroundWorker.WorkerReportsProgress = true;
                 backgroundWorker.WorkerSupportsCancellation = true;
                 backgroundWorker.DoWork += SyncFolderWithVKAsync;
-                backgroundWorker.RunWorkerAsync(CachedSounds);
+                backgroundWorker.RunWorkerAsync(SoundsData);
         }
 
 
@@ -723,8 +700,7 @@ namespace VKMusicSync.ModelView
         private void SyncFolderWithVKAsync(object sender, DoWorkEventArgs e)
         {
             SoundHandler = new SynhronizeAdapter<Sound>(Properties.Settings.Default.DownloadFolderPath,
-                                                        "*.mp3",
-                                                        Properties.Settings.Default.ThreadCountToUse);
+              "*.mp3",															Properties.Settings.Default.ThreadCountToUse);
 
             SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
             SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;

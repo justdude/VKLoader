@@ -45,7 +45,7 @@ namespace MVVM
 					}
 				}
 
-				public Dispatcher WindowDispatcher { get; set; }
+				public Dispatcher CurrentDispatcher { get; set; }
 
 				public event PropertyChangedEventHandler PropertyChanged;
 
@@ -67,22 +67,23 @@ namespace MVVM
 				public ViewModelBase()
 				{
 					Messenger.Add(this);
+					CurrentDispatcher = Application.Current.Dispatcher;
 				}
 
 				public void Execute(Action action)
 				{
-					if (WindowDispatcher == null || action == null)
+					if (CurrentDispatcher == null || action == null)
 						return;
 
-					WindowDispatcher.Invoke(action);
+					CurrentDispatcher.Invoke(action);
 				}
 
 				public void BeginExecute(Action action)
 				{
-					if (WindowDispatcher == null || action == null)
+					if (CurrentDispatcher == null || action == null)
 						return;
 
-					WindowDispatcher.BeginInvoke(action);
+					CurrentDispatcher.BeginInvoke(action);
 				}
 
 				#region IReceiver Members
