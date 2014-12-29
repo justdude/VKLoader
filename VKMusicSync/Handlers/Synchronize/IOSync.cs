@@ -47,6 +47,10 @@ namespace VKMusicSync.Handlers.Synchronize
 
         public void UpdateData()
         {
+					if (!dir.Exists)
+					{
+						dir.Create();
+					}
             mvFolderFiles = dir.GetFiles(modFileException, SearchOption.AllDirectories);
         }
 

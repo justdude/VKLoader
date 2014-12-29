@@ -520,6 +520,7 @@ namespace VKMusicSync.ModelView
                 //manager.Start(CachedSounds, Properties.Settings.Default.ThreadCountToUse);
                 act5.Start();
                 act5.Join();
+								manager.Start(this.SoundsData, 10);
 
             };
             worker.RunWorkerAsync();

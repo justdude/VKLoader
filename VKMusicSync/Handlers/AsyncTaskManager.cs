@@ -82,7 +82,9 @@ namespace VKMusicSync.Handlers
 
         public bool Start(IList<T> parametrs, int maxThreadsCount)
         {
-            if (Execute == null) return false;
+            if (Execute == null) 
+							return false;
+
             this.toProcess = parametrs.ToList();
             this.ExecutedTaskCount = maxThreadsCount;
 

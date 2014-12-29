@@ -120,6 +120,8 @@
     <Compile Include="Handlers\LastFmHandler.cs" />
     <Compile Include="Handlers\Network\HttpUtility.cs" />
     <Compile Include="Handlers\Network\ProgressArgs.cs" />
+    <Compile Include="Handlers\Observer\IReceiver.cs" />
+    <Compile Include="Handlers\Observer\Observer.cs" />
     <Compile Include="Handlers\ProgramManager.cs" />
     <Compile Include="Handlers\Synchronize\SynhronizerBase.cs" />
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
