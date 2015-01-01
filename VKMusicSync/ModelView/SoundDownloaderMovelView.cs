@@ -499,7 +499,7 @@ namespace VKMusicSync.ModelView
                 act2.Start();
                 act2.Join();
 
-                //manager.Start(CachedSounds, Properties.Settings.Default.ThreadCountToUse);
+                //manager.Start(SoundsData, Properties.Settings.Default.ThreadCountToUse);
                 act5.Start();
                 act5.Join();
 								//manager.Start(this.SoundsData, 10);

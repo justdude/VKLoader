@@ -145,6 +145,7 @@
     <Compile Include="Handlers\vkontakte\Commands\WallCommands.cs" />
     <Compile Include="Handlers\vkontakte\Commands\XMLNodeHelper.cs" />
     <Compile Include="Handlers\vkontakte\ICommand.cs" />
+    <Compile Include="ModelView\MainMovelView.cs" />
     <Compile Include="ModelView\SettingsModelView.cs" />
     <Compile Include="Model\AudioUploadedInfo.cs" />
     <Compile Include="Model\Profile.cs" />
