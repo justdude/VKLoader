@@ -14,8 +14,14 @@ namespace MVVM
 
 		public TabModelView():base()
 		{
-
+			Header = "dsds";
 		}
+
+		////public override string ToString()
+		////{
+		////return "!!!!!!";
+		////	//return base.ToString();
+		////}
 
 	}
 }

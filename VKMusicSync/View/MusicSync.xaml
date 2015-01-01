@@ -97,20 +97,80 @@
         </StackPanel>
 
 
-
-
         <TabControl Grid.Row="1" 
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch"
 										ItemsSource="{Binding Tabs}"
                     SelectedIndex="{Binding TabSelectedIndex}">
 					
-						<TabControl.ContentTemplate>
-							<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
-									<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-										<TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-									</Grid>
+						 <!--<TabControl.ItemTemplate>
+                <DataTemplate DataType="TabItem">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="{Binding Header}"/>
+											<Button></Button>
+										</StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>-->
+
+			<!--<TabItem.Header>
+				<StackPanel Orientation="Horizontal">
+					<Image Name="img" Height="auto" Width="auto" Source="images/1.png" />
+					<TextBlock Text="Login" Margin="2,0,0,0" VerticalAlignment="Center" />
+				</StackPanel>
+			</TabItem.Header>-->
+
+			<TabControl.Resources>
+				
+			</TabControl.Resources>
+			<!-- BasedOn="{StaticResource {x:Type TabItem}}" -->
+			<TabControl.ItemContainerStyle>
+				<Style TargetType="{x:Type TabItem}">
+					<Setter Property="HeaderTemplate" >
+						<Setter.Value>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal" Margin="0" Height="25" MaxWidth="120">
+									<TextBlock VerticalAlignment="Center" Text="{Binding Header}" />
+									<Button Content="x" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}">
+										<!--Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"-->
+									</Button>
+								</StackPanel>
 							</DataTemplate>
+						</Setter.Value>
+					</Setter>
+					<!--<Setter Property="Header" Value="{Binding Header}"/>-->
+				</Style>
+			</TabControl.ItemContainerStyle>
+
+			<TabControl.ContentTemplate>
+							<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="35"></RowDefinition>
+							<RowDefinition Height="60*" ></RowDefinition>
+						</Grid.RowDefinitions>
+						<StackPanel Grid.Row="0"
+																Margin="10 0 0 0"
+																Orientation="Horizontal">
+
+							<CheckBox Margin="5 5 5 5"
+																Command="{Binding CheckAll}">
+
+							</CheckBox>
+							<Button
+												Style="{StaticResource ButtonEmtyWith2State}"
+												Margin="5 5 5 5"></Button>
+						</StackPanel>
+						<ListBox 
+                        Grid.Row="1" 
+                        Margin="5" 
+                        ItemsSource="{Binding Sounds}"
+                        ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+                        ItemTemplate ="{StaticResource ListBoxItemTemplate}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" >
+						</ListBox>
+					</Grid>
+				</DataTemplate>
 
 						</TabControl.ContentTemplate>
             <!--<TabItem Header="Download">
