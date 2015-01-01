@@ -24,7 +24,7 @@ using System.Windows;
 
 namespace VKMusicSync.ModelView
 {
-    public class SoundDownloaderMovelView: ViewModelBase
+    public class SoundDownloaderMovelView: TabModelView
     {
 
         #region Private variables

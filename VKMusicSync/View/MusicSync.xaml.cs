@@ -36,7 +36,7 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SoundDownloaderMovelView modelView = new SoundDownloaderMovelView();
+            var modelView = new MainMovelView();
             this.DataContext = modelView;
 
         }

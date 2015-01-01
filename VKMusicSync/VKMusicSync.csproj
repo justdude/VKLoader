@@ -150,6 +150,7 @@
     <Compile Include="Model\AudioUploadedInfo.cs" />
     <Compile Include="Model\Profile.cs" />
     <Compile Include="MVVM\Collections\AsyncObservableCollection.cs" />
+    <Compile Include="MVVM\ViewModelsBase\TabModelView.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

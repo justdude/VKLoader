@@ -6,6 +6,7 @@
         xmlns:params="http://schemas.codeplex.com/elysium/params"
         xmlns:converters ="clr-namespace:VKMusicSync.Converters"
         xmlns:local="clr-namespace:vkontakte"
+				xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
         xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
         
         x:Class="VKMusicSync.MusicSync"
@@ -100,9 +101,19 @@
 
         <TabControl Grid.Row="1" 
                     HorizontalAlignment="Stretch" 
-                    VerticalAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
+										ItemsSource="{Binding Tabs}"
                     SelectedIndex="{Binding TabSelectedIndex}">
-            <TabItem Header="Download">
+					
+						<TabControl.ContentTemplate>
+							<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
+									<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+										<TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+									</Grid>
+							</DataTemplate>
+
+						</TabControl.ContentTemplate>
+            <!--<TabItem Header="Download">
                 <Grid>
 									<Grid.RowDefinitions>
 										<RowDefinition Height="35"></RowDefinition>
@@ -140,7 +151,7 @@
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
 
         <StatusBar Grid.Row="2">
