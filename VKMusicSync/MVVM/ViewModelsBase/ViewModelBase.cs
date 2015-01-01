@@ -37,6 +37,23 @@ namespace MVVM
 					}
 				}
 
+				public bool IsLoading
+				{
+					get
+					{
+						return mvIsLoading;
+					}
+					set
+					{
+						if (value == mvIsLoading)
+							return;
+
+						mvIsLoading = value;
+
+						OnPropertyChanged("IsLoading");
+					}
+				}
+
 				public Observer Messenger 
 				{
 					get
@@ -48,6 +65,7 @@ namespace MVVM
 				public Dispatcher CurrentDispatcher { get; set; }
 
 				public event PropertyChangedEventHandler PropertyChanged;
+				private bool mvIsLoading;
 
         protected void OnPropertyChanged(string propertyName)
         {

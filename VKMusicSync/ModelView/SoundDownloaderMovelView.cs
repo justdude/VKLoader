@@ -447,7 +447,7 @@ namespace VKMusicSync.ModelView
 
         private void UpdateDataFromProfile(object obj)
         {
-
+				IsLoading = false;
             var worker = new BackgroundWorker();
             worker.WorkerSupportsCancellation = true;
             
@@ -463,6 +463,7 @@ namespace VKMusicSync.ModelView
                     Status = "Загрузка треков";
                     LoadAudioInfo();
 										System.Threading.Thread.Sleep(1000 * 3);
+										Execute(()=>IsLoading = true);
                 });
 
                 var manager = new AsyncTaskManager<Sound>();
