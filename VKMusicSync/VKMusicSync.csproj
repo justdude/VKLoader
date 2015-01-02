@@ -145,11 +145,15 @@
     <Compile Include="Handlers\vkontakte\Commands\WallCommands.cs" />
     <Compile Include="Handlers\vkontakte\Commands\XMLNodeHelper.cs" />
     <Compile Include="Handlers\vkontakte\ICommand.cs" />
-    <Compile Include="ModelView\MainMovelView.cs" />
+    <Compile Include="ModelView\IDataState.cs" />
+    <Compile Include="ModelView\MainModelView.cs" />
     <Compile Include="ModelView\SettingsModelView.cs" />
+    <Compile Include="ModelView\SoundDownloaderMovelView_backup.cs" />
     <Compile Include="Model\AudioUploadedInfo.cs" />
     <Compile Include="Model\Profile.cs" />
     <Compile Include="MVVM\Collections\AsyncObservableCollection.cs" />
+    <Compile Include="MVVM\ViewModelsBase\ITabModelView.cs" />
+    <Compile Include="MVVM\ViewModelsBase\ListTabViewModel.cs" />
     <Compile Include="MVVM\ViewModelsBase\TabModelView.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -234,6 +238,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Graph1.dgml" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

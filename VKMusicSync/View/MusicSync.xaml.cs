@@ -36,7 +36,7 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var modelView = new MainMovelView();
+            var modelView = new MainModelView();
             this.DataContext = modelView;
 
         }

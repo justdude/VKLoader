@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace MVVM
 {
-	public class TabModelView : ViewModelBase
+	public class TabModelView :  ViewModelBase//ListTabViewModel<M, VM>
 	{
 		public string Header { get; set; }
 
@@ -14,7 +14,6 @@ namespace MVVM
 
 		public TabModelView():base()
 		{
-			Header = "dsds";
 		}
 
 		////public override string ToString()

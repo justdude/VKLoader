@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using VKMusicSync.Model;
+using VKMusicSync;
 
 namespace vkontakte
 {
@@ -19,23 +20,61 @@ namespace vkontakte
 
         public static AccessData AccessData { get; set; }
         public static Profile Profile { get; set; }
+
+				public static void Connect()
+				{
+					var authWindow = new Auth();
+					authWindow.ShowDialog();
+				}
+
     }
 
     public class VKApi
     {
+				public enum ConnectionState
+				{
+					None,
+					Connected,
+					Disconected
+				}
+
+				public event Action<VKApi.ConnectionState> OnStateChanged;
+
+				private void ChangeConnectionState(VKApi.ConnectionState state)
+				{
+					State = state;
+
+					if (OnStateChanged == null)
+						return;
+
+					OnStateChanged(state);
+				}
+
         public int UserId = 0;
         public string AccessToken = "";
+				public ConnectionState State { get; private set; }
 
 
         public VKApi(AccessData data)
         {
             this.UserId = data.UserId;
             this.AccessToken = data.AccessToken;
+
+
+						Action act =()=>{};
+						act.BeginInvoke((p)=>{
+
+							System.Threading.Thread.Sleep(1000);
+							ChangeConnectionState(ConnectionState.Connected);
+
+						}, null);
+						
         }
 
         public VKApi(string url)
         {
             Parse(url, out this.UserId, out this.AccessToken);
+						ChangeConnectionState(ConnectionState.Connected);
         }
 
         private void Parse(string url, out int id, out string token)

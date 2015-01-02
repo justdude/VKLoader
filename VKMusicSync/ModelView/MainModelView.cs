@@ -21,10 +21,11 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKMusicSync.MVVM.Collections;
 using System.Windows;
+using vkontakte;
 
 namespace VKMusicSync.ModelView
 {
-	public class MainMovelView : ViewModelBase
+	public class MainModelView : ViewModelBase
 	{
 
 		#region Fields
@@ -33,7 +34,21 @@ namespace VKMusicSync.ModelView
 		private bool isSyncing = false;
 		private string status;
 		private int tabSelectedIndex = 0;
-		private string avatar = Constants.Constants.DefaultAvatar;
+		private string avatar = Constants.Const.DefaultAvatar;
+
+		#endregion
+
+		#region Connection state
+
+		public static event Action<VKApi.ConnectionState> OnStateChanged;
+
+		private static void ChangeConnectionState(VKApi.ConnectionState state)
+		{ 
+			if (OnStateChanged == null)
+				return;
+
+			OnStateChanged(state);
+		}
 
 		#endregion
 
@@ -187,13 +202,20 @@ namespace VKMusicSync.ModelView
 
 		#region Constructor
 
-		public MainMovelView()
+		public MainModelView()
 		{
-			FIll();
 			Tabs = new ObservableCollection<TabModelView>();
 			var tab = new SoundDownloaderMovelView();
 			Tabs.Add(tab);
+
+			FIll();
 			
+			vkontakte.APIManager.vk.OnStateChanged += vk_OnStateChanged;
+		}
+
+		void vk_OnStateChanged(vkontakte.VKApi.ConnectionState obj)
+		{
+			OnStateChanged(obj);
 		}
 
 		#endregion
@@ -221,15 +243,8 @@ namespace VKMusicSync.ModelView
 			form.ShowDialog();
 		}
 
-		private void OnAuthClick()
-		{
-			var authWindow = new Auth();
-			authWindow.ShowDialog();
-		}
-
 		public void FIll()
 		{
-			OnAuthClick();
 			UpdateDataFromProfile(null);
 		}
 
@@ -239,6 +254,7 @@ namespace VKMusicSync.ModelView
 
 		private void UpdateDataFromProfile(object obj)
 		{
+			APIManager.Connect();
 
 			var worker = new BackgroundWorker();
 			worker.WorkerSupportsCancellation = true;
@@ -248,6 +264,7 @@ namespace VKMusicSync.ModelView
 					Status = "Загрузка профиля";
 					LoadProfileInfo();
 			};
+			worker.RunWorkerAsync();
 
 		}
 

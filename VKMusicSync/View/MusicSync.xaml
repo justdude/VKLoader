@@ -163,7 +163,7 @@
 						<ListBox 
                         Grid.Row="1" 
                         Margin="5" 
-                        ItemsSource="{Binding Sounds}"
+                        ItemsSource="{Binding Items}"
                         ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                         ItemTemplate ="{StaticResource ListBoxItemTemplate}"
                         HorizontalAlignment="Stretch" 

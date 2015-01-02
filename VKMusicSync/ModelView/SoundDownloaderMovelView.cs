@@ -24,7 +24,7 @@ using System.Windows;
 
 namespace VKMusicSync.ModelView
 {
-    public class SoundDownloaderMovelView: TabModelView
+    public class SoundDownloaderMovelView: ListTabViewModel<Sound, SoundModelView>, IDataState
     {
 
         #region Private variables
@@ -50,8 +50,6 @@ namespace VKMusicSync.ModelView
 
         #region Binding variables
 
-
-
         public bool LoadInfoFromLast
         {
             get
@@ -74,43 +72,8 @@ namespace VKMusicSync.ModelView
             }
         }
 
-
-        private bool progressVisibility = false;
-				private bool isSyncing = false;
 				private string status;
-				private int tabSelectedIndex = 0;
-				private string avatar = Constants.Constants.DefaultAvatar;
-				private double progressPercentage = 0;
-
-
-        public bool ProgressVisibility
-        {
-            get
-            {
-                return progressVisibility;
-            }
-            set
-            {
-                progressVisibility = value;
-                OnPropertyChanged("ProgressVisibility");
-            }
-        }
-        public bool IsSyncing
-        {
-            get
-            {
-                return isSyncing;
-            }
-            set
-            {
-                if (isSyncing!=value)
-                {
-                    isSyncing = value;
-                    OnPropertyChanged("IsSyncing");
-                }
-            }
-        }
-			
+						
         public List<Sound> SoundsData
         {
             get
@@ -120,30 +83,6 @@ namespace VKMusicSync.ModelView
             set
             {
 							modSoundsData = value;
-            }
-        }
-
-        public ObservableCollection<SoundModelView> Sounds 
-        { 
-            get
-            {
-                return mvSounds;
-            }
-            set
-            {
-                mvSounds = value;
-            }
-        }
-
-        public int TabSelectedIndex
-        {
-            get
-            { return tabSelectedIndex; }
-            set
-            {
-                //System.Windows.Forms.MessageBox.Show(tabSelectedIndex.ToString());
-                tabSelectedIndex = value;
-                OnPropertyChanged("TabSelectedIndex");
             }
         }
 
@@ -164,87 +103,60 @@ namespace VKMusicSync.ModelView
             }
         }
 
-        public string UserFullName
-        {
-            get
-            {
-                if (APIManager.Profile == null)
-                    return "";
-                return APIManager.Profile.ToString(); }
-            set
-            {
-                OnPropertyChanged("UserFullName");
-            }
-        }
+				// for old buttons
 
-        
-        public string Avatar 
-        {
-            get
-            {
-                return avatar;
-            }
-            set
-            {
-								
+				//public double ProgressPercentage
+				//{
+				//		get
+				//		{
+				//				return progressPercentage;
+				//		}
+				//		set
+				//		{
+				//				progressPercentage = value;
+				//				if (progressPercentage>=100)
+				//				{
+				//						ProgressVisibility = false;
+				//				}
+				//				else
+				//				{
+				//						if (progressVisibility==false)
+				//								ProgressVisibility = true;
+				//				}
+				//				OnPropertyChanged("ProgressPercentage");
+				//		}
+				//}
 
-                avatar = value;
-                OnPropertyChanged("Avatar");
-            }
-        }
+				//private bool allChecked = true;
+				//private string checkedText =  "Отменить все";
 
-        public double ProgressPercentage
-        {
-            get
-            {
-                return progressPercentage;
-            }
-            set
-            {
-                progressPercentage = value;
-                if (progressPercentage>=100)
-                {
-                    ProgressVisibility = false;
-                }
-                else
-                {
-                    if (progressVisibility==false)
-                        ProgressVisibility = true;
-                }
-                OnPropertyChanged("ProgressPercentage");
-            }
-        }
+				//public string CheckedText
+				//{
+				//		get
+				//		{
+				//				return checkedText; 
+				//		}
+				//		set
+				//		{
+				//				checkedText = value;
+				//				OnPropertyChanged("CheckedText");
+				//		}
+				//}
 
-        private bool allChecked = true;
-        private string checkedText =  "Отменить все";
+				//private string loadButtonText = "Синхронизация";
 
-        public string CheckedText
-        {
-            get
-            {
-                return checkedText; 
-            }
-            set
-            {
-                checkedText = value;
-                OnPropertyChanged("CheckedText");
-            }
-        }
-
-        private string loadButtonText = "Синхронизация";
-
-        public string LoadButtonText
-        {
-            get
-            {
-                return loadButtonText;
-            }
-            set
-            {
-                loadButtonText = value;
-                OnPropertyChanged("LoadButtonText");
-            }
-        }
+				//public string LoadButtonText
+				//{
+				//		get
+				//		{
+				//				return loadButtonText;
+				//		}
+				//		set
+				//		{
+				//				loadButtonText = value;
+				//				OnPropertyChanged("LoadButtonText");
+				//		}
+				//}
 
         #endregion
 
@@ -270,8 +182,8 @@ namespace VKMusicSync.ModelView
 
         private bool CheckIsLoaded()
         {
-            if (this.Sounds != null)
-                if (this.Sounds.Count > 0)
+            if (this.Items != null)
+                if (this.Items.Count > 0)
                     return true;
             return false;
         }
@@ -305,36 +217,6 @@ namespace VKMusicSync.ModelView
 
         }
 
-        
-
-        private DelegateCommand settings;
-        public ICommand SettingsClick
-        {
-            get
-            {
-                if (settings == null)
-                {
-                    settings = new DelegateCommand(OnSettingsClick);
-                }
-                return settings;
-            }
-
-        }
-
-        private DelegateCommand shareClick;
-        public ICommand ShareClick
-        {
-            get
-            {
-                if (shareClick == null)
-                {
-                    shareClick = new DelegateCommand(OnShareClick);
-                }
-                return shareClick;
-            }
-
-        }
-
         private DelegateCommand sync;
         public ICommand SyncClick
         {
@@ -351,36 +233,48 @@ namespace VKMusicSync.ModelView
         #endregion
 
         #region Constructor
-        public SoundDownloaderMovelView(List<Sound> sounds)
-        {
-            SetSounds(sounds);
-        }
 
-        public SoundDownloaderMovelView()
+
+        public SoundDownloaderMovelView():base()
         {
+						Header = Constants.Const.tbAudiosHeader;
             SoundsData = new List<Sound>();
-            Sounds = new AsyncObservableCollection<SoundModelView>();
 
-						FIll();
+						MainModelView.OnStateChanged += MainModelView_OnStateChanged;
+
         }
 
-        private void SetSounds(List<Sound> sounds)
-        {
-            Sounds = new AsyncObservableCollection<SoundModelView>(sounds.Select(s => new SoundModelView(s)));
-        }
+				private void MainModelView_OnStateChanged(VKApi.ConnectionState obj)
+				{
+					switch(obj)
+					{
+						case(VKApi.ConnectionState.Connected):
+						if (!IsFirstLoadDone || IsNeedFill)
+							UpdateDataFromProfile(null);
+						break;
+
+						case (VKApi.ConnectionState.Disconected):
+							IsNeedFill = true;
+						break;
+							
+						default:
+							return;
+					}
+				}
+
         #endregion
 
         #region FormsActions
 
         private void OnSyncClick()
         {
-            UpdateDataFromProfile(null);
+           UpdateDataFromProfile(null);
         }
 
         private void OnShareClick()
         {
-            OnUploadClick();
-            return;
+						//OnUploadClick();
+						//return;
             vkontakte.CommandsGenerator.WallCommands.Post(
                 +vkontakte.APIManager.AccessData.UserId,
                 "VK Loader API test...my name :"
@@ -394,51 +288,30 @@ namespace VKMusicSync.ModelView
 
         }
 
-        private void OnSettingsClick()
-        {
-            var form = new VKMusicSync.View.Settings();
-            form.ShowDialog();
-        }
-
-        private void OnAuthClick()
-        {
-            var authWindow = new Auth();
-            authWindow.ShowDialog();
-            //System.Windows.Forms.MessageBox.Show("OnSyncClick");
-        }
-
         private void OnCheckedAllClick()
         {
             
             if (allChecked)
             {
                 allChecked = false;
-                foreach (var value in Sounds)
+                foreach (var value in Items)
                     value.Checked = false;
-                this.CheckedText = "Выбрать все";
+								//this.CheckedText = "Выбрать все";
                 
             }
             else
             {
                 allChecked = true;
-                foreach (var value in Sounds)
+                foreach (var value in Items)
                     value.Checked = true;
-                this.CheckedText = "Отменить все";
+								//this.CheckedText = "Отменить все";
             }
             UpdateList();
         }
 
         public void UpdateList()
         {
-            OnPropertyChanged("Sounds");
-        }
-
-        public void FIll()
-        {
-            OnAuthClick();
-            UpdateDataFromProfile(null);
-            //Thread thread = new Thread( new ParameterizedThreadStart( ));
-            //thread.Start();
+          OnPropertyChanged("Items");
         }
 
         #endregion
@@ -447,16 +320,11 @@ namespace VKMusicSync.ModelView
 
         private void UpdateDataFromProfile(object obj)
         {
-				IsLoading = false;
+						IsLoading = false;
             var worker = new BackgroundWorker();
             worker.WorkerSupportsCancellation = true;
             
             worker.DoWork += (p,arg)=>{
-                Thread act1 = new Thread(() =>
-                {
-                    Status = "Загрузка профиля";
-                    LoadProfileInfo();
-                });
 
                 Thread act2 = new Thread(() =>
                 {
@@ -485,74 +353,27 @@ namespace VKMusicSync.ModelView
                     }
                 });
 
-                Thread act5 = new Thread(() =>
-                {
-                    InitDone(null, null);
-                });
-
-
-
-                act1.IsBackground = true;
                 act2.IsBackground = true;
-                act5.IsBackground = true;
-                act1.Start();
-                act1.Join();
                 act2.Start();
                 act2.Join();
 
-                //manager.Start(SoundsData, Properties.Settings.Default.ThreadCountToUse);
-                act5.Start();
-                act5.Join();
+								InitDone();
+								//manager.Start(SoundsData, Properties.Settings.Default.ThreadCountToUse);
 								//manager.Start(this.SoundsData, 10);
 
             };
             worker.RunWorkerAsync();
-            ProgressVisibility = true;
-            //BackgroundWorker backgroundWorker = new BackgroundWorker();
-            //backgroundWorker.SyncFolderWithVKAsync += this.Init;
-            //backgroundWorker.RunWorkerCompleted += this.InitDone;
-            //backgroundWorker.RunWorkerAsync();
-            //while(backgroundWorker.IsBusy)
-            //{
-
-            //}
         }
 
-        //private void Init(object sender, DoWorkEventArgs e)
-        //{
-        //    Status = "Загрузка профиля";
-        //    LoadProfileInfo();
-        //    Status = "Загрузка треков";
-        //    LoadAudioInfo();
-        //    Status = "Загрузка информации о треках с Last.Fm";
-        //    Handlers.ItemHelper.FillLastInfo(CachedSounds, LastFmHandler.Api);
-        //    Status = "Размер файла";
-        //    Handlers.ItemHelper.FillDataInfo(CachedSounds);
-        //}
+				private void OnCommandLoading(Object sender, DownloadProgressChangedEventArgs e)
+				{
+					//this.ProgressPercentage = (double)Math.Abs(1 - e.ProgressPercentage);
+				}
 
-        private void OnCommandLoading(Object sender, DownloadProgressChangedEventArgs e)
+        private void InitDone()
         {
-            this.ProgressPercentage = (double)Math.Abs(1 - e.ProgressPercentage);
-        }
-
-        private void InitDone(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //var s = mvSounds;
-
-            //this.Sounds.Clear();
-            //for (int i = 0; i < mvSounds.Count; i++)
-            //    this.Sounds.Add(mvSounds[i]);
-            Status = "Загружено информацию о " + this.Sounds.Count + " трэках";
-
-            //System.Windows.Application.Current.Dispatcher.Invoke(new Action(
-            //    ()=>{
-            //            this.Sounds.Clear();
-            //            for(int i=0; i<CachedSounds.Count; i++)
-            //                this.Sounds.Add(new SoundModelView(CachedSounds[i]));
-            //            Status = "Загружено информацию о " +this.Sounds.Count + " трэках";
-            //    }),new object[]{});
-            this.ProgressPercentage = 100;
-            ProgressVisibility = false;
+            Status = "Загружено информацию о " + this.Items.Count + " трэках";
+						IsFirstLoadDone = true;
         }
 
         #endregion
@@ -582,7 +403,10 @@ namespace VKMusicSync.ModelView
                 SoundsData.Add(item);
             }
 
-            Execute(() => FillFromData(SoundsData));
+						base.ItemsData =  SoundsData;
+
+            Execute(() => FillFromData(SoundsData, 
+							p=>{ return new SoundModelView(p); }));
 
         }
 
@@ -591,17 +415,6 @@ namespace VKMusicSync.ModelView
             var sound = item as Sound;
             if (sound != null)
                 Handlers.TagReader.Read(item.PathWithFileName, sound);
-        }
-
-        private void FillFromData(List<Sound> soundsData)
-        {
-            Converter<Sound, SoundModelView> converter = new Converter<Sound, SoundModelView>(c => new SoundModelView(c));
-            var cached = new ObservableCollection<SoundModelView>(soundsData.ConvertAll<SoundModelView>(converter));
-            Sounds.Clear();
-            foreach (var item in cached)
-            {
-                Sounds.Add(item);
-            }
         }
 
         private List<Sound> DownloadProcces()
@@ -618,28 +431,13 @@ namespace VKMusicSync.ModelView
 
         #endregion
 
-        #region Profile
-
-        public void LoadProfileInfo()
-        {
-            APIManager.Profile = CommandsGenerator.ProfileCommands.GetUser(APIManager.AccessData.UserId);
-            var paths = (new List<string>() { APIManager.Profile.photo, APIManager.Profile.photoMedium, APIManager.Profile.photoBig });
-            var leng = paths.Max(p => p.Length);
-            string path = paths.FirstOrDefault(p => p.Length == leng);
-            if (path != string.Empty)
-                Avatar = path;
-
-            this.UserFullName = APIManager.Profile.last_name;
-        }
-        #endregion
-
         #region Share
 
         public void ShareInfo()
         {
-            OnUploadClick();
-            /*AudiosCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
-            profCommand.ExecuteNonQuery();*/
+						//OnUploadClick();
+            AudiosCommand profCommand = vkontakte.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+						profCommand.ExecuteCommand();
         }
 
         #endregion
@@ -667,10 +465,11 @@ namespace VKMusicSync.ModelView
 
         private SynhronizeAdapter<Sound> SoundHandler;
         BackgroundWorker backgroundWorker;
+				private bool allChecked;
 
         private void OnDownloadFiles()
         {
-                IsSyncing = true;
+                IsLoading = true;
                 VKMusicSync.ModelView.SoundModelView.FreezeClick = true;
                 backgroundWorker = new BackgroundWorker();
                 //backgroundWorker.WorkerReportsProgress = true;
@@ -708,28 +507,44 @@ namespace VKMusicSync.ModelView
             SoundHandler.OnReadDataInfoEvent += new SynhronizerBase.HandleDataEvent(FilFromDiskItem);
             SoundHandler.OnUploadAction += new SynhronizerBase.HandleDataEvent(UploadItem);
 
-            IEnumerable<SoundModelView> selected = Sounds.Where(p => p.Checked);
+            IEnumerable<SoundModelView> selected = Items.Where(p => p.Checked);
 
             SoundHandler.SyncFolderWithList<SoundModelView>(selected.ToList());
         }
 
         private void AdapterSyncFolderWithVKAsyncOnProgress(object sender, ProgressArgs e)
         {
-            Status = SoundHandler.CountLoadedFiles + "/" + this.Sounds.Count;  
-            this.ProgressPercentage = (e.ProgressPercentage * 100.0);
+            Status = SoundHandler.CountLoadedFiles + "/" + this.Items.Count;  
+						//this.ProgressPercentage = (e.ProgressPercentage * 100.0);
 
         }
 
         private void AdapterSyncFolderWithVKAsyncDone(object sender, ProgressArgs e)
         {
-            Status = SoundHandler.CountLoadedFiles + "/" + this.Sounds.Count;  
-            this.ProgressPercentage = 100;
+            Status = SoundHandler.CountLoadedFiles + "/" + this.Items.Count;  
+						//this.ProgressPercentage = 100;
             IOHandler.OpenPath(Properties.Settings.Default.DownloadFolderPath);
-            IsSyncing = false;
+            IsLoading = false;
         }
 
         #endregion
 
 
-    }
+
+				#region IDataState Members
+
+				public bool IsNeedFill
+				{
+					get;
+					set;
+				}
+
+				public bool IsFirstLoadDone
+				{
+					get;
+					private set;
+				}
+
+				#endregion
+		}
 }
