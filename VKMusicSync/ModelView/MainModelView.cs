@@ -25,7 +25,7 @@ using vkontakte;
 
 namespace VKMusicSync.ModelView
 {
-	public class MainModelView : ViewModelBase
+	public class MainModelView : ViewModelBase, IDataState
 	{
 
 		#region Fields
@@ -208,13 +208,19 @@ namespace VKMusicSync.ModelView
 			var tab = new SoundDownloaderMovelView();
 			Tabs.Add(tab);
 
-			FIll();
-			
+			APIManager.vk = new VKApi();
 			vkontakte.APIManager.vk.OnStateChanged += vk_OnStateChanged;
+			APIManager.Connect();
+			APIManager.vk.Connect(APIManager.AccessData);
 		}
 
 		void vk_OnStateChanged(vkontakte.VKApi.ConnectionState obj)
 		{
+			if (!IsFirstLoadDone)
+			{
+				UpdateDataFromProfile(null);
+			}
+			
 			OnStateChanged(obj);
 		}
 
@@ -243,19 +249,12 @@ namespace VKMusicSync.ModelView
 			form.ShowDialog();
 		}
 
-		public void FIll()
-		{
-			UpdateDataFromProfile(null);
-		}
-
 		#endregion
 
 		#region Process vk data
 
 		private void UpdateDataFromProfile(object obj)
 		{
-			APIManager.Connect();
-
 			var worker = new BackgroundWorker();
 			worker.WorkerSupportsCancellation = true;
 
@@ -263,6 +262,7 @@ namespace VKMusicSync.ModelView
 			{
 					Status = "Загрузка профиля";
 					LoadProfileInfo();
+					Execute(()=>{IsFirstLoadDone = true;});
 			};
 			worker.RunWorkerAsync();
 
@@ -304,5 +304,21 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
+
+		#region IDataState Members
+
+		public bool IsNeedFill
+		{
+			get;
+			set;
+		}
+
+		public bool IsFirstLoadDone
+		{
+			get;
+			private set;
+		}
+
+		#endregion
 	}
 }

@@ -131,8 +131,8 @@
     <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
     <Compile Include="Handlers\TagsHandler.cs" />
     <Compile Include="Handlers\TestLastFmConfig.cs" />
-    <Compile Include="Handlers\toclean\ContainerHandlers.cs" />
     <Compile Include="Handlers\vkontakte\AcessData.cs" />
+    <Compile Include="Handlers\vkontakte\APIManager.cs" />
     <Compile Include="Handlers\vkontakte\Commands\Command\CommandHelper.cs" />
     <Compile Include="Handlers\vkontakte\Commands\Command\AudioCommand.cs" />
     <Compile Include="Handlers\vkontakte\Commands\Command\AudioUploadComman.cs" />
@@ -247,6 +247,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Handlers\toclean\" />
     <Folder Include="ModelConector\" />
   </ItemGroup>
   <ItemGroup>

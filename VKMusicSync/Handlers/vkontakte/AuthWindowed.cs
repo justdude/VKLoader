@@ -54,8 +54,6 @@ namespace vkontakte
                 if (url.IndexOf("access_token") > 0)
                 {
                     APIManager.AccessData = new AccessData(url);
-                    APIManager.vk = new VKApi(APIManager.AccessData);
-                    if (OnInit != null) OnInit();
                 }
                 else if (url.IndexOf("access_denied") > 0)
                 {
