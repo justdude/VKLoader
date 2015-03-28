@@ -16,11 +16,11 @@
         params:Manager.Theme="Light" 
         params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}"
         params:Manager.ContrastBrush="White" Loaded="Window_Loaded">
-    
-    <Window.Resources>	
-        <converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>
-        <converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
-    </Window.Resources>
+
+	<Window.Resources>
+		<converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>
+		<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
+	</Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -100,6 +100,7 @@
         <TabControl Grid.Row="1" 
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch"
+					ItemContainerStyle="{StaticResource TabItemStyle}"
 										ItemsSource="{Binding Tabs}"
                     SelectedIndex="{Binding TabSelectedIndex}">
 					
@@ -123,7 +124,7 @@
 				
 			</TabControl.Resources>
 			<!-- BasedOn="{StaticResource {x:Type TabItem}}" -->
-			<TabControl.ItemContainerStyle>
+			<!--<TabControl.ItemContainerStyle>
 				<Style TargetType="{x:Type TabItem}">
 					<Setter Property="HeaderTemplate" >
 						<Setter.Value>
@@ -131,17 +132,17 @@
 								<StackPanel Orientation="Horizontal" Margin="0" Height="25" MaxWidth="120">
 									<TextBlock VerticalAlignment="Center" Text="{Binding Header}" />
 									<Button Content="x" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}">
-										<!--Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"-->
+										--><!--Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"--><!--
 									</Button>
 								</StackPanel>
 							</DataTemplate>
 						</Setter.Value>
 					</Setter>
-					<!--<Setter Property="Header" Value="{Binding Header}"/>-->
+					--><!--<Setter Property="Header" Value="{Binding Header}"/>--><!--
 				</Style>
-			</TabControl.ItemContainerStyle>
+			</TabControl.ItemContainerStyle>-->
 
-			<TabControl.ContentTemplate>
+			<!--<TabControl.ContentTemplate>
 							<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
 					<Grid>
 						<Grid.RowDefinitions>
@@ -172,7 +173,7 @@
 					</Grid>
 				</DataTemplate>
 
-						</TabControl.ContentTemplate>
+						</TabControl.ContentTemplate>-->
             <!--<TabItem Header="Download">
                 <Grid>
 									<Grid.RowDefinitions>

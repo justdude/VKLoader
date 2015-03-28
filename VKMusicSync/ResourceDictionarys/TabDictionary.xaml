@@ -7,11 +7,6 @@
 										xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-
-	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="ResourceDictionarys/Styles.xaml"/>
-	</ResourceDictionary.MergedDictionaries>
-
 	<!--Styles-->
 	<Style x:Key="TabItemStyle" 
 				 TargetType="{x:Type TabItem}" 
@@ -46,7 +41,7 @@
 	</Style>
 
 
-<!--Templates-->
+	<!--Templates-->
 
 	<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
 		<Grid>
