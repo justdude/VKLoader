@@ -445,7 +445,7 @@
 
 //				#endregion
 
-//				#region Process vk value to forms
+//				#region Process API value to forms
 
 //				private void UpdateDataFromProfile(object obj)
 //				{
@@ -608,12 +608,12 @@
 
 //				private List<Sound> DownloadProcces()
 //						{
-//								int count_ = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
+//								int count_ = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.API.UserId, false);
 
 //								if (count_ > 0)
 //								{
 //										CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
-//										return CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.vk.UserId, false, 0, count_);
+//										return CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.API.UserId, false, 0, count_);
 //								};
 //								return new List<Sound>();
 //				}

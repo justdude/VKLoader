@@ -35,7 +35,7 @@ namespace vkontakte
 
         public BaseCommand(string CommandName, NameValueCollection Params)
         {
-            this.AccessData = APIManager.AccessData;
+            this.AccessData = APIManager.Instance.AccessData;
             this.CommandName = CommandName;
             this.Params = Params;
         }

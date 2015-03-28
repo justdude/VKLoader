@@ -248,12 +248,12 @@ namespace VKMusicSync.ModelView
 				{
 					switch(obj)
 					{
-						case(VKApi.ConnectionState.Connected):
+						case(VKApi.ConnectionState.Loaded):
 						if (!IsFirstLoadDone || IsNeedFill)
 							UpdateDataFromProfile(null);
 						break;
 
-						case (VKApi.ConnectionState.Disconected):
+						case (VKApi.ConnectionState.Failed):
 							IsNeedFill = true;
 						break;
 							
@@ -276,9 +276,9 @@ namespace VKMusicSync.ModelView
 						//OnUploadClick();
 						//return;
             vkontakte.CommandsGenerator.WallCommands.Post(
-                +vkontakte.APIManager.AccessData.UserId,
+                +vkontakte.APIManager.Instance.AccessData.UserId,
                 "VK Loader API test...my name :"
-                + vkontakte.APIManager.Profile.FullName,
+				+ vkontakte.APIManager.Instance.Profile.FullName,
                 @"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
                 "",
                 "");
@@ -316,11 +316,11 @@ namespace VKMusicSync.ModelView
 
         #endregion
 
-        #region Process vk value to forms
+        #region Process API value to forms
 
         private void UpdateDataFromProfile(object obj)
         {
-						IsLoading = false;
+			IsLoading = false;
             var worker = new BackgroundWorker();
             worker.WorkerSupportsCancellation = true;
             
@@ -419,12 +419,12 @@ namespace VKMusicSync.ModelView
 
         private List<Sound> DownloadProcces()
             {
-                int count_ = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.vk.UserId, false);
+                int count_ = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.Instance.API.UserId, false);
 
                 if (count_ > 0)
                 {
                     CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
-                    return CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.vk.UserId, false, 0, count_);
+					return CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.Instance.API.UserId, false, 0, count_);
                 };
                 return new List<Sound>();
         }
@@ -436,7 +436,7 @@ namespace VKMusicSync.ModelView
         public void ShareInfo()
         {
 						//OnUploadClick();
-            AudiosCommand profCommand = vkontakte.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+            AudiosCommand profCommand = vkontakte.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.Instance.AccessData.UserId, 230);
 						profCommand.ExecuteCommand();
         }
 

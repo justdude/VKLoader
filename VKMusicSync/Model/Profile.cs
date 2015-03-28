@@ -41,24 +41,43 @@ namespace VKMusicSync.Model
             photoBig = "";
         }
 
-        public Profile(int id, string first_name, string last_name)
-        {
+		public Profile(int id, string first_name, string last_name)
+		{
 
-            first_name = "";
-            last_name = "";
-            nickname = "";
-            sex = "";
-            birthdate = "";
-            city = "";
-            country = "";
-            photo = "";
-            photoMedium = "";
-            photoBig = "";
+			first_name = "";
+			last_name = "";
+			nickname = "";
+			sex = "";
+			birthdate = "";
+			city = "";
+			country = "";
+			photo = "";
+			photoMedium = "";
+			photoBig = "";
 
-            this.uid = id;
-            this.first_name = first_name;
-            this.last_name = last_name;
-        }
+			this.uid = id;
+			this.first_name = first_name;
+			this.last_name = last_name;
+		}
+
+		public Profile(int id)
+		{
+
+			first_name = "";
+			last_name = "";
+			nickname = "";
+			sex = "";
+			birthdate = "";
+			city = "";
+			country = "";
+			photo = "";
+			photoMedium = "";
+			photoBig = string.Empty;
+
+			this.uid = id;
+			this.first_name = string.Empty;
+			this.last_name = string.Empty;
+		}
 
         public override string ToString()
         {

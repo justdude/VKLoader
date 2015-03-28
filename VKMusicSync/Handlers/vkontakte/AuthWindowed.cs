@@ -34,6 +34,7 @@ namespace vkontakte
 
         public delegate void OnInitDelegate();
         public OnInitDelegate OnInit;
+				public Action<string> OnAccessTokenLoaded;
 
         public AuthWindowed(WebBrowser browser)
         {
@@ -53,7 +54,8 @@ namespace vkontakte
             {
                 if (url.IndexOf("access_token") > 0)
                 {
-                    APIManager.AccessData = new AccessData(url);
+										if (OnAccessTokenLoaded != null)
+											OnAccessTokenLoaded(url);
                 }
                 else if (url.IndexOf("access_denied") > 0)
                 {

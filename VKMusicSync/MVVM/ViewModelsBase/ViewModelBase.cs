@@ -6,19 +6,16 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using VKMusicSync.Handlers.Observer;
 
 namespace MVVM
 {
     /// <summary>
     /// Provides common functionality for ViewModel classes
     /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged, IReceiver
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
 				
 				private bool mvIsBusy;
-
-				private static Observer mvMessenger;
 
 				public bool IsBusy
 				{
@@ -54,14 +51,6 @@ namespace MVVM
 					}
 				}
 
-				public Observer Messenger 
-				{
-					get
-					{
-						return mvMessenger;
-					}
-				}
-
 				public Dispatcher CurrentDispatcher { get; set; }
 
 				public event PropertyChangedEventHandler PropertyChanged;
@@ -79,12 +68,10 @@ namespace MVVM
 
 				static ViewModelBase()
 				{
-					mvMessenger = new Observer();
 				}
 
 				public ViewModelBase()
 				{
-					Messenger.Add(this);
 					CurrentDispatcher = Application.Current.Dispatcher;
 				}
 
@@ -106,10 +93,6 @@ namespace MVVM
 
 				#region IReceiver Members
 
-				public virtual void HandleRequest(object sender)
-				{
-
-				}
 
 				#endregion
 		}

@@ -17,7 +17,7 @@ namespace VKMusicSync.ModelView
         {
             get
             {
-                return vkontakte.APIManager.Profile.ToString();
+                return vkontakte.APIManager.Instance.Profile.ToString();
             }
             set
             {
@@ -292,26 +292,23 @@ namespace VKMusicSync.ModelView
         #region Checkers
         private bool CanLogin()
         {
-            return vkontakte.APIManager.AccessData == null;
+			return vkontakte.APIManager.Instance.IsCanLogin;
         }
 
         private bool CanExit()
         {
-            return vkontakte.APIManager.AccessData != null;
+			return vkontakte.APIManager.Instance.IsCanLogin == false;
         }
         #endregion
 
         private void OnExitClick()
         {
-            //http://api.vk.com/oauth/logout
-            vkontakte.APIManager.AccessData = null;
-            vkontakte.APIManager.Profile = null;
+			vkontakte.APIManager.Instance.TryExit();
         }
 
         private void OnLoginClick()
         {
-            Auth form = new Auth();
-            form.ShowDialog();
+			vkontakte.APIManager.Instance.Connect();
         }
 
 

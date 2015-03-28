@@ -195,7 +195,7 @@ namespace vkontakte
             CommandName = "audio.save";
             AudioUploadComman command = new AudioUploadComman(CommandName, Params);
             var paramsAndtoken = @"" + command.GetParamsWithToken();
-            return VKMusicSync.Handlers.Reqeust.POST("https://api.vk.com/method/audio.save", paramsAndtoken);
+            return VKMusicSync.Handlers.Reqeust.POST("https://api.API.com/method/audio.save", paramsAndtoken);
         }
 
         #endregion

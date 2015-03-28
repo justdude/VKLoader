@@ -121,8 +121,6 @@
     <Compile Include="Handlers\LastFmHandler.cs" />
     <Compile Include="Handlers\Network\HttpUtility.cs" />
     <Compile Include="Handlers\Network\ProgressArgs.cs" />
-    <Compile Include="Handlers\Observer\IReceiver.cs" />
-    <Compile Include="Handlers\Observer\Observer.cs" />
     <Compile Include="Handlers\ProgramManager.cs" />
     <Compile Include="Handlers\Synchronize\SynhronizerBase.cs" />
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
@@ -161,6 +159,10 @@
     <Compile Include="View\TestVectorImages.xaml.cs">
       <DependentUpon>TestVectorImages.xaml</DependentUpon>
     </Compile>
+    <Page Include="ResourceDictionarys\TabDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ResourceDictionarys\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

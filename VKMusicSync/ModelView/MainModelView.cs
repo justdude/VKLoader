@@ -43,7 +43,7 @@ namespace VKMusicSync.ModelView
 		public static event Action<VKApi.ConnectionState> OnStateChanged;
 
 		private static void ChangeConnectionState(VKApi.ConnectionState state)
-		{ 
+		{
 			if (OnStateChanged == null)
 				return;
 
@@ -54,7 +54,7 @@ namespace VKMusicSync.ModelView
 
 		#region Properties
 
-		public ObservableCollection<TabModelView> Tabs { get; private set;}
+		public ObservableCollection<TabModelView> Tabs { get; private set; }
 
 		public bool IsInited { get; set; }
 
@@ -142,9 +142,9 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				if (APIManager.Profile == null)
+				if (APIManager.Instance.Profile == null)
 					return "";
-				return APIManager.Profile.ToString();
+				return APIManager.Instance.Profile.ToString();
 			}
 			set
 			{
@@ -208,19 +208,26 @@ namespace VKMusicSync.ModelView
 			var tab = new SoundDownloaderMovelView();
 			Tabs.Add(tab);
 
-			APIManager.vk = new VKApi();
-			vkontakte.APIManager.vk.OnStateChanged += vk_OnStateChanged;
-			APIManager.Connect();
-			APIManager.vk.Connect(APIManager.AccessData);
+			vkontakte.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
+			vkontakte.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
+			APIManager.Instance.Connect();
+
+		}
+
+		void API_OnConnectionStateChanged(vkontakte.VKApi.ConnectionState obj)
+		{
+			ThreadPool.QueueUserWorkItem((p) =>
+			{
+				BeginExecute(() => IsLoading = true);
+				APIManager.Instance.InitUser();
+				BeginExecute(() => IsLoading = false);
+			});
 		}
 
 		void vk_OnStateChanged(vkontakte.VKApi.ConnectionState obj)
 		{
-			if (!IsFirstLoadDone)
-			{
-				UpdateDataFromProfile(null);
-			}
-			
+			UpdateDataFromProfile(null);
+
 			OnStateChanged(obj);
 		}
 
@@ -231,9 +238,9 @@ namespace VKMusicSync.ModelView
 		private void OnShareClick()
 		{
 			vkontakte.CommandsGenerator.WallCommands.Post(
-					+vkontakte.APIManager.AccessData.UserId,
+					+vkontakte.APIManager.Instance.AccessData.UserId,
 					"VK Loader API test...my name :"
-					+ vkontakte.APIManager.Profile.FullName,
+					+ vkontakte.APIManager.Instance.Profile.FullName,
 					@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
 					"",
 					"");
@@ -251,45 +258,35 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
-		#region Process vk data
+		#region Process API data
 
 		private void UpdateDataFromProfile(object obj)
 		{
-			var worker = new BackgroundWorker();
-			worker.WorkerSupportsCancellation = true;
-
-			worker.DoWork += (p, arg) =>
-			{
-					Status = "Загрузка профиля";
-					LoadProfileInfo();
-					Execute(()=>{IsFirstLoadDone = true;});
-			};
-			worker.RunWorkerAsync();
-
+			Status = "Загрузка профиля";
+			LoadProfileInfo();
+			Execute(() => { IsFirstLoadDone = true; });
 		}
 
 		#endregion
-		
+
 		#region Profile
 
 		public void LoadProfileInfo()
 		{
-			APIManager.Profile = CommandsGenerator.ProfileCommands.GetUser(APIManager.AccessData.UserId);
-
 			var paths = (new List<string>() 
 						{ 
-							APIManager.Profile.photo, 
-							APIManager.Profile.photoMedium, 
-							APIManager.Profile.photoBig });
+							APIManager.Instance.Profile.photo, 
+							APIManager.Instance.Profile.photoMedium, 
+							APIManager.Instance.Profile.photoBig });
 
 			var leng = paths.Max(p => p.Length);
 
 			string path = paths.FirstOrDefault(p => p.Length == leng);
 
 			if (path != string.Empty)
-				Execute(()=> Avatar = path);
+				Execute(() => Avatar = path);
 
-			Execute(()=> UserFullName = APIManager.Profile.last_name);
+			Execute(() => UserFullName = APIManager.Instance.Profile.last_name);
 			IsInited = true;
 		}
 		#endregion
