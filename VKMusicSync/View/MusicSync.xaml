@@ -58,7 +58,7 @@
         <Rectangle Grid.Row="0" Fill="#FF017BCD"/>
 
         <StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,0,0,0">
-            <Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,1,0,0"></Image>
+            <!--<Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,1,0,0"></Image>-->
             <TextBlock Text="{Binding UserFullName}" Style="{StaticResource NameText}" HorizontalAlignment="Center" ></TextBlock>
         </StackPanel>
 
