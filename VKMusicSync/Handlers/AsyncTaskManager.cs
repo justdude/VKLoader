@@ -76,7 +76,7 @@ namespace VKMusicSync.Handlers
             Pack<T> pack = (Pack<T>)parametr;
             Execute(pack.value);
             ExecutedTaskCount++;
-            if (ExecutedTaskCount>=TaskCount)
+            //if (ExecutedTaskCount>=TaskCount)
                 pack.endEvent.Set();
         }
 
@@ -89,7 +89,10 @@ namespace VKMusicSync.Handlers
             this.ExecutedTaskCount = maxThreadsCount;
 
             endEvents[0] = new ManualResetEvent(false);
-            
+			
+			if (toProcess.Count == 0)
+				return true;
+
             for (int i = 0; i < toProcess.Count; i++)
             {
                 Pack<T> pack = new Pack<T>(endEvents[0], toProcess[0]);

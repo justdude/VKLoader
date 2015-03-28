@@ -56,8 +56,6 @@ namespace VKMusicSync.ModelView
 
 		public ObservableCollection<TabModelView> Tabs { get; private set; }
 
-		public bool IsInited { get; set; }
-
 		public bool LoadInfoFromLast
 		{
 			get
@@ -214,8 +212,15 @@ namespace VKMusicSync.ModelView
 
 		}
 
+		#endregion
+
+		#region Events listen
+
 		void API_OnConnectionStateChanged(vkontakte.VKApi.ConnectionState obj)
 		{
+			if (obj != vkontakte.VKApi.ConnectionState.Loaded)
+				return;
+
 			ThreadPool.QueueUserWorkItem((p) =>
 			{
 				BeginExecute(() => IsLoading = true);
@@ -226,9 +231,12 @@ namespace VKMusicSync.ModelView
 
 		void vk_OnStateChanged(vkontakte.VKApi.ConnectionState obj)
 		{
-			UpdateDataFromProfile(null);
+			ChangeConnectionState(obj);
 
-			OnStateChanged(obj);
+			if (obj != vkontakte.VKApi.ConnectionState.Loaded)
+				return;
+
+			UpdateDataFromProfile();
 		}
 
 		#endregion
@@ -260,10 +268,13 @@ namespace VKMusicSync.ModelView
 
 		#region Process API data
 
-		private void UpdateDataFromProfile(object obj)
+		private void UpdateDataFromProfile()
 		{
-			Status = "Загрузка профиля";
+			Status = Constants.Status.ProfileLoading;
+
 			LoadProfileInfo();
+
+			Status = string.Empty;
 			Execute(() => { IsFirstLoadDone = true; });
 		}
 
@@ -273,21 +284,12 @@ namespace VKMusicSync.ModelView
 
 		public void LoadProfileInfo()
 		{
-			var paths = (new List<string>() 
-						{ 
-							APIManager.Instance.Profile.photo, 
-							APIManager.Instance.Profile.photoMedium, 
-							APIManager.Instance.Profile.photoBig });
-
-			var leng = paths.Max(p => p.Length);
-
-			string path = paths.FirstOrDefault(p => p.Length == leng);
+			string path = APIManager.Instance.Profile.GetMaxPhotoSize();
 
 			if (path != string.Empty)
 				Execute(() => Avatar = path);
 
 			Execute(() => UserFullName = APIManager.Instance.Profile.last_name);
-			IsInited = true;
 		}
 		#endregion
 

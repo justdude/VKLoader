@@ -15,6 +15,7 @@ namespace VKMusicSync.Constants
 		public const string tbAudiosSearchHeader = "Поиск аудио";
 		public const string tbAudiosRecommendationHeader = "Рекомендации";
 		public const string tbAudiosGroupingHeader = "Аудиозаписи";
+		public const string MP3 = "*.mp3";
 		#endregion
 	}
 }
