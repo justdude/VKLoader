@@ -6,8 +6,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ResourceDictionarys/Styles.xaml"/>
-								<ResourceDictionary Source="ResourceDictionarys/Templates.xaml"/>
-								<ResourceDictionary Source="ResourceDictionarys/TabDictionary.xaml"/> 
+				<ResourceDictionary Source="ResourceDictionarys/Templates.xaml"/>
+				<ResourceDictionary Source="ResourceDictionarys/TabDictionary.xaml"/> 
 			</ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

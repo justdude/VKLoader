@@ -103,7 +103,7 @@
 					ItemContainerStyle="{StaticResource TabItemStyle}"
 										ItemsSource="{Binding Tabs}"
                     SelectedIndex="{Binding TabSelectedIndex}">
-					
+
 						 <!--<TabControl.ItemTemplate>
                 <DataTemplate DataType="TabItem">
 										<StackPanel Orientation="Horizontal">
@@ -123,24 +123,6 @@
 			<TabControl.Resources>
 				
 			</TabControl.Resources>
-			<!-- BasedOn="{StaticResource {x:Type TabItem}}" -->
-			<!--<TabControl.ItemContainerStyle>
-				<Style TargetType="{x:Type TabItem}">
-					<Setter Property="HeaderTemplate" >
-						<Setter.Value>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal" Margin="0" Height="25" MaxWidth="120">
-									<TextBlock VerticalAlignment="Center" Text="{Binding Header}" />
-									<Button Content="x" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}">
-										--><!--Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"--><!--
-									</Button>
-								</StackPanel>
-							</DataTemplate>
-						</Setter.Value>
-					</Setter>
-					--><!--<Setter Property="Header" Value="{Binding Header}"/>--><!--
-				</Style>
-			</TabControl.ItemContainerStyle>-->
 
 			<!--<TabControl.ContentTemplate>
 							<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">

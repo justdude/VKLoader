@@ -5,12 +5,21 @@
     xmlns:metro="http://schemas.codeplex.com/elysium"
     xmlns:params="http://schemas.codeplex.com/elysium/params"
     xmlns:converters ="clr-namespace:VKMusicSync.Converters"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:local="clr-namespace:vkontakte"
     xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
         
     xmlns:windows="clr-namespace:vkontakte">
 
-    <converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>
+
+	<x:Array Type="{x:Type sys:Object}" x:Key="extensions">
+		<Separator />
+		<MenuItem Header="Extension MenuItem 1" />
+		<MenuItem Header="Extension MenuItem 2" />
+		<MenuItem Header="Extension MenuItem 3" />
+	</x:Array>
+	
+	<converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>
     <converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
 
     <DataTemplate x:Key="ListBoxItemTemplate">
@@ -21,6 +30,10 @@
                                         Padding="2.5"  
                                         Background="#66F8F8FF" 
                                         BorderBrush="Silver" >
+			<Border.ContextMenu>
+				<ContextMenu ItemsSource="{StaticResource extensions}">
+				</ContextMenu>
+			</Border.ContextMenu>
 
             <Grid  HorizontalAlignment="Stretch" >
                 <Grid.ColumnDefinitions>

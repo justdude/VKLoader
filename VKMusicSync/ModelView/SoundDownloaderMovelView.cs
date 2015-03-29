@@ -182,9 +182,11 @@ namespace VKMusicSync.ModelView
 
 		private bool CheckIsLoaded()
 		{
+
 			if (this.Items != null)
 				if (this.Items.Count > 0)
 					return true;
+
 			return false;
 		}
 
@@ -196,7 +198,7 @@ namespace VKMusicSync.ModelView
 			{
 				if (downloadFiles == null)
 				{
-					downloadFiles = new DelegateCommand(OnDownloadFiles, CheckIsLoaded);
+					downloadFiles = new DelegateCommand(StartSync, () => { return IsCanStartyngSync; });
 				}
 				return downloadFiles;
 			}
@@ -317,6 +319,19 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
+
+		private bool IsCanStartyngSync
+		{
+			get
+			{
+				bool res = IsFirstLoadDone && IsNeedFill == false;
+
+				res &= IsLoading == false;
+
+				return res;
+			}
+		}
+
 		#region Process API value to forms
 
 		private void UpdateDataFromProfile(object obj)
@@ -332,6 +347,8 @@ namespace VKMusicSync.ModelView
 				{
 					Status = Constants.Status.LoadingTrackInfo;
 					LoadAudioInfo();
+					IsFirstLoadDone = true;
+					IsNeedFill = false;
 				});
 
 				var manager = new AsyncTaskManager<Sound>();
@@ -342,7 +359,7 @@ namespace VKMusicSync.ModelView
 
 				Status = Constants.Status.LoadingTrackInfo;
 
-				manager.Start(SoundsData, Properties.Settings.Default.ThreadCountToUse);
+				//manager.Start(SoundsData, Properties.Settings.Default.ThreadCountToUse);
 
 				InitDone();
 
@@ -379,6 +396,7 @@ namespace VKMusicSync.ModelView
 		{
 			Status = string.Format(Constants.Status.LoadingNTracksInfo, Items.Count);
 			IsFirstLoadDone = true;
+			Execute(() => IsLoading = false);
 		}
 
 		#endregion
@@ -475,7 +493,7 @@ namespace VKMusicSync.ModelView
 		BackgroundWorker backgroundWorker;
 		private bool allChecked;
 
-		private void OnDownloadFiles()
+		private void StartSync()
 		{
 			IsLoading = true;
 			VKMusicSync.ModelView.SoundModelView.FreezeClick = true;

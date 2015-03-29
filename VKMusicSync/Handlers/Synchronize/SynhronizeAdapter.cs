@@ -124,26 +124,36 @@ namespace VKMusicSync.Handlers.Synchronize
         {
             controlDownloading = false;
             base.RemainCount = 0;
+			ManualResetEvent sleeper = new ManualResetEvent(false);
 
             for (int i = 0; i < valuesToDownload.Count; i++)
             {
                 if (controlDownloading == true)
                     break;
-                while (RemainCount >= CountThreads)
+
+                if (RemainCount >= CountThreads)
                 {
-                    Thread.Sleep(50);
+					sleeper.WaitOne();
                 }
+				else
+				{
+					sleeper.Set();
+				}
                 var cachedData = valuesToDownload[i];
 
                 HandleActionsWithItem<T>(cachedData);
 
                 base.RemainCount++;
-
             }
+
+			sleeper.Reset();
+
             while (RemainCount > 0)
             {
-                Thread.Sleep(50);
+				//sleeper.WaitOne();
+				Thread.Sleep(50);
             }
+
             if (OnDone != null)
                 OnDone(this, new ProgressArgs(100, 100, 0, null));
         }
@@ -307,6 +317,9 @@ namespace VKMusicSync.Handlers.Synchronize
 
         private void OnDownloadCompleteActions(IDownnloadedData value, DataLoader downloader)
         {
+			if (RemainCount == 0)
+				return;
+
             base.RemainCount--;
             base.CountLoadedFiles++;
             downloaders.Remove(downloader);
