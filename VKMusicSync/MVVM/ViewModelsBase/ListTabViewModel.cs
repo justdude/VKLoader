@@ -18,7 +18,7 @@ namespace MVVM
 			Items = new ObservableCollection<VM>();
 		}
 
-		protected void FillFromData(List<M> soundsData, Func<M, VM> creator)
+		protected void FillFromData(Func<M, VM> creator)
 		{
 			if (creator == null)
 				return;

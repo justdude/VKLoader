@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7969FD04-EA9B-4ECD-BB8F-A0BC75049FB4}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VKMusicSync</RootNamespace>
     <AssemblyName>VKMusicSync</AssemblyName>
@@ -67,6 +67,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotLastFm">
       <HintPath>..\packages\dotLastFm.1.0.4.0\lib\Net40\dotLastFm.dll</HintPath>
@@ -117,6 +120,7 @@
     <Compile Include="Delegates\Arguments.cs" />
     <Compile Include="Handlers\AsyncTaskManager.cs" />
     <Compile Include="Handlers\AudioHelper.cs" />
+    <Compile Include="Handlers\CachedData\Cache.cs" />
     <Compile Include="Handlers\ColorJam.cs" />
     <Compile Include="Handlers\DataHelper.cs" />
     <Compile Include="Handlers\LastFmHandler.cs" />
@@ -274,6 +278,11 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\unknownSong.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

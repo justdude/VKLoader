@@ -49,13 +49,13 @@ namespace VKMusicSync.Handlers.Synchronize
             List<T> existData = handler.CastExistData(Creator);
 
             //read from tags
-            if (false && IsHandleDataAfterReadingFromDisk) //&& OnReadDataInfoEvent != null)
-            {
-                foreach(var item in existData)
-                {
-                   ReadDataInfoAction(item, mvOnReadDataInfoEvent);
-                }
-            }
+			//if (IsHandleDataAfterReadingFromDisk) //&& OnReadDataInfoEvent != null)
+			//{
+			//	foreach(var item in existData)
+			//	{
+			//	   ReadDataInfoAction(item, mvOnReadDataInfoEvent);
+			//	}
+			//}
 
             //load data from modLoader and merge
             if (DownloadInfoFromWeb != null)

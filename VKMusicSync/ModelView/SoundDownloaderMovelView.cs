@@ -21,6 +21,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKMusicSync.MVVM.Collections;
 using System.Windows;
+using VKMusicSync.Handlers.CachedData;
+using DotLastFm.Models;
 
 namespace VKMusicSync.ModelView
 {
@@ -343,28 +345,32 @@ namespace VKMusicSync.ModelView
 			worker.DoWork += (p, arg) =>
 			{
 
-				Thread act2 = new Thread(() =>
-				{
-					Status = Constants.Status.LoadingTrackInfo;
-					LoadAudioInfo();
-					IsFirstLoadDone = true;
-					IsNeedFill = false;
-				});
-
-				var manager = new AsyncTaskManager<Sound>();
-				manager.Execute = new AsyncTaskManager<Sound>.ExecuteWork(PreloadDatFromLast);
-				act2.IsBackground = true;
-				act2.Start();
-				act2.Join();
-
+				//Thread act2 = new Thread(() =>
+				//{
 				Status = Constants.Status.LoadingTrackInfo;
+				LoadAudioInfo();
+				IsFirstLoadDone = true;
+				//	IsNeedFill = false;
+				//});
 
-				//manager.Start(SoundsData, Properties.Settings.Default.ThreadCountToUse);
 
-				InitDone();
+				//act2.IsBackground = true;
+				//act2.Start();
+				//act2.Join();
+				//InitDone();
 
 			};
 			worker.RunWorkerAsync();
+
+			worker.RunWorkerCompleted += (s, e) =>
+				{
+					var manager = new AsyncTaskManager<Sound>(PreloadDatFromLast);
+					Status = Constants.Status.LoadingTrackInfo;
+
+					manager.ProcessAsync(SoundsData, Properties.Settings.Default.ThreadCountToUse);
+					manager.AllDone.WaitOne();
+					InitDone();
+				};
 		}
 
 		private void PreloadDatFromLast(Sound sound)
@@ -374,16 +380,23 @@ namespace VKMusicSync.ModelView
 
 			try
 			{
-				Status = Constants.Status.LoadingTrackInfo + sound.artist;
-				var artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
-				sound.authorPhotoPath = artist.Images[2].Value; // little spike 
-				sound.similarArtists = artist.SimilarArtists.Select(el => el.Name).ToList<string>();
+				ArtistWithDetails artist = Cache.Get(sound.artist) as ArtistWithDetails;
 
+				if (artist == null)
+					artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
+
+				Cache.AddIfNotExist(sound.artist, artist);
+				Execute(() =>
+				{
+					Status = Constants.Status.LoadingTrackInfo + sound.artist;
+					sound.authorPhotoPath = artist.Images[2].Value; // little spike 
+					sound.similarArtists = artist.SimilarArtists.Select(el => el.Name).ToList<string>();
+				});
 			}
 			//catch (DotLastFm.Api.Rest.LastFmApiException ex)
-			catch (Exception)
+			catch (Exception ex)
 			{
-
+				Console.WriteLine(ex.Message);
 			}
 		}
 
@@ -408,12 +421,11 @@ namespace VKMusicSync.ModelView
 			List<Sound> soundsData;
 
 			soundHandler = new SynhronizeAdapter<Sound>(Properties.Settings.Default.DownloadFolderPath,
-														Constants.Const.MP3,
-														Properties.Settings.Default.ThreadCountToUse);
+				Constants.Const.MP3,
+				Properties.Settings.Default.ThreadCountToUse);
 
 			//SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
 			//SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;
-
 
 			soundHandler.OnReadDataInfoEvent += FilFromDiskItem;
 
@@ -429,8 +441,7 @@ namespace VKMusicSync.ModelView
 
 			base.ItemsData = soundsData;
 
-			Execute(() => FillFromData(soundsData,
-							p => { return new SoundModelView(p); }));
+			Execute(() => FillFromData(p => { return new SoundModelView(p); }));
 
 			SoundHandler = soundHandler;
 			SoundsData = soundsData;

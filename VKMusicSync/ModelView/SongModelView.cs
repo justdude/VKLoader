@@ -182,6 +182,11 @@ namespace VKMusicSync.ModelView
 					if (Sound.authorPhotoPath != null && Sound.authorPhotoPath.Length > 0)
 						mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath));
 				}
+				//else
+				//{
+				//	var bm = new BitmapImage(new Uri(Constants.Const.UnjnownAuthorPath));
+				//	return bm;
+				//}
 				return mvImage;
 			}
 			set

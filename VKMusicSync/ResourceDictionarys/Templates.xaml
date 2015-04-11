@@ -57,8 +57,9 @@
                     </Grid.ColumnDefinitions>
                     <Image 
                                                 Grid.Column="0"
-                                                Visibility="{Binding LoadInfoFromLast, Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Collapsed'}"
-                                                Source="{Binding Photo}" 
+                                                Visibility="{Binding LoadInfoFromLast,
+					Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Collapsed'}"
+                                                Source="{Binding Photo}"
                                                 Stretch="UniformToFill"
                                                 Height="58" 
                                                 Width="75"></Image>

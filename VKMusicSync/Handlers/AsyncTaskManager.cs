@@ -8,99 +8,160 @@ namespace VKMusicSync.Handlers
 {
 	public class Pack<T>
 	{
-		public ManualResetEvent endEvent;
-		public T value;
-		public Pack(ManualResetEvent endEvent, T val)
+		public ManualResetEvent EndEvent { get; private set; }
+		public Action<T> TargetAction { get; private set; }
+		private Thread modThread;
+		public Pack(ManualResetEvent endEvent, Action<T> targetAction)
 		{
-			this.endEvent = endEvent;
-			this.value = val;
+			if (endEvent == null || targetAction == null)
+				throw new ArgumentNullException();
+
+			TargetAction = targetAction;
+			EndEvent = endEvent;
+			modThread = new Thread(new ParameterizedThreadStart(Execute));
+		}
+
+		public void Start(T param)
+		{
+			modThread.Start(param);
+		}
+
+		private void Execute(object par)
+		{
+			T parm = default(T);
+
+			if (par != null)
+			{
+				parm = (T)par;
+			}
+
+			TargetAction(parm);
+
+			EndEvent.Set();
 		}
 	}
 
-	public class AsyncTaskManager<T> //where T: class
+	public class AsyncTaskManager<T>
 	{
+		#region Fields
 		private readonly object locker = new object();
 		private int executedTaskCount = 0;
-		public int ExecutedTaskCount
+		private Queue<T> modEvents;
+		private ManualResetEvent resetEvent = null;
+		private int mvCurrentThreadsCount;
+		private ManualResetEvent[] endEvents;
+		#endregion
+
+		#region Properties
+
+		public Action<T> Execute { get; set; }
+
+		public int ThreadsCount
 		{
 			get
 			{
-				lock (locker)
-				{
-					return executedTaskCount;
-				}
+
+				return executedTaskCount;
+			}
+			private set
+			{
+				executedTaskCount = value;
+			}
+		}
+
+		public int CurrentThreadsCount
+		{
+			get
+			{
+				return mvCurrentThreadsCount;
 			}
 			private set
 			{
 				lock (locker)
 				{
-					executedTaskCount = value;
+					mvCurrentThreadsCount = value;
 				}
 			}
-
 		}
 
-		public int TaskCount
-		{
-			get
-			{
-				lock (locker)
-				{
-					return toProcess.Count;
-				}
-			}
+		public ManualResetEvent AllDone { get; private set; }
 
+		#endregion
+
+		#region Ctr
+
+		public AsyncTaskManager(Action<T> action)
+		{
+			this.Execute += action;
 		}
 
-		public delegate void ExecuteWork(T item);
-		public ExecuteWork Execute { get; set; }
-		private List<T> toProcess;
-		private ManualResetEvent[] endEvents;
+		#endregion
 
+		#region Methods
 
-		public AsyncTaskManager(ExecuteWork del)
+		public void ProcessAsync(IList<T> data, int maxThreadsCount)
 		{
-			this.Execute += del;
-			this.endEvents = new ManualResetEvent[1];
-			ThreadPool.SetMaxThreads(executedTaskCount, executedTaskCount);
-		}
+			AllDone = new ManualResetEvent(false);
 
-		public AsyncTaskManager()
-		{
-			this.endEvents = new ManualResetEvent[1];
-			ThreadPool.SetMaxThreads(executedTaskCount, executedTaskCount);
-		}
-
-		private void DoTask(object parametr)
-		{
-			Pack<T> pack = (Pack<T>)parametr;
-			Execute(pack.value);
-			ExecutedTaskCount++;
-			//if (ExecutedTaskCount>=TaskCount)
-			pack.endEvent.Set();
-		}
-
-		public bool Start(IList<T> parametrs, int maxThreadsCount)
-		{
 			if (Execute == null)
-				return false;
-
-			this.toProcess = parametrs.ToList();
-			this.ExecutedTaskCount = maxThreadsCount;
-
-			endEvents[0] = new ManualResetEvent(false);
-
-			if (toProcess.Count == 0)
-				return true;
-
-			for (int i = 0; i < toProcess.Count; i++)
 			{
-				Pack<T> pack = new Pack<T>(endEvents[0], toProcess[0]);
-				pack.value = toProcess[i];
-				ThreadPool.QueueUserWorkItem(new WaitCallback(DoTask), pack);
+				EndExecute();
+				return;
 			}
-			return WaitHandle.WaitAll(endEvents);
+
+			if (data == null || data.Count == 0)
+			{
+				EndExecute();
+				return;
+			}
+
+			modEvents = new Queue<T>(data);
+			ThreadsCount = maxThreadsCount;
+
+			resetEvent = new ManualResetEvent(false);
+			CurrentThreadsCount = 0;
+
+			new Thread(() =>
+				{
+					for (int i = 0; i < modEvents.Count; i++)
+					{
+						int threadsCount = Math.Min(ThreadsCount, modEvents.Count);
+
+						ManualResetEvent[] waitEvents = new ManualResetEvent[threadsCount];
+
+						while (CurrentThreadsCount < threadsCount)
+						{
+							ProcessItem(waitEvents);
+						}
+
+						ManualResetEvent.WaitAll(waitEvents);
+						CurrentThreadsCount = 0;
+
+					}
+
+					EndExecute();
+
+				}).Start();
+
+		}//end
+
+		private void EndExecute()
+		{
+			AllDone.Set();
 		}
 
+		private void ProcessItem(ManualResetEvent[] waitEvents)
+		{
+			ManualResetEvent manualEvent = new ManualResetEvent(false);
+			waitEvents[CurrentThreadsCount] = manualEvent;
+
+			Pack<T> pack = new Pack<T>(manualEvent, Execute);
+			pack.Start(modEvents.Dequeue());
+
+			CurrentThreadsCount++;
+		}
+
+		#endregion
 	}
+
 }

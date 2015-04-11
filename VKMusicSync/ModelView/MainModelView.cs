@@ -303,7 +303,6 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
-
 		#region IDataState Members
 
 		public bool IsNeedFill
