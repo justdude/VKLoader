@@ -139,12 +139,14 @@
     <Compile Include="ModelView\MainModelView.cs" />
     <Compile Include="ModelView\SettingsModelView.cs" />
     <Compile Include="ModelView\SoundDownloaderMovelView_backup.cs" />
+    <Compile Include="Model\IData.cs" />
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\Sound.cs" />
     <Compile Include="MVVM\Collections\AsyncObservableCollection.cs" />
     <Compile Include="MVVM\ViewModelsBase\ITabModelView.cs" />
     <Compile Include="MVVM\ViewModelsBase\ListTabViewModel.cs" />
     <Compile Include="MVVM\ViewModelsBase\TabModelView.cs" />
+    <Compile Include="MyCategory.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
