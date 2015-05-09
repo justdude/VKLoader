@@ -461,7 +461,15 @@ namespace VKMusicSync.ModelView
 			if (count_ > 0)
 			{
 				CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
-				return CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.Instance.API.UserId, false, 0, count_);
+
+				List<SoundBase> sounds = CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.Instance.API.UserId, false, 0, count_);
+				
+				if (sounds == null)
+					return new List<Sound>();
+
+
+				return sounds.Select(p =>{ return new Sound(p);}).ToList();
+
 			};
 			return new List<Sound>();
 		}

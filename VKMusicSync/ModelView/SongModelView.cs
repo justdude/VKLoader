@@ -179,8 +179,19 @@ namespace VKMusicSync.ModelView
 			{
 				if (mvImage == null)
 				{
-					if (Sound.authorPhotoPath != null && Sound.authorPhotoPath.Length > 0)
-						mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath));
+						if (Sound.authorPhotoPath != null && Sound.authorPhotoPath.Length > 0)
+						{
+							//try
+							//{
+							//CurrentDispatcher.BeginInvoke(new Action(()=>
+							//	mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath))), null);
+							//}
+							//catch (Exception)
+							//{
+							//	CurrentDispatcher.BeginInvoke(new Action(() =>
+							//		mvImage = new BitmapImage(new Uri(VkDay.Constants.ImageDefaultURI))), null);
+							//} 
+						}
 				}
 				//else
 				//{

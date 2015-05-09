@@ -117,7 +117,6 @@
     <Compile Include="Converters\StateToVisibilityConverter.cs" />
     <Compile Include="Converters\VisibilityToBoolConverter.cs" />
     <Compile Include="Delegates\ActionsDelegates.cs" />
-    <Compile Include="Delegates\Arguments.cs" />
     <Compile Include="Handlers\AsyncTaskManager.cs" />
     <Compile Include="Handlers\AudioHelper.cs" />
     <Compile Include="Handlers\CachedData\Cache.cs" />
@@ -134,26 +133,14 @@
     <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
     <Compile Include="Handlers\TagsHandler.cs" />
     <Compile Include="Handlers\TestLastFmConfig.cs" />
-    <Compile Include="Handlers\vkontakte\AcessData.cs" />
-    <Compile Include="Handlers\vkontakte\APIManager.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\Command\CommandHelper.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\Command\AudioCommand.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\Command\AudioUploadComman.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\AudioCommands.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\Command\WallCommand.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\ProfileCommands.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\CommandsGenerator.cs" />
-    <Compile Include="Handlers\vkontakte\BaseCommand.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\Command\ProfileCommand.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\WallCommands.cs" />
-    <Compile Include="Handlers\vkontakte\Commands\XMLNodeHelper.cs" />
-    <Compile Include="Handlers\vkontakte\ICommand.cs" />
+    <Compile Include="IDownnloadedData.cs" />
+    <Compile Include="IStateChanged.cs" />
     <Compile Include="ModelView\IDataState.cs" />
     <Compile Include="ModelView\MainModelView.cs" />
     <Compile Include="ModelView\SettingsModelView.cs" />
     <Compile Include="ModelView\SoundDownloaderMovelView_backup.cs" />
-    <Compile Include="Model\AudioUploadedInfo.cs" />
-    <Compile Include="Model\Profile.cs" />
+    <Compile Include="Model\ImageModel.cs" />
+    <Compile Include="Model\Sound.cs" />
     <Compile Include="MVVM\Collections\AsyncObservableCollection.cs" />
     <Compile Include="MVVM\ViewModelsBase\ITabModelView.cs" />
     <Compile Include="MVVM\ViewModelsBase\ListTabViewModel.cs" />
@@ -186,23 +173,11 @@
     </Compile>
     <Compile Include="ModelView\SongModelView.cs" />
     <Compile Include="ModelView\SoundDownloaderMovelView.cs" />
-    <Compile Include="Model\Sound.cs" />
-    <Compile Include="Model\IData.cs" />
     <Compile Include="MVVM\Commands\CommandReference.cs" />
     <Compile Include="MVVM\Commands\DelegateCommand.cs" />
     <Compile Include="MVVM\ViewModelsBase\ViewModelBase.cs" />
-    <Compile Include="View\Auth.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Auth.Designer.cs">
-      <DependentUpon>Auth.cs</DependentUpon>
-    </Compile>
     <Compile Include="Converters\Converters.cs" />
-    <Compile Include="Model\DataTypes.cs" />
-    <Compile Include="Handlers\vkontakte\AuthWindowed.cs" />
     <Compile Include="Handlers\Network\Downloader.cs" />
-    <Compile Include="Handlers\Network\Reqeust.cs" />
-    <Compile Include="Handlers\vkontakte\VKApi.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -237,9 +212,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="View\Auth.resx">
-      <DependentUpon>Auth.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -283,6 +255,12 @@
     <EmbeddedResource Include="Images\unknownSong.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VkDay\VkDay.csproj">
+      <Project>{3f2e72de-b2f1-4777-97cc-f503cbe7c034}</Project>
+      <Name>VkDay</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
