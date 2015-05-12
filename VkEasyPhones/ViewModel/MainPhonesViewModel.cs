@@ -40,6 +40,8 @@ namespace VkEasyPhones.ViewModel
 		{
 			APIManager.Instance.Connect();
 			APIManager.Instance.InitUser();
+			var users = CommandsGenerator.ProfileCommands.Search("Иван", 1000, 1);
+			
 		}
 
 		#endregion
