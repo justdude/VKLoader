@@ -1,0 +1,14 @@
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate stub for VkDay.Constants: type is sealed.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate stub for VkDay.Program: type is not visible to exported or assembly(VkDay.Fakes).
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate stub for vkontakte.APIManager: type has no family visible contructors.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate stub for vkontakte.Genre: type is a value type.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate stub for vkontakte.XMLNodeHelper: type is not visible to exported or assembly(VkDay.Fakes).
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate stub for VkDay.vkontakte.VkontakteScopeList: type is a value type.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for VKMusicSync.Model.Profile+<>c__DisplayClass4: type is not supported because of internal limitations.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for VkDay.Program: type is not visible to exported or assembly(VkDay.Fakes).
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for vkontakte.AuthWindowed+OnInitDelegate: type is a delegate.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for vkontakte.Genre: type is an enum.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for vkontakte.XMLNodeHelper: type is not visible to exported or assembly(VkDay.Fakes).
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for vkontakte.ICommand`1: type is an interface.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for vkontakte.VKApi+ConnectionState: type is an enum.
+D:\Projects\Vk_client\VkEasyPhones\Fakes\VkDay.fakes : warning : Cannot generate shim for VkDay.vkontakte.VkontakteScopeList: type is an enum.

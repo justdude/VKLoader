@@ -12,7 +12,7 @@ using MVVM;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VKMusicSync.Handlers.Synchronize;
-using vkontakte;
+using VkDay;
 using VKMusicSync.Handlers;
 using System.Collections.Specialized;
 using System.IO;
@@ -21,7 +21,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKMusicSync.MVVM.Collections;
 using System.Windows;
-using vkontakte;
+using VkDay;
 
 namespace VKMusicSync.ModelView
 {
@@ -206,8 +206,8 @@ namespace VKMusicSync.ModelView
 			var tab = new SoundDownloaderMovelView();
 			Tabs.Add(tab);
 
-			vkontakte.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
-			vkontakte.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
+			VkDay.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
+			VkDay.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
 			APIManager.Instance.Connect();
 
 		}
@@ -216,9 +216,9 @@ namespace VKMusicSync.ModelView
 
 		#region Events listen
 
-		void API_OnConnectionStateChanged(vkontakte.VKApi.ConnectionState obj)
+		void API_OnConnectionStateChanged(VkDay.VKApi.ConnectionState obj)
 		{
-			if (obj != vkontakte.VKApi.ConnectionState.Loaded)
+			if (obj != VkDay.VKApi.ConnectionState.Loaded)
 				return;
 
 			ThreadPool.QueueUserWorkItem((p) =>
@@ -229,11 +229,11 @@ namespace VKMusicSync.ModelView
 			});
 		}
 
-		void vk_OnStateChanged(vkontakte.VKApi.ConnectionState obj)
+		void vk_OnStateChanged(VkDay.VKApi.ConnectionState obj)
 		{
 			ChangeConnectionState(obj);
 
-			if (obj != vkontakte.VKApi.ConnectionState.Loaded)
+			if (obj != VkDay.VKApi.ConnectionState.Loaded)
 				return;
 
 			UpdateDataFromProfile();
@@ -245,10 +245,10 @@ namespace VKMusicSync.ModelView
 
 		private void OnShareClick()
 		{
-			vkontakte.CommandsGenerator.WallCommands.Post(
-					+vkontakte.APIManager.Instance.AccessData.UserId,
+			VkDay.CommandsGenerator.WallCommands.Post(
+					+VkDay.APIManager.Instance.AccessData.UserId,
 					"VK Loader API test...my name :"
-					+ vkontakte.APIManager.Instance.Profile.FullName,
+					+ VkDay.APIManager.Instance.Profile.FullName,
 					@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
 					"",
 					"");
@@ -297,7 +297,7 @@ namespace VKMusicSync.ModelView
 
 		public void ShareInfo()
 		{
-			/*AudiosCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+			/*AudiosCommand profCommand = VkDay.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
 			profCommand.ExecuteNonQuery();*/
 		}
 

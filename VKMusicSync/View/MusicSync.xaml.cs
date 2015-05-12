@@ -14,6 +14,7 @@ using Elysium;
 using VKMusicSync;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
+using VkDay;
 
 namespace VKMusicSync
 {

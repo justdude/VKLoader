@@ -7,11 +7,11 @@ using System.Globalization;
 using System.Web;
 using System.Windows.Forms;
 
-using VKMusicSync.Model;
-using VKMusicSync.Handlers;
+using VkDay.Model;
+using VkDay.Handlers;
 using VkDay.vkontakte;
 
-namespace vkontakte
+namespace VkDay
 {
     public class AuthWindowed
     {

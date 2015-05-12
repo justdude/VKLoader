@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using vkontakte;
+using VkDay;
 
-namespace VKMusicSync
+namespace VkDay
 {
     public partial class Auth : Form
     {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using VkDay.Delegates;
 using VKMusicSync.Comparers;
 using VKMusicSync.Delegates;
 using VKMusicSync.Model;
@@ -173,7 +174,7 @@ namespace VKMusicSync.Handlers.Synchronize
             {
                 ActionsDelegates.Execute(item.InstanceWithEvents.OnLoadEnded,
                          this,
-                         new Delegates.Argument() { result = true });
+                         new Argument() { result = true });
 
                 OnDownloadCompleteActions(item, null);
             }
@@ -182,7 +183,7 @@ namespace VKMusicSync.Handlers.Synchronize
             {
                 ActionsDelegates.Execute(item.InstanceWithEvents.OnRaiseError,
                          this,
-                         new Delegates.Argument() { result = true });
+                         new Argument() { result = true });
 
                 OnDownloadCompleteActions(item, null);
             }
@@ -236,7 +237,7 @@ namespace VKMusicSync.Handlers.Synchronize
 
                 ActionsDelegates.Execute(value.InstanceWithEvents.OnProgresChanged, 
                                          this, 
-                                         new Delegates.Argument() {  result = false});
+                                         new Argument() {  result = false});
 
                 if (this.OnProgress != null)
                     OnProgress(this, 
@@ -248,7 +249,7 @@ namespace VKMusicSync.Handlers.Synchronize
             {
                 ActionsDelegates.Execute(value.InstanceWithEvents.OnLoadEnded, 
                                          this, 
-                                         new Delegates.Argument() { result = true });
+                                         new Argument() { result = true });
 
                 OnDownloadCompleteActions(value, downloader);
 
@@ -261,7 +262,7 @@ namespace VKMusicSync.Handlers.Synchronize
 
             ActionsDelegates.Execute(value.InstanceWithEvents.OnLoadStarted,
                                      this, 
-                                     new Delegates.Argument() { result = false });
+                                     new Argument() { result = false });
 
             downloader.DownloadAsync(value.Path, value.FileName + " " + value.FileExtention);
         }
@@ -276,7 +277,7 @@ namespace VKMusicSync.Handlers.Synchronize
         {
             ActionsDelegates.Execute(value.InstanceWithEvents.OnLoadStarted,
                          this,
-                         new Delegates.Argument() { result = false });
+                         new Argument() { result = false });
 
 
             if (OnUploadAction != null)
@@ -285,7 +286,7 @@ namespace VKMusicSync.Handlers.Synchronize
 
             ActionsDelegates.Execute(value.InstanceWithEvents.OnLoadEnded,
                                         this,
-                                        new Delegates.Argument() { result = true });
+                                        new Argument() { result = true });
 
             OnDownloadCompleteActions(value, null);
 

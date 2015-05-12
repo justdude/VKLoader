@@ -5,7 +5,7 @@
         xmlns:metro="http://schemas.codeplex.com/elysium"
         xmlns:params="http://schemas.codeplex.com/elysium/params"
         xmlns:converters ="clr-namespace:VKMusicSync.Converters"
-        xmlns:local="clr-namespace:vkontakte"
+        xmlns:local="clr-namespace:VkDay"
 				xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
         xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
         

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Net;
-using VKMusicSync.Model;
-using VKMusicSync.Handlers.vkontakte.Commands;
+using VkDay.Model;
+using VkDay.Handlers.Commands;
 //using UrlDecode;
 
-namespace vkontakte
+namespace VkDay
 {
     public class WallCommands
     {

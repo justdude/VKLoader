@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
-using vkontakte;
+using VkDay;
 
 namespace VkEasyPhones.ViewModel
 {

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Net;
-using VKMusicSync.Model;
+using VkDay.Model;
 
-namespace vkontakte
+namespace VkDay
 {
     public enum Genre
     {
@@ -182,7 +182,7 @@ namespace vkontakte
             return command.UploadAudio(path, fileName);//DOWNLOAD PROGRESS!!!!!
         }
 
-        public string SaveAudio(VKMusicSync.Model.AudioUploadedInfo info)
+        public string SaveAudio(VkDay.Model.AudioUploadedInfo info)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -195,7 +195,7 @@ namespace vkontakte
             CommandName = "audio.save";
             AudioUploadComman command = new AudioUploadComman(CommandName, Params);
             var paramsAndtoken = @"" + command.GetParamsWithToken();
-            return VKMusicSync.Handlers.Reqeust.POST("https://api.API.com/method/audio.save", paramsAndtoken);
+            return VkDay.Handlers.Reqeust.POST("https://api.API.com/method/audio.save", paramsAndtoken);
         }
 
         #endregion

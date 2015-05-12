@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VKMusicSync;
-using VKMusicSync.Model;
+using VkDay;
+using VkDay.Model;
 
-namespace vkontakte
+namespace VkDay
 {
 	public class APIManager
 	{

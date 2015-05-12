@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VKMusicSync.Model;
+using VkDay.Model;
 
-namespace vkontakte
+namespace VkDay
 {
     public class AudiosCommand : BaseCommand<SoundBase>
     {

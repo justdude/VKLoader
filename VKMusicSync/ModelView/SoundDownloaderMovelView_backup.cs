@@ -12,7 +12,7 @@
 //using VKMusicSync.Model;
 //using VKMusicSync.ModelView;
 //using VKMusicSync.Handlers.Synchronize;
-//using vkontakte;
+//using VkDay;
 //using VKMusicSync.Handlers;
 //using System.Collections.Specialized;
 //using System.IO;
@@ -383,10 +383,10 @@
 //				{
 //						OnUploadClick();
 //						return;
-//						vkontakte.CommandsGenerator.WallCommands.Post(
-//								+vkontakte.APIManager.AccessData.UserId,
+//						VkDay.CommandsGenerator.WallCommands.Post(
+//								+VkDay.APIManager.AccessData.UserId,
 //								"VK Loader API test...my name :"
-//								+ vkontakte.APIManager.Profile.FullName,
+//								+ VkDay.APIManager.Profile.FullName,
 //								@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
 //								"",
 //								"");
@@ -640,7 +640,7 @@
 //				public void ShareInfo()
 //				{
 //						OnUploadClick();
-//						/*AudiosCommand profCommand = vkontakte.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+//						/*AudiosCommand profCommand = VkDay.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
 //						profCommand.ExecuteNonQuery();*/
 //				}
 

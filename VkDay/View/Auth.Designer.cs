@@ -1,4 +1,4 @@
-﻿namespace VKMusicSync
+﻿namespace VkDay
 {
     partial class Auth
     {

@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
-namespace VKMusicSync.Handlers.vkontakte.Commands
+namespace VkDay.Handlers.Commands
 {
     public class CommandHelper
     {

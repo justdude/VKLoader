@@ -10,6 +10,7 @@ using VKMusicSync.Handlers.Synchronize;
 using VKMusicSync.Delegates;
 using System.Threading;
 using DotLastFm.Models;
+using VkDay.Delegates;
 namespace VKMusicSync.ModelView
 {
 	public class SoundModelView : ViewModelBase, IDownnloadedData, IStateChanged

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Net;
-using VKMusicSync.Model;
+using VkDay.Model;
 
-namespace vkontakte
+namespace VkDay
 {
   
     public class CommandsGenerator

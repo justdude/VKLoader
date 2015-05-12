@@ -6,7 +6,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Security.Cryptography;
-namespace VKMusicSync.Handlers
+namespace VkDay.Handlers
 {
     public class Reqeust
     {

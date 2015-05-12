@@ -4,8 +4,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VKMusicSync.Model;
-namespace vkontakte
+using VkDay.Model;
+namespace VkDay
 {
     public class ProfileCommand : BaseCommand<Profile>
     {
