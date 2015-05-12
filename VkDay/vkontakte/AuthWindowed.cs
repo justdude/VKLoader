@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using VKMusicSync.Model;
 using VKMusicSync.Handlers;
+using VkDay.vkontakte;
 
 namespace vkontakte
 {

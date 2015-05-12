@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VkEasyPhones.ViewModel;
 
 namespace VkEasyPhones
 {
@@ -23,6 +24,13 @@ namespace VkEasyPhones
 		public MainWindow()
 		{
 			InitializeComponent();
+			Loaded += MainWindow_Loaded;
+		}
+
+		void MainWindow_Loaded(object sender, RoutedEventArgs e)
+		{
+			MainPhonesViewModel mainViewModel = new MainPhonesViewModel();
+			DataContext = mainViewModel;
 		}
 	}
 }

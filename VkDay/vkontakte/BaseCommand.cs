@@ -85,8 +85,12 @@ namespace vkontakte
             queryString = MakeQueryString(CommandName, AccessData.AccessToken, Params);
 
             downloader.DownloadProgressChanged += OnCommandExecuting;
-            downloader.DownloadFileAsync(new Uri(queryString), CommandName);
-
+						try
+						{ 
+							downloader.DownloadFileAsync(new Uri(queryString), CommandName);
+						}
+						catch
+						{ }
             while (true)
                 if (!downloader.IsBusy) break;
             FileStream fileStream = new FileStream(CommandName, FileMode.Open, FileAccess.Read);
