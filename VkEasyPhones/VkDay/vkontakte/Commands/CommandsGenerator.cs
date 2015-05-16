@@ -55,6 +55,19 @@ namespace VkDay
             }
         }
 
+				private static GeolocationCommands geolocationCommands;
+				public static GeolocationCommands GeolocationCommands
+				{
+					get
+					{
+						if (geolocationCommands == null) geolocationCommands = new GeolocationCommands();
+						return geolocationCommands;
+					}
+					set
+					{
+						geolocationCommands = value;
+					}
+				}
       
     }
 }

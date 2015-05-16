@@ -56,6 +56,9 @@ namespace VkDay
 			{
 				try
 				{
+					if (AccessData == null)
+						return;
+
 					Profile = CommandsGenerator.ProfileCommands.GetUser(AccessData.UserId);
 					RaiseOnUserLoaded(VKApi.ConnectionState.Loaded);
 				}

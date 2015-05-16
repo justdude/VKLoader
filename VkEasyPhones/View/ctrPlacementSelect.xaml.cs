@@ -23,5 +23,19 @@ namespace VkEasyPhones.View
 		{
 			InitializeComponent();
 		}
+
+
+
+		public string SelectedCityId
+		{
+			get { return (string)GetValue(SelectedCityIdProperty); }
+			set { SetValue(SelectedCityIdProperty, value); }
+		}
+
+		public static readonly DependencyProperty SelectedCityIdProperty =
+				DependencyProperty.Register("SelectedCityId", typeof(string), typeof(ctrPlacementSelect), new PropertyMetadata(string.Empty));
+
+
+
 	}
 }

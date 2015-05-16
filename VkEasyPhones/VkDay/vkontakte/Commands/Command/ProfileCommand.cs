@@ -54,10 +54,10 @@ namespace VkDay
 					List<Profile> data = new List<Profile>();
 					var item = new Profile();
 					System.Xml.XmlNodeList nodes = doc["response"].ChildNodes;
-					for (int i = 0; i < nodes.Count; i++)
+					for (int i = 1; i < nodes.Count; i++)
 					{
 						item = new Profile();
-						//item.uid = int.Parse(nodes[i]["uid"].InnerText);
+						item.uid = int.Parse(nodes[i]["uid"].InnerText);
 						item.first_name = nodes[i]["first_name"].InnerText;
 						item.last_name = (nodes[i]["last_name"].InnerText);
 						item.nickname = XMLNodeHelper.TryParse(nodes[i], "nickname");
@@ -67,6 +67,8 @@ namespace VkDay
 						item.photo = XMLNodeHelper.TryParse(nodes[i], "photo");
 						item.photoBig = XMLNodeHelper.TryParse(nodes[i], "photo_big");
 						item.photoMedium = XMLNodeHelper.TryParse(nodes[i], "photo_medium");
+						item.mobile_phone = XMLNodeHelper.TryParse(nodes[i], "mobile_phone");
+						item.home_phone = XMLNodeHelper.TryParse(nodes[i], "home_phone");
 						data.Add(item);
 					}
 					return data;

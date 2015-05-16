@@ -18,6 +18,8 @@ namespace VkDay.Model
 		public string photo { get; set; }
 		public string photoMedium { get; set; }
 		public string photoBig { get; set; }
+		public string mobile_phone { get; set; }
+		public string home_phone { get; set; }
 
 		public string FullName
 		{
@@ -96,6 +98,31 @@ namespace VkDay.Model
 		public override string ToString()
 		{
 			return this.first_name + " " + this.last_name;
+		}
+
+
+		public bool IsHasNonEmptyNumbers 
+		{ 
+			get
+			{
+				return string.IsNullOrEmpty(home_phone)==false 
+			|| string.IsNullOrEmpty(mobile_phone)==false;
+			} 
+		}
+
+		//public bool IsPhone(string text)
+		//{
+
+		//}
+
+		public string PhoneOut 
+		{ 
+			get
+			{
+				//string mphone = IsPhone(mobile_phone)? mobile_phone : string.Empty;
+
+				return FullName + "(" + uid + ")" + " : " + mobile_phone + " ; " + home_phone;
+			} 
 		}
 
 	}
