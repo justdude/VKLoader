@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace MVVM
 {
-	public class TabModelView :  ViewModelBase//ListTabViewModel<M, VM>
+	public class TabModelView :  AdwancedViewModelBase//ListTabViewModel<M, VM>
 	{
 		public string Header { get; set; }
 

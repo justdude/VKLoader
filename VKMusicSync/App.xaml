@@ -1,14 +1,12 @@
-﻿<Application x:Class="VKMusicSync.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="View/MusicSync.xaml">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourceDictionarys/Styles.xaml"/>
-				<ResourceDictionary Source="ResourceDictionarys/Templates.xaml"/>
-				<ResourceDictionary Source="ResourceDictionarys/TabDictionary.xaml"/> 
-			</ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
+<Application x:Class="VKMusicSync.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="View/MusicSync.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ResourceDictionarys/Styles.xaml" />
+        <ResourceDictionary Source="ResourceDictionarys/Templates.xaml" />
+        <ResourceDictionary Source="ResourceDictionarys/TabDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:VKMusicSync.ViewModel" />
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>

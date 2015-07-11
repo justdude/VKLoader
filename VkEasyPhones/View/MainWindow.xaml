@@ -6,11 +6,42 @@
 		xmlns:local="clr-namespace:VkEasyPhones.View"
 		xmlns:conv="clr-namespace:VkEasyPhones.Converters"
 		xmlns:constants="clr-namespace:VkEasyPhones.Constants"
-        Title="{x:Static constants:Translates.VkSearch}" Height="350" Width="525">
+        Title="{x:Static constants:Translates.VkSearch}" Height="500" Width="650">
 
 	<Window.Resources>
 		<conv:enPeoplesTypeConverter x:Key="peopTypeConverter"/>
+		<conv:enFoundStatesConverter x:Key="foundStatesConverter"/>
+		<conv:IntConverter x:Key="intConverter"/>
 		<conv:StringToIntConverter x:Key="strToIntConv"/>
+		<BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+		<DataTemplate x:Key="tmplLoading" DataType="ContentControl">
+			<StackPanel Margin="1">
+				<TextBlock Text="{x:Static constants:Translates.Loading}"
+							   HorizontalAlignment="Center"></TextBlock>
+				<Controls:ProgressRing
+										   Width="80"
+										   Height="80"
+										   Margin="0 1 0 0"
+										   HorizontalAlignment="Center"
+					IsActive="True"
+										   Visibility="Visible">
+				</Controls:ProgressRing>
+			</StackPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Key="tmplNone" DataType="ContentControl">
+			<TextBlock></TextBlock>
+		</DataTemplate>
+
+		<DataTemplate x:Key="tmplResults" DataType="ContentControl">
+			<StackPanel Margin="6">
+
+				<TextBlock Text="{Binding ResultText}"
+							   HorizontalAlignment="Left"></TextBlock>
+			</StackPanel>
+		</DataTemplate>
+
 	</Window.Resources>
 
 	<Border Margin="4">
@@ -41,29 +72,37 @@
 					</StackPanel>
 				</StackPanel>
 			</Border>
-			
+
 			<Border Grid.Column="0"
 					Grid.Row="1"
 					Grid.RowSpan="2">
-				<StackPanel>
+				<ContentControl Content="{Binding}">
+					<ContentControl.Style>
+						<Style TargetType="ContentControl">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding FoundStates,Converter={StaticResource foundStatesConverter},ConverterParameter=Searching}" Value="True">
+									<Setter Property="ContentTemplate" Value="{StaticResource ResourceKey=tmplLoading}"></Setter>
+								</DataTrigger>
+								
+								<DataTrigger Binding="{Binding FoundStates,Converter={StaticResource foundStatesConverter},ConverterParameter=ShowResults}" Value="True">
+									<Setter Property="ContentTemplate" Value="{StaticResource ResourceKey=tmplResults}"></Setter>
+								</DataTrigger>
 
-					<TextBlock Text="{x:Static constants:Translates.Loading}"></TextBlock>
-					<Controls:ProgressRing Grid.Row="1"
-										   Width="80"
-										   Height="80"
-										   Name="prgWaitings"
-										   Visibility="Visible"
-										   IsActive="True">
-					</Controls:ProgressRing>
-				</StackPanel>
+								<DataTrigger Binding="{Binding FoundStates,Converter={StaticResource foundStatesConverter},ConverterParameter=None}" Value="True">
+									<Setter Property="ContentTemplate" Value="{StaticResource tmplNone}"></Setter>
+								</DataTrigger>
+
+							</Style.Triggers>
+						</Style>
+					</ContentControl.Style>
+				</ContentControl>
 			</Border>
-			
+
 			<!--Searching params-->
 			<local:ctrPlacementSelect Grid.Row="1"
 									  Grid.Column="1"
 									  x:Name="ctrPlacementSel"
-									  Height="130"
-									  SelectedCityId="{Binding SelectedCityId}"></local:ctrPlacementSelect>
+									  Height="130"></local:ctrPlacementSelect>
 			<Grid Grid.Row="2"
 				  Grid.Column="1"
 						VerticalAlignment="Stretch">
@@ -83,7 +122,7 @@
 			</StackPanel>-->
 				<GroupBox Grid.Column="0"
 						  IsEnabled="{Binding IsLoaded}"
-						  Height="130"
+						  MinHeight="130"
 						  Header="{x:Static constants:Translates.AdditionalSearchSettings}">
 					<Grid>
 						<Grid.ColumnDefinitions>
@@ -106,6 +145,7 @@
 
 						<Grid Grid.Column="0">
 							<Grid.RowDefinitions>
+								<RowDefinition></RowDefinition>
 								<RowDefinition></RowDefinition>
 								<RowDefinition></RowDefinition>
 							</Grid.RowDefinitions>
@@ -133,6 +173,14 @@
 							 MaxWidth="33"
 							 Height="20"
 							 Text="{Binding MaxAge, Converter={StaticResource strToIntConv}}"></TextBox>
+
+							<StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+								<TextBlock Text="{x:Static constants:Translates.ResultsFoundFolder}"></TextBlock>
+								<TextBox Width="200" Text="{Binding TargetPath}" ToolTip="{Binding TargetPath}"></TextBox>
+
+								<TextBlock Text="{x:Static constants:Translates.CountOfPages}"></TextBlock>
+								<TextBox Width="200" Text="{Binding CountOfPages,Converter={StaticResource intConverter}}"></TextBox>
+							</StackPanel>
 
 						</Grid>
 

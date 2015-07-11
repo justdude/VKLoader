@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace VKMusicSync.ModelView
 {
-    class SettingsModelView : ViewModelBase
+    class SettingsModelView : AdwancedViewModelBase
     {
 
         public string UserFullName

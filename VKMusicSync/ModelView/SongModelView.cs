@@ -13,7 +13,7 @@ using DotLastFm.Models;
 using VkDay.Delegates;
 namespace VKMusicSync.ModelView
 {
-	public class SoundModelView : ViewModelBase, IDownnloadedData, IStateChanged
+	public class SoundModelView : AdwancedViewModelBase, IDownnloadedData, IStateChanged
 	{
 
 		public IStateChanged InstanceWithEvents

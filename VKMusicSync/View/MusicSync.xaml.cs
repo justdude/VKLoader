@@ -15,17 +15,16 @@ using VKMusicSync;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VkDay;
+using VKMusicSync.MVVM.View;
 
 namespace VKMusicSync
 {
     /// <summary>
     /// Логика взаимодействия для MusicSync.xaml
     /// </summary>
-    public partial class MusicSync : Elysium.Controls.Window
+    public partial class MusicSync : WindowExtended
     {
-				private Auth authWindow;
-
-        public MusicSync()
+        public MusicSync():base()
         {
             //InitializeComponent();
         }
@@ -39,19 +38,8 @@ namespace VKMusicSync
         {
             var modelView = new MainModelView();
             this.DataContext = modelView;
-
-        }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            authWindow = new Auth();
-            authWindow.auth.OnInit += OnAuthDone;
-            authWindow.ShowDialog();
-        }
-        private void OnAuthDone()
-        {
-            if (authWindow != null) authWindow.Close();
+			modelView.Token = this.Token;
+			//modelView.CurrentDispatcher = Dispatcher;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

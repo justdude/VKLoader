@@ -36,10 +36,12 @@
 							Style="{StaticResource cmbStylePlacement}"></ComboBox>
 			<TextBlock Grid.Row="2" 
 							 Text="{x:Static constants:Translates.Towns }"></TextBlock>
-			<ComboBox Grid.Row="3" 
+			<ComboBox Grid.Row="3"
+							Name="cmbCityes"
 							ItemsSource="{Binding Cities}"
 							IsEditable="True"
 							SelectedItem="{Binding SelectedCity, Mode=TwoWay}"
+							TextBoxBase.TextChanged="cmbCityes_TextChanged"
 							Text="{Binding CityName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
 							DisplayMemberPath="PlaceName"
 							Style="{StaticResource cmbStylePlacement}"></ComboBox>

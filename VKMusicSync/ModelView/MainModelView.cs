@@ -25,7 +25,7 @@ using VkDay;
 
 namespace VKMusicSync.ModelView
 {
-	public class MainModelView : ViewModelBase, IDataState
+	public class MainModelView : AdwancedViewModelBase, IDataState
 	{
 
 		#region Fields
@@ -205,16 +205,17 @@ namespace VKMusicSync.ModelView
 			Tabs = new ObservableCollection<TabModelView>();
 			var tab = new SoundDownloaderMovelView();
 			Tabs.Add(tab);
-
-			VkDay.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
-			VkDay.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
-			APIManager.Instance.Connect();
-
 		}
 
 		#endregion
 
 		#region Events listen
+
+		void worker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			Thread.Sleep(1000 * 1);
+			Execute(APIManager.Instance.Connect);
+		}
 
 		void API_OnConnectionStateChanged(VkDay.VKApi.ConnectionState obj)
 		{
@@ -299,6 +300,30 @@ namespace VKMusicSync.ModelView
 		{
 			/*AudiosCommand profCommand = VkDay.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
 			profCommand.ExecuteNonQuery();*/
+		}
+
+		#endregion
+
+		#region ViewModel overrides
+
+		protected override void OnTokenChanged()
+		{
+			VkDay.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
+			VkDay.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
+
+			BackgroundWorker worker = new BackgroundWorker();
+			worker.DoWork += worker_DoWork;
+			worker.RunWorkerAsync();
+			
+			base.OnTokenChanged();
+		}
+
+		protected override void OnCleanup()
+		{
+			VkDay.APIManager.Instance.OnUserLoaded -= vk_OnStateChanged;
+			VkDay.APIManager.Instance.API.OnConnectionStateChanged -= API_OnConnectionStateChanged;
+
+			base.OnCleanup();
 		}
 
 		#endregion

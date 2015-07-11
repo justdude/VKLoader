@@ -13,6 +13,10 @@ using System.Threading;
 using VkEasyPhones.VkDay.Model;
 using VkEasyPhones.Converters;
 using VkEasyPhones.Enumartions;
+using System.Windows.Threading;
+using VkEasyPhones.Constants;
+using VkEasyPhones.Helpers;
+using System.Windows;
 
 namespace VkEasyPhones.ViewModel
 {
@@ -22,6 +26,12 @@ namespace VkEasyPhones.ViewModel
 		private enPeoplesTypes mvPeoplesSearchingType;
 		private int mvMaxAge;
 		private int mvMinAge;
+		private bool mvIsLoading;
+		private enFoundStates mvFoundStates;
+		private int modFoundResultCount = 0;
+		private string mvSelectedCityId;
+		private string mvTargetPath;
+		private int mvCountOfPages;
 		#endregion
 
 		#region Properties
@@ -38,6 +48,52 @@ namespace VkEasyPhones.ViewModel
 			get
 			{
 				return APIManager.Instance.IsCanLogin == false;
+			}
+		}
+
+		public bool IsLoading
+		{
+			get
+			{
+				return mvIsLoading;
+			}
+			set
+			{
+				if (mvIsLoading == value)
+					return;
+
+				mvIsLoading = value;
+				RaisePropertyChanged(() => IsLoading);
+			}
+		}
+		public string ResultText
+		{
+			get
+			{
+				return string.Format(Translates.ResultsFound, modFoundResultCount);
+			}
+		}
+
+		public string TargetPath
+		{
+			get { return mvTargetPath; }
+			set { mvTargetPath = value; RaisePropertyChanged(() => TargetPath); }
+		}
+
+		public string SelectedCityId
+		{
+			get
+			{
+				return mvSelectedCityId;
+			}
+			set
+			{
+				if (mvSelectedCityId == value)
+					return;
+
+				mvSelectedCityId = value;
+
+				RaisePropertyChanged(() => SelectedCityId);
 			}
 		}
 
@@ -74,6 +130,24 @@ namespace VkEasyPhones.ViewModel
 				RaisePropertyChanged(() => MinAge);
 			}
 		}
+		//
+
+		public int CountOfPages
+		{
+			get
+			{
+				return mvCountOfPages;
+			}
+			set
+			{
+				if (mvCountOfPages == value)
+					return;
+
+				mvCountOfPages = value;
+
+				RaisePropertyChanged(() => CountOfPages);
+			}
+		}
 
 		public enPeoplesTypes PeoplesSearchingType
 		{
@@ -92,6 +166,22 @@ namespace VkEasyPhones.ViewModel
 			}
 		}
 
+		public enFoundStates FoundStates
+		{
+			get
+			{
+				return mvFoundStates;
+			}
+			set
+			{
+				if (mvFoundStates == value)
+					return;
+
+				mvFoundStates = value;
+
+				RaisePropertyChanged(() => FoundStates);
+			}
+		}//FoundStates
 		#endregion
 
 		#region Commands
@@ -131,6 +221,11 @@ namespace VkEasyPhones.ViewModel
 			PeoplesSearchingType = enPeoplesTypes.All;
 			MinAge = 16;
 			MaxAge = 80;
+
+			CountOfPages = 10;
+
+			MessengerInstance.Register<VkEasyPhones.Messages.PlacementMessage>(this, OnLocationChange);
+			TargetPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 		}
 		#endregion
 
@@ -139,6 +234,7 @@ namespace VkEasyPhones.ViewModel
 
 		private void OnAutorizeClick()
 		{
+			IsLoading = true;
 			APIManager.Instance.OnUserLoaded += Instance_OnUserLoaded;
 			APIManager.Instance.Connect();
 
@@ -146,6 +242,7 @@ namespace VkEasyPhones.ViewModel
 				return;
 
 			APIManager.Instance.InitUser();
+			IsLoading = false;
 		}
 
 		private void Instance_OnUserLoaded(VKApi.ConnectionState obj)
@@ -156,33 +253,105 @@ namespace VkEasyPhones.ViewModel
 			}
 		}
 
+
 		private void OnSearchClick()
 		{
+			List<Profile> users = new List<Profile>();
+
+			if (string.IsNullOrEmpty(TargetPath) || System.IO.Directory.Exists(TargetPath) == false)
+			{
+				MessageBox.Show(" Неверный путь ");
+				return;
+			}
+			if (string.IsNullOrEmpty(TargetPath))
+			{
+				MessageBox.Show(" Город неверен ");
+				return;
+			}
+			if (CountOfPages <=1)
+			{
+				MessageBox.Show(" Нужно больше страниц ");
+				return;
+			}
+			//CountOfPages
+
+			int pagesCount = CountOfPages;
+			int threads = 3;
+			string cityId = SelectedCityId;//"2201";
+			string filePath = TargetPath + @"\" + "FOUND_USERS.txt";
+			string xlsPath = TargetPath + @"\" + "FOUND_USERS.xls";
+
+			ChangeState(0, enFoundStates.Searching, true);
+
 			ThreadPool.QueueUserWorkItem((d) =>
 			{
-				List<Profile> users = new List<Profile>();
+				Fill(users, pagesCount, threads);
 
-				for (int i = 0; i < 3; i++)
+				var filtered = Filter(users, cityId);
+
+				WriteToFile(filtered, filePath);
+
+
+				try
 				{
-					var tempUsers = CommandsGenerator.ProfileCommands.Search("", 1000, i);
-					users.AddRange(tempUsers);
+					CExcelHelper.WriteToExcelSpreadSheets(xlsPath, filtered);
+					System.Diagnostics.Process.Start(xlsPath);
+				}
+				catch
+				{
+					MessageBox.Show("Не удалось обработать Excel файл. Воспользуйтесь txt файлом");
 				}
 
-				var withPhones = users.Where(p => p.IsHasNonEmptyNumbers && p.city == "2201");
+				ChangeState(filtered.Count(), enFoundStates.ShowResults, false);
 
-				StringBuilder bd = new StringBuilder();
-				foreach (var item in withPhones)
-				{
-					bd.AppendLine(item.FullName + "(" + item.uid + ")" + " : " + item.mobile_phone + " ; " + item.home_phone);
-				}
-
-				File.WriteAllText("file.txt", bd.ToString());
-				System.Diagnostics.Process.Start("file.txt");
+				
 			});
+		}
+
+		private static IEnumerable<Profile> Filter(List<Profile> users, string cityId)
+		{
+			var withPhones = users.Where(p => p.IsHasNonEmptyNumbers && p.city == cityId).GroupBy(p=>p.uid).Select(gpr=>gpr.FirstOrDefault());
+			return withPhones;
+		}
+
+		private void ChangeState(int countFound, enFoundStates state, bool isLoading)
+		{
+			Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+			{
+				//IsLoaded = true;
+				modFoundResultCount = countFound;
+				IsLoading = isLoading;
+				FoundStates = state;
+			}));
+		}
+
+		private static void WriteToFile(IEnumerable<Profile> users, string path)
+		{
+			StringBuilder bd = new StringBuilder();
+			foreach (var item in users)
+			{
+				bd.AppendLine(item.FullName + "(" + item.uid + ")" + " : " + item.mobile_phone + " ; " + item.home_phone);
+			}
+
+			File.WriteAllText(path, bd.ToString());
+		}
+
+		private static void Fill(List<Profile> users, int pagesCount, int threads)
+		{
+			for (int i = 0; i < pagesCount; i++)
+			{
+				var tempUsers = CommandsGenerator.ProfileCommands.Search("", 1000, i);
+				users.AddRange(tempUsers);
+			}
 		}
 
 		#endregion
 
-		
+
+
+		public void OnLocationChange(VkEasyPhones.Messages.PlacementMessage mess)
+		{
+			SelectedCityId = mess.CityID;
+		}
 	}
 }

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using VkDay;
+using VkEasyPhones.VkDay.Model;
 
 namespace VkEasyPhones.ViewModel
 {
@@ -30,7 +31,9 @@ namespace VkEasyPhones.ViewModel
 					return;
 
 				mvSelectedCountry = value;
+				
 				UpdateCities(SelectedCountry.Location.cid);
+				InformListeners();
 
 				RaisePropertyChanged(()=>SelectedCountry);
 			}
@@ -48,6 +51,7 @@ namespace VkEasyPhones.ViewModel
 					return;
 
 				mvSelectedCity = value;
+				InformListeners();
 
 				RaisePropertyChanged(() => SelectedCity);
 			} 
@@ -65,9 +69,28 @@ namespace VkEasyPhones.ViewModel
 					return;
 
 				mvCityName = value;
+				InformListeners();
 
 				RaisePropertyChanged(()=>CityName);
 			}
+		}
+
+		private void InformListeners()
+		{
+
+			if (SelectedCity == null || SelectedCountry == null)
+				return;
+
+			if (SelectedCountry.Location == null || SelectedCity.Location == null)
+				return;
+
+			var message = new VkEasyPhones.Messages.PlacementMessage()
+			{
+				CityID = SelectedCity.Location.cid,
+				CountryID = SelectedCountry.Location.cid,
+			};
+
+			MessengerInstance.Send<VkEasyPhones.Messages.PlacementMessage>(message);
 		}
 
 		public bool IsLoaded
@@ -136,8 +159,21 @@ namespace VkEasyPhones.ViewModel
 		private void UpdateCities(string countryId)
 		{
 			var cities = CommandsGenerator.GeolocationCommands.GetSities(countryId, string.Empty);
+
 			Cities.Clear();
-			cities.ForEach(p => Cities.Add(new PlaceViewModel(p)));
+			cities.ForEach(p => Cities.Add(new PlaceViewModel(p)));			
+			
+			if(countryId == "2")
+			{
+				Cities.Add(new PlaceViewModel() 
+				{ 
+					Location = new City() 
+					{ 
+						cid = "2201", 
+						title = "Кировоград" 
+					}
+				});
+			}
 			SelectedCity = Cities.FirstOrDefault();
 		}
 

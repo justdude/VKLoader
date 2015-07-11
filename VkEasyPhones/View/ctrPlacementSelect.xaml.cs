@@ -24,8 +24,6 @@ namespace VkEasyPhones.View
 			InitializeComponent();
 		}
 
-
-
 		public string SelectedCityId
 		{
 			get { return (string)GetValue(SelectedCityIdProperty); }
@@ -33,9 +31,17 @@ namespace VkEasyPhones.View
 		}
 
 		public static readonly DependencyProperty SelectedCityIdProperty =
-				DependencyProperty.Register("SelectedCityId", typeof(string), typeof(ctrPlacementSelect), new PropertyMetadata(string.Empty));
+				DependencyProperty.Register("SelectedCityId", typeof(string), typeof(ctrPlacementSelect), new PropertyMetadata(string.Empty, PropertyChanged));
 
+		private static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			//cmbCityes.Text = SelectedCityId;
+		}
 
+		private void cmbCityes_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			SelectedCityId = cmbCityes.Text;
+		}
 
 	}
 }
