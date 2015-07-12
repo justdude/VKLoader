@@ -155,7 +155,6 @@
     <Compile Include="ModelView\IDataState.cs" />
     <Compile Include="ModelView\MainModelView.cs" />
     <Compile Include="ModelView\SettingsModelView.cs" />
-    <Compile Include="ModelView\SoundDownloaderMovelView_backup.cs" />
     <Compile Include="Model\IData.cs" />
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\Sound.cs" />

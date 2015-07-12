@@ -27,7 +27,7 @@ namespace VKMusicSync.MVVM.View
 			if (viewModel == null)
 				return;
 
-			viewModel.CleanViewModel();
+			viewModel.Clean();
 		}
 
 	}

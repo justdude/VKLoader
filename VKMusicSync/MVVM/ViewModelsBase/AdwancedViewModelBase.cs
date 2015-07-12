@@ -122,7 +122,7 @@ namespace MVVM
 
 		#region Public methods
 
-		public void CleanViewModel()
+		public void Clean()
 		{
 			OnCleanup();
 		}
@@ -135,6 +135,9 @@ namespace MVVM
 			
 		}
 
+		public virtual void RefreshCommands()
+		{ }
+
 		protected virtual void RefreshPrivate()
 		{
 		}
@@ -142,6 +145,11 @@ namespace MVVM
 		protected virtual void OnCleanup()
 		{
 			Cleanup();
+		}
+
+		public virtual void Refresh()
+		{
+			RefreshPrivate();
 		}
 
 		#endregion

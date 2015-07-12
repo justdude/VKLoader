@@ -64,8 +64,13 @@ namespace VKMusicSync.ModelView
 			}
 			set
 			{
+				if (Properties.Settings.Default.LoadInfoFromLastFm == value)
+					return;
+
 				Properties.Settings.Default.LoadInfoFromLastFm = value;
 				Properties.Settings.Default.Save();
+
+				RaisePropertyChanged<bool>(() => LoadInfoFromLast);
 			}
 		}
 
@@ -87,7 +92,7 @@ namespace VKMusicSync.ModelView
 			set
 			{
 				progressVisibility = value;
-				OnPropertyChanged("ProgressVisibility");
+				RaisePropertyChanged<bool>(() => ProgressVisibility);
 			}
 		}
 
@@ -99,11 +104,11 @@ namespace VKMusicSync.ModelView
 			}
 			set
 			{
-				if (isSyncing != value)
-				{
-					isSyncing = value;
-					OnPropertyChanged("IsSyncing");
-				}
+				if (isSyncing == value)
+					return;
+
+				isSyncing = value;
+				RaisePropertyChanged<bool>(() => IsSyncing);
 			}
 		}
 
@@ -115,7 +120,7 @@ namespace VKMusicSync.ModelView
 			{
 				//System.Windows.Forms.MessageBox.Show(tabSelectedIndex.ToString());
 				tabSelectedIndex = value;
-				OnPropertyChanged("TabSelectedIndex");
+				RaisePropertyChanged<int>(() => TabSelectedIndex);
 			}
 		}
 
@@ -132,7 +137,7 @@ namespace VKMusicSync.ModelView
 
 				status = value;
 
-				OnPropertyChanged("Status");
+				RaisePropertyChanged<string>(() => Status);
 			}
 		}
 
@@ -143,10 +148,6 @@ namespace VKMusicSync.ModelView
 				if (APIManager.Instance.Profile == null)
 					return "";
 				return APIManager.Instance.Profile.ToString();
-			}
-			set
-			{
-				OnPropertyChanged("UserFullName");
 			}
 		}
 
@@ -159,8 +160,12 @@ namespace VKMusicSync.ModelView
 			}
 			set
 			{
+				if (avatar == value)
+					return;
+
 				avatar = value;
-				OnPropertyChanged("Avatar");
+
+				RaisePropertyChanged<string>(() => Avatar);
 			}
 		}
 
@@ -168,18 +173,14 @@ namespace VKMusicSync.ModelView
 
 		#region Click Commands
 
-		private DelegateCommand settings;
-		private DelegateCommand shareClick;
+		private readonly DelegateCommand modSettingsCLickCommand;
+		private readonly DelegateCommand modShareClickCommand;
 
 		public ICommand SettingsClick
 		{
 			get
 			{
-				if (settings == null)
-				{
-					settings = new DelegateCommand(OnSettingsClick);
-				}
-				return settings;
+				return modSettingsCLickCommand;
 			}
 
 		}
@@ -188,11 +189,7 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				if (shareClick == null)
-				{
-					shareClick = new DelegateCommand(OnShareClick);
-				}
-				return shareClick;
+				return modShareClickCommand;
 			}
 
 		}
@@ -202,9 +199,10 @@ namespace VKMusicSync.ModelView
 
 		public MainModelView()
 		{
+			modSettingsCLickCommand = new DelegateCommand(OnSettingsClick);
+			modShareClickCommand = new DelegateCommand(OnShareClick);
+
 			Tabs = new ObservableCollection<TabModelView>();
-			var tab = new SoundDownloaderMovelView();
-			Tabs.Add(tab);
 		}
 
 		#endregion
@@ -290,7 +288,7 @@ namespace VKMusicSync.ModelView
 			if (path != string.Empty)
 				Execute(() => Avatar = path);
 
-			Execute(() => UserFullName = APIManager.Instance.Profile.last_name);
+			Execute(() => Refresh());
 		}
 		#endregion
 
@@ -306,20 +304,55 @@ namespace VKMusicSync.ModelView
 
 		#region ViewModel overrides
 
+		private void RaisePropertyesChaned()
+		{
+			RaisePropertyChanged<string>(() => BackgroundPath);
+			RaisePropertyChanged<bool>(() => LoadInfoFromLast);
+			RaisePropertyChanged<bool>(() => ProgressVisibility);
+			RaisePropertyChanged<bool>(() => IsSyncing);
+			RaisePropertyChanged<int>(() => TabSelectedIndex);
+			RaisePropertyChanged<string>(() => Status);
+			RaisePropertyChanged<string>(() => Avatar);
+			RaisePropertyChanged<string>(() => UserFullName);
+		}
+
+		public override void RefreshCommands()
+		{
+			modSettingsCLickCommand.RaiseCanExecuteChanged();
+			modShareClickCommand.RaiseCanExecuteChanged();
+			base.RefreshCommands();
+		}
+
+		protected override void RefreshPrivate()
+		{
+			RaisePropertyesChaned();
+			RefreshCommands();
+			base.RefreshPrivate();
+		}
+
 		protected override void OnTokenChanged()
 		{
 			VkDay.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
 			VkDay.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
 
+			var tab = new SoundDownloaderMovelView() { Token = this.Token };
+			Tabs.Add(tab);
+
 			BackgroundWorker worker = new BackgroundWorker();
 			worker.DoWork += worker_DoWork;
 			worker.RunWorkerAsync();
-			
+
 			base.OnTokenChanged();
 		}
 
 		protected override void OnCleanup()
 		{
+			foreach (var item in Tabs)
+			{
+				item.Clean();
+			}
+			Tabs.Clear();
+
 			VkDay.APIManager.Instance.OnUserLoaded -= vk_OnStateChanged;
 			VkDay.APIManager.Instance.API.OnConnectionStateChanged -= API_OnConnectionStateChanged;
 

@@ -36,6 +36,11 @@ namespace VKMusicSync.ModelView
 		private ObservableCollection<SoundModelView> mvSounds = new ObservableCollection<SoundModelView>();
 
 
+		private readonly DelegateCommand checkAll;
+		private readonly DelegateCommand downloadFiles;
+		private readonly DelegateCommand cancelProcess;
+		private readonly DelegateCommand sync;
+
 		//private List<Sound> cachedSounds = new List<Sound>();
 		//private List<Sound> CachedSounds
 		//{
@@ -165,22 +170,12 @@ namespace VKMusicSync.ModelView
 
 		#region Click Commands
 
-		private DelegateCommand checkAll;
 		public ICommand CheckAll
 		{
 			get
 			{
-				if (checkAll == null)
-				{
-					checkAll = new DelegateCommand(OnCheckedAllClick, CheckIsLoaded);
-				}
 				return checkAll;
 			}
-			set
-			{
-				OnPropertyChanged("CheckAll");
-			}
-
 		}
 
 		private bool CheckIsLoaded()
@@ -193,44 +188,27 @@ namespace VKMusicSync.ModelView
 			return false;
 		}
 
-
-		private DelegateCommand downloadFiles;
 		public ICommand DownloadFiles
 		{
 			get
 			{
-				if (downloadFiles == null)
-				{
-					downloadFiles = new DelegateCommand(StartSync, () => { return IsCanStartyngSync; });
-				}
 				return downloadFiles;
 			}
 
 		}
 
-		private DelegateCommand cancelProcess;
 		public ICommand CancelProcess
 		{
 			get
 			{
-				if (cancelProcess == null)
-				{
-					cancelProcess = new DelegateCommand(CancelSync, CheckIsLoaded);
-				}
 				return cancelProcess;
 			}
-
 		}
 
-		private DelegateCommand sync;
 		public ICommand SyncClick
 		{
 			get
 			{
-				if (sync == null)
-				{
-					sync = new DelegateCommand(OnUploadClick);
-				}
 				return sync;
 			}
 
@@ -239,15 +217,11 @@ namespace VKMusicSync.ModelView
 
 		#region Constructor
 
-
 		public SoundDownloaderMovelView()
 			: base()
 		{
 			Header = Constants.Const.tbAudiosHeader;
 			SoundsData = new List<Sound>();
-
-			MainModelView.OnStateChanged += MainModelView_OnStateChanged;
-
 		}
 
 		private void MainModelView_OnStateChanged(VKApi.ConnectionState obj)
@@ -321,7 +295,6 @@ namespace VKMusicSync.ModelView
 		}
 
 		#endregion
-
 
 		private bool IsCanStartyngSync
 		{
@@ -575,6 +548,29 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
+		protected override void OnTokenChanged()
+		{
+			MainModelView.OnStateChanged += MainModelView_OnStateChanged;
+
+			base.OnTokenChanged();
+		}
+
+		protected override void OnCleanup()
+		{
+			MainModelView.OnStateChanged -= MainModelView_OnStateChanged;
+
+			try
+			{
+				if (SoundHandler != null)
+					SoundHandler.CancelDownloading();
+
+				CancelSync();
+			}
+			catch(Exception)
+			{ }
+
+			base.OnCleanup();
+		}
 
 
 		#region IDataState Members
