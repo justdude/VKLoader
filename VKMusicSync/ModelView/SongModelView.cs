@@ -11,6 +11,9 @@ using VKMusicSync.Delegates;
 using System.Threading;
 using DotLastFm.Models;
 using VkDay.Delegates;
+using System.Reflection;
+using System.IO;
+using VCSKicks;
 namespace VKMusicSync.ModelView
 {
 	public class SoundModelView : AdwancedViewModelBase, IDownnloadedData, IStateChanged
@@ -53,6 +56,7 @@ namespace VKMusicSync.ModelView
 		public static bool FreezeClick = false;
 
 		private bool ischecked = true;
+		private bool currentProgressVisibility = false;
 
 		public bool Checked
 		{
@@ -63,15 +67,15 @@ namespace VKMusicSync.ModelView
 			set
 			{
 				//if (FreezeClick == false)
-				if (ischecked != value)
-				{
-					ischecked = value;
-					OnPropertyChanged("Checked");
-				}
+				if (ischecked == value)
+					return;
+
+				ischecked = value;
+
+				OnPropertyChanged("Checked");
 			}
 		}
 
-		private bool currentProgressVisibility = false;
 		public bool CurrentProgressVisibility
 		{
 			get
@@ -80,11 +84,12 @@ namespace VKMusicSync.ModelView
 			}
 			set
 			{
-				if (currentProgressVisibility != value)
-				{
-					currentProgressVisibility = value;
-					OnPropertyChanged("CurrentProgressVisibility");
-				}
+				if (currentProgressVisibility == value)
+					return;
+
+				currentProgressVisibility = value;
+
+				OnPropertyChanged("CurrentProgressVisibility");
 			}
 
 		}
@@ -95,6 +100,9 @@ namespace VKMusicSync.ModelView
 			get { return Sound.artist; }
 			set
 			{
+				if (Sound.artist == value)
+					return;
+
 				Sound.artist = value;
 				OnPropertyChanged("Artist");
 			}
@@ -105,6 +113,9 @@ namespace VKMusicSync.ModelView
 			get { return Sound.title; }
 			set
 			{
+				if (Sound.title == value)
+					return;
+
 				Sound.title = value;
 				OnPropertyChanged("Title");
 			}
@@ -118,6 +129,9 @@ namespace VKMusicSync.ModelView
 			}
 			set
 			{
+				if (Sound.duration == value)
+					return;
+
 				Sound.duration = value;
 				OnPropertyChanged("Duration");
 			}
@@ -125,7 +139,7 @@ namespace VKMusicSync.ModelView
 
 		public int Quality
 		{
-			get { return 192; }
+			get { return 0; }
 			set
 			{
 				//Sound.Quality = value;
@@ -138,6 +152,9 @@ namespace VKMusicSync.ModelView
 			get { return Sound.Size; }
 			set
 			{
+				if (Sound.Size == value)
+					return;
+
 				Sound.Size = value;
 				OnPropertyChanged("Size");
 			}
@@ -148,6 +165,9 @@ namespace VKMusicSync.ModelView
 			get { return Sound.LoadedSize; }
 			set
 			{
+				if (Sound.Size == value)
+					return;
+
 				Sound.LoadedSize = value;
 				OnPropertyChanged("LoadedSize");
 			}
@@ -180,34 +200,36 @@ namespace VKMusicSync.ModelView
 			{
 				if (mvImage == null)
 				{
-						if (Sound.authorPhotoPath != null && Sound.authorPhotoPath.Length > 0)
+						if (string.IsNullOrWhiteSpace(Sound.authorPhotoPath)==false)
 						{
-							//try
-							//{
-							//CurrentDispatcher.BeginInvoke(new Action(()=>
-							//	mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath))), null);
-							//}
-							//catch (Exception)
-							//{
-							//	CurrentDispatcher.BeginInvoke(new Action(() =>
-							//		mvImage = new BitmapImage(new Uri(VkDay.Constants.ImageDefaultURI))), null);
-							//} 
+							try
+							{
+
+								CurrentDispatcher.BeginInvoke(new Action(() =>
+									mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath))), null);
+							}
+							catch (Exception)
+							{
+								CurrentDispatcher.BeginInvoke(new Action(() =>
+									mvImage = new BitmapImage(new Uri(VkDay.Constants.ImageDefaultURI))), null);
+							} 
+						}
+						else
+						{
+							var bm = new BitmapImage(new Uri(Constants.Const.UnjnownAuthorPath));
+							return bm;
 						}
 				}
-				//else
-				//{
-				//	var bm = new BitmapImage(new Uri(Constants.Const.UnjnownAuthorPath));
-				//	return bm;
-				//}
 				return mvImage;
 			}
 			set
 			{
-				if (value != mvImage)
-				{
-					mvImage = value;
-					OnPropertyChanged("Photo");
-				}
+				if (value == mvImage)
+					return;
+
+				mvImage = value;
+
+				OnPropertyChanged("Photo");
 			}
 		}
 
