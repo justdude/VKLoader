@@ -59,35 +59,11 @@
 		<Rectangle Grid.Row="0" Fill="#FF017BCD"/>
 
 		<StackPanel Grid.Row="0" Orientation="Vertical" Height="55" Width="120"  HorizontalAlignment="Left" Margin="0,0,0,0">
-			<!--<Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,1,0,0"></Image>-->
+			<Image Source="{Binding Avatar}" HorizontalAlignment="Center" Height="35"  Width="35" Margin="0,1,0,0"></Image>
 			<TextBlock Text="{Binding UserFullName}" Style="{StaticResource NameText}" HorizontalAlignment="Center" ></TextBlock>
 		</StackPanel>
 
 		<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-			<!--<Button Content="Закачать" Command="{Binding DownloadFiles}" />-->
-			<!--<Button Content="Синронизировать" Command="{Binding SyncClick}" />-->
-			<!--<Border Style="{DynamicResource BorderStyle}">
-                <Grid>
-                    <Button
-                        Grid.Row="0"
-                        Content="Загрузка"
-                        Command="{Binding DownloadFiles}" 
-                        Visibility="{Binding IsSyncing, Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Invert'}"
-                        />
-                    
-                    <Button 
-                        Grid.Row="0"
-                        Content="Отмена" 
-                        Command="{Binding CancelProcess}" 
-                        Visibility="{Binding IsSyncing, Converter={StaticResource VisibilityToBoolConverter}}"
-                        />
-
-                </Grid>
-            </Border>-->
-			<!--<Border Style="{DynamicResource BorderStyle}">
-                <Button  Content="{Binding CheckedText}" Command="{Binding CheckAll}" ></Button>
-            </Border>-->
-			<!--Content="{Binding SelectButtonState}"  Command="{Binding ButtonStateClick}" />-->
 			<Border Style="{DynamicResource BorderStyle}">
 				<Button Content="Поделиться"  Command="{Binding ShareClick}" />
 			</Border>
@@ -104,98 +80,6 @@
 					ItemContainerStyle="{StaticResource TabItemStyle}"
 										ItemsSource="{Binding Tabs}"
                     SelectedIndex="{Binding TabSelectedIndex}">
-
-			<!--<TabControl.ItemTemplate>
-                <DataTemplate DataType="TabItem">
-										<StackPanel Orientation="Horizontal">
-											<TextBlock Text="{Binding Header}"/>
-											<Button></Button>
-										</StackPanel>
-                </DataTemplate>
-            </TabControl.ItemTemplate>-->
-
-			<!--<TabItem.Header>
-				<StackPanel Orientation="Horizontal">
-					<Image Name="img" Height="auto" Width="auto" Source="images/1.png" />
-					<TextBlock Text="Login" Margin="2,0,0,0" VerticalAlignment="Center" />
-				</StackPanel>
-			</TabItem.Header>-->
-
-			<TabControl.Resources>
-
-			</TabControl.Resources>
-
-			<!--<TabControl.ContentTemplate>
-							<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
-					<Grid>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="35"></RowDefinition>
-							<RowDefinition Height="60*" ></RowDefinition>
-						</Grid.RowDefinitions>
-						<StackPanel Grid.Row="0"
-																Margin="10 0 0 0"
-																Orientation="Horizontal">
-
-							<CheckBox Margin="5 5 5 5"
-																Command="{Binding CheckAll}">
-
-							</CheckBox>
-							<Button
-												Style="{StaticResource ButtonEmtyWith2State}"
-												Margin="5 5 5 5"></Button>
-						</StackPanel>
-						<ListBox 
-                        Grid.Row="1" 
-                        Margin="5" 
-                        ItemsSource="{Binding Items}"
-                        ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                        ItemTemplate ="{StaticResource ListBoxItemTemplate}"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch" >
-						</ListBox>
-					</Grid>
-				</DataTemplate>
-
-						</TabControl.ContentTemplate>-->
-			<!--<TabItem Header="Download">
-                <Grid>
-									<Grid.RowDefinitions>
-										<RowDefinition Height="35"></RowDefinition>
-										<RowDefinition Height="60*" ></RowDefinition>
-									</Grid.RowDefinitions>
-										<StackPanel Grid.Row="0"
-																Margin="10 0 0 0"
-																Orientation="Horizontal">
-												
-											<CheckBox Margin="5 5 5 5"
-																Command="{Binding CheckAll}">
-												
-											</CheckBox>
-										<Button
-												Style="{StaticResource ButtonEmtyWith2State}"
-												Margin="5 5 5 5"></Button>
-										</StackPanel>
-                    <ListBox 
-                        Grid.Row="1" 
-                        Margin="5" 
-                        ItemsSource="{Binding Sounds}"
-                        ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                        ItemTemplate ="{StaticResource ListBoxItemTemplate}"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch" >
-                    </ListBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Upload">
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Recomendation">
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock  Text="Betta" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                </Grid>
-            </TabItem>-->
 		</TabControl>
 
 		<StatusBar Grid.Row="2">

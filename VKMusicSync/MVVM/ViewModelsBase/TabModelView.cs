@@ -16,6 +16,9 @@ namespace MVVM
 		{
 		}
 
+		public void CleanAndClose()
+		{ }
+
 		////public override string ToString()
 		////{
 		////return "!!!!!!";

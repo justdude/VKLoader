@@ -4,8 +4,8 @@
 	xmlns:metro="http://schemas.codeplex.com/elysium"
   xmlns:windows="clr-namespace:VkDay">
 
-	<Style x:Key="EmptyButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"> 
-				 <!--BasedOn="{StaticResource {x:Type Button}}"-->
+	<Style x:Key="EmptyButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}">
+		<!--BasedOn="{StaticResource {x:Type Button}}"-->
 		<Setter Property="Background" Value="Transparent"></Setter>
 		<Setter Property="BorderBrush" Value="Transparent"></Setter>
 		<Style.Triggers>
@@ -22,7 +22,7 @@
 	<Style x:Key="ButtonEmtyWith2State" 
 				 TargetType="Button" BasedOn="{StaticResource EmptyButtonStyle}">
 		<Style.Triggers>
-			
+
 			<!--IsLoading-->
 
 			<DataTrigger Binding="{Binding IsLoading}" Value="true">
@@ -51,7 +51,7 @@
 					</Setter.Value>
 				</Setter>
 				<Setter Property="Command" Value="{Binding DownloadFiles}" >
-					
+
 				</Setter>
 
 			</DataTrigger>
@@ -60,73 +60,98 @@
 	</Style>
 
 	<Style x:Key="GlassButton" TargetType="{x:Type Button}">
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <!-- Background Layer -->
-                        <Ellipse Fill="{TemplateBinding Background}"/>
-                        <!-- Refraction Layer -->
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="OverridesDefaultStyle" Value="True"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid>
+						<!-- Background Layer -->
+						<Ellipse Fill="{TemplateBinding Background}"/>
+						<!-- Refraction Layer -->
 
-                        <!-- Reflection Layer -->
+						<!-- Reflection Layer -->
 
-                        <!-- ContentPresenter -->
-                        <ContentPresenter Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-
-                    </Grid>
-                  
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="NameText" TargetType="TextBlock">
-        <Setter Property="FontStyle" Value="Normal"></Setter>
-        <Setter Property="FontStretch" Value="Normal"></Setter>
-        <Setter Property="FontSize" Value="14"></Setter>
-        <Setter Property="FontWeight" Value="Normal"></Setter>
-    </Style>
-
-    <Style x:Key="BorderStyle" TargetType="Border">
-        <Setter Property="BorderBrush" Value="White"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="CornerRadius" Value="0"></Setter>
-        <Setter Property="Margin" Value="4"></Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property = "RenderTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+						<!-- ContentPresenter -->
+						<ContentPresenter Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 
-    <Style x:Key="DropShadow" TargetType="{x:Type Grid}">
-        <Setter Property="Background" Value="Aqua" />
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Opacity="0.8" BlurRadius="15" Direction="0" ShadowDepth="0"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
+					</Grid>
 
-    <Style x:Key="ListBoxItemStyle"  TargetType="ListBoxItem">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="WhiteSmoke" />
-                <Setter Property="Foreground" Value="Blue" />
-            </Trigger>
-        </Style.Triggers>
+	<Style x:Key="CloseButton" TargetType="{x:Type Button}">
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="OverridesDefaultStyle" Value="True"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<StackPanel Orientation="Horizontal">
+						<Path
+							Stretch="UniformToFill"
+										Height="{TemplateBinding Height}"
+										Width="{TemplateBinding Width}"
+										Fill="#FF000000"
+										HorizontalAlignment="Stretch"
+										VerticalAlignment="Stretch"
+										Data="F1 M 56.0143,57L 45.683,57L 39.0246,44.6245C 38.7758,44.1665 38.5156,43.3183 38.2442,42.0799L 38.1339,42.0799C 38.0095,42.6623 37.7127,43.5473 37.2433,44.7348L 30.5594,57L 20.1857,57L 32.5018,38L 21.2714,19L 31.8487,19L 37.3621,30.3915C 37.7918,31.2963 38.1763,32.365 38.5156,33.5977L 38.6259,33.5977C 38.8408,32.857 39.2394,31.7543 39.8219,30.2897L 45.8951,19L 55.4714,19L 44.0969,37.8388L 56.0143,57 Z "/>
+						<!-- ContentPresenter -->
+						<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
 
-    </Style>
+					</StackPanel>
+
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="NameText" TargetType="TextBlock">
+		<Setter Property="FontStyle" Value="Normal"></Setter>
+		<Setter Property="FontStretch" Value="Normal"></Setter>
+		<Setter Property="FontSize" Value="14"></Setter>
+		<Setter Property="FontWeight" Value="Normal"></Setter>
+	</Style>
+
+	<Style x:Key="BorderStyle" TargetType="Border">
+		<Setter Property="BorderBrush" Value="White"></Setter>
+		<Setter Property="BorderThickness" Value="1"></Setter>
+		<Setter Property="CornerRadius" Value="0"></Setter>
+		<Setter Property="Margin" Value="4"></Setter>
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="true">
+				<Setter Property = "RenderTransform">
+					<Setter.Value>
+						<ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+
+	<Style x:Key="DropShadow" TargetType="{x:Type Grid}">
+		<Setter Property="Background" Value="Aqua" />
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowEffect Opacity="0.8" BlurRadius="15" Direction="0" ShadowDepth="0"/>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="ListBoxItemStyle"  TargetType="ListBoxItem">
+		<Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Background" Value="WhiteSmoke" />
+				<Setter Property="Foreground" Value="Blue" />
+			</Trigger>
+		</Style.Triggers>
+
+	</Style>
 
 
 </ResourceDictionary>

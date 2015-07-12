@@ -40,6 +40,7 @@ namespace VKMusicSync.ModelView
 		private readonly DelegateCommand downloadFiles;
 		private readonly DelegateCommand cancelProcess;
 		private readonly DelegateCommand sync;
+		private readonly DelegateCommand modCloseCommand;
 
 		//private List<Sound> cachedSounds = new List<Sound>();
 		//private List<Sound> CachedSounds
@@ -170,6 +171,14 @@ namespace VKMusicSync.ModelView
 
 		#region Click Commands
 
+		public override ICommand CloseTab
+		{
+			get
+			{
+				return modCloseCommand;
+			}
+		}
+
 		public ICommand CheckAll
 		{
 			get
@@ -222,6 +231,23 @@ namespace VKMusicSync.ModelView
 		{
 			Header = Constants.Const.tbAudiosHeader;
 			SoundsData = new List<Sound>();
+
+			checkAll = new DelegateCommand(OnCheckedAllClick, CheckIsLoaded);
+			downloadFiles = new DelegateCommand(StartSync, () => { return IsCanStartyngSync; });
+
+			cancelProcess = new DelegateCommand(CancelSync, CheckIsLoaded);
+			sync = new DelegateCommand(OnUploadClick);
+			modCloseCommand = new DelegateCommand(OnCloseTab, CanCloseTab);
+		}
+
+		private bool CanCloseTab()
+		{
+			return false;
+		}
+
+		private void OnCloseTab()
+		{
+			CleanAndClose();
 		}
 
 		private void MainModelView_OnStateChanged(VKApi.ConnectionState obj)
@@ -437,12 +463,12 @@ namespace VKMusicSync.ModelView
 				CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
 
 				List<SoundBase> sounds = CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.Instance.API.UserId, false, 0, count_);
-				
+
 				if (sounds == null)
 					return new List<Sound>();
 
 
-				return sounds.Select(p =>{ return new Sound(p);}).ToList();
+				return sounds.Select(p => { return new Sound(p); }).ToList();
 
 			};
 			return new List<Sound>();
@@ -500,8 +526,15 @@ namespace VKMusicSync.ModelView
 
 		private void CancelSync()
 		{
-			SoundHandler.CancelDownloading();
-			backgroundWorker.CancelAsync();
+			try
+			{
+				SoundHandler.CancelDownloading();
+				backgroundWorker.CancelAsync();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
 		}
 
 
@@ -566,7 +599,7 @@ namespace VKMusicSync.ModelView
 
 				CancelSync();
 			}
-			catch(Exception)
+			catch (Exception)
 			{ }
 
 			base.OnCleanup();
