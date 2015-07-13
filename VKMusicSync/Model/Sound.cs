@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VkDay.Model;
+using VKMusicSync.Constants;
 
 namespace VKMusicSync.Model
 {
@@ -66,7 +67,7 @@ namespace VKMusicSync.Model
 		{
 			get
 			{
-				return ".mp3";
+				return Const.Mp3Extenstion;
 			}
 		}
 
@@ -93,11 +94,10 @@ namespace VKMusicSync.Model
 			get;
 			set;
 		}
-
-		public Sound()
+		public Sound() : base()
 		{
-			this.artist = "no name";
-			this.title = "track";
+			this.artist = Const.NoName;
+			this.title = Const.NoNameTrack;
 		}
 
 		public Sound(string artist, string title)
@@ -106,10 +106,8 @@ namespace VKMusicSync.Model
 			this.title = title;
 		}
 
-		public Sound(string url)
+		public Sound(string url):this()
 		{
-			this.artist = "no name";
-			this.title = "track";
 			this.url = url;
 		}
 

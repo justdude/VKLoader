@@ -61,13 +61,13 @@ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 						Margin="10 0 0 0"
 						Orientation="Horizontal">
 
-				<CheckBox Margin="5 5 0 0"
-						  Command="{Binding CheckAll}">
-
-				</CheckBox>
+				<Button Margin="5 0 0 0"
+						Content="Select all"
+						Command="{Binding CheckAll}">
+				</Button>
 				<Button
 					Style="{StaticResource ButtonEmtyWith2State}"
-					Margin="5 5 0 0"></Button>
+					Margin="5 0 0 0"></Button>
 			</StackPanel>
 
 			<ListBox 

@@ -135,6 +135,8 @@
     <Compile Include="Handlers\AsyncTaskManager.cs" />
     <Compile Include="Handlers\AudioHelper.cs" />
     <Compile Include="Handlers\CachedData\Cache.cs" />
+    <Compile Include="Handlers\CachedData\InstancesData.cs" />
+    <Compile Include="Handlers\CachedData\MethodsPool.cs" />
     <Compile Include="Handlers\ColorJam.cs" />
     <Compile Include="Handlers\DataHelper.cs" />
     <Compile Include="Handlers\LastFmHandler.cs" />

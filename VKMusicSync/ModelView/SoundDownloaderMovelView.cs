@@ -36,11 +36,11 @@ namespace VKMusicSync.ModelView
 		private ObservableCollection<SoundModelView> mvSounds = new ObservableCollection<SoundModelView>();
 
 
-		private readonly DelegateCommand checkAll;
-		private readonly DelegateCommand downloadFiles;
-		private readonly DelegateCommand cancelProcess;
-		private readonly DelegateCommand sync;
-		private readonly DelegateCommand modCloseCommand;
+		private readonly DelegateCommand modCheckAll;
+		private readonly DelegateCommand modDownloadFiles;
+		private readonly DelegateCommand modCancelProcess;
+		private readonly DelegateCommand modSyncClick;
+		private readonly DelegateCommand modCloseTabCommand;
 
 		//private List<Sound> cachedSounds = new List<Sound>();
 		//private List<Sound> CachedSounds
@@ -112,6 +112,22 @@ namespace VKMusicSync.ModelView
 			}
 		}
 
+		public bool IsSyncing
+		{
+			get
+			{
+				return mvIsSyncing;
+			}
+			set
+			{
+				if (mvIsSyncing == value)
+					return;
+
+				mvIsSyncing = value;
+
+				RaisePropertyChanged<bool>(() => IsSyncing);
+			}
+		}
 		// for old buttons
 
 		//public double ProgressPercentage
@@ -169,13 +185,28 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
+		#region Ctr
+
+		public SoundDownloaderMovelView()
+			: base()
+		{
+			Header = Constants.Const.tbAudiosHeader;
+			SoundsData = new List<Sound>();
+
+			modCheckAll = new DelegateCommand(OnCheckedAllClick, CheckIsLoaded);
+			modDownloadFiles = new DelegateCommand(StartSync, InCanStartSync);
+			modCancelProcess = new DelegateCommand(CancelSync, CheckIsLoaded);
+			modSyncClick = new DelegateCommand(OnUploadClick);
+			modCloseTabCommand = new DelegateCommand(OnCloseTab, CanCloseTab);
+		}
+
 		#region Click Commands
 
 		public override ICommand CloseTab
 		{
 			get
 			{
-				return modCloseCommand;
+				return modCloseTabCommand;
 			}
 		}
 
@@ -183,25 +214,15 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				return checkAll;
+				return modCheckAll;
 			}
-		}
-
-		private bool CheckIsLoaded()
-		{
-
-			if (this.Items != null)
-				if (this.Items.Count > 0)
-					return true;
-
-			return false;
 		}
 
 		public ICommand DownloadFiles
 		{
 			get
 			{
-				return downloadFiles;
+				return modDownloadFiles;
 			}
 
 		}
@@ -210,7 +231,7 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				return cancelProcess;
+				return modCancelProcess;
 			}
 		}
 
@@ -218,32 +239,38 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				return sync;
+				return modSyncClick;
 			}
 
 		}
 		#endregion
 
-		#region Constructor
+		#region Checkers
 
-		public SoundDownloaderMovelView()
-			: base()
+		private bool CheckIsLoaded()
 		{
-			Header = Constants.Const.tbAudiosHeader;
-			SoundsData = new List<Sound>();
 
-			checkAll = new DelegateCommand(OnCheckedAllClick, CheckIsLoaded);
-			downloadFiles = new DelegateCommand(StartSync, () => { return IsCanStartyngSync; });
+			if (this.Items == null)
+				return false;
 
-			cancelProcess = new DelegateCommand(CancelSync, CheckIsLoaded);
-			sync = new DelegateCommand(OnUploadClick);
-			modCloseCommand = new DelegateCommand(OnCloseTab, CanCloseTab);
+			if (this.Items.Count > 0 && IsLoading)
+				return true;
+
+			return false;
+		}
+
+		private bool InCanStartSync()
+		{
+			return IsCanStartyngSync;
 		}
 
 		private bool CanCloseTab()
 		{
 			return false;
 		}
+
+		#endregion
+
 
 		private void OnCloseTab()
 		{
@@ -380,12 +407,13 @@ namespace VKMusicSync.ModelView
 
 			try
 			{
-				ArtistWithDetails artist = Cache.Get(sound.artist) as ArtistWithDetails;
+				//ArtistWithDetails artist = Cache.Get(sound.artist) as ArtistWithDetails;
+				//Cache.AddIfNotExist(sound.artist, artist);
+				ArtistWithDetails artist = null;
 
 				if (artist == null)
 					artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
 
-				Cache.AddIfNotExist(sound.artist, artist);
 				Execute(() =>
 				{
 					Status = Constants.Status.LoadingTrackInfo + sound.artist;
@@ -511,10 +539,13 @@ namespace VKMusicSync.ModelView
 		private SynhronizeAdapter<Sound> SoundHandler;
 		BackgroundWorker backgroundWorker;
 		private bool allChecked;
+		private bool mvIsSyncing;
 
 		private void StartSync()
 		{
 			IsLoading = true;
+			IsSyncing = true;
+
 			VKMusicSync.ModelView.SoundModelView.FreezeClick = true;
 			backgroundWorker = new BackgroundWorker();
 			//backgroundWorker.WorkerReportsProgress = true;
@@ -576,7 +607,14 @@ namespace VKMusicSync.ModelView
 			Status = SoundHandler.CountLoadedFiles + "/" + this.Items.Count;
 			//this.ProgressPercentage = 100;
 			IOHandler.OpenPath(Properties.Settings.Default.DownloadFolderPath);
-			IsLoading = false;
+
+			BeginExecute(() =>
+				{
+					IsLoading = false;
+					IsSyncing = false;
+					RaisePropertiesChanged();
+					RefreshCommands();
+				});
 		}
 
 		#endregion
@@ -605,7 +643,29 @@ namespace VKMusicSync.ModelView
 			base.OnCleanup();
 		}
 
+		#region ViewModel overrides
 
+		private void RaisePropertiesChanged()
+		{
+			RaisePropertyChanged<bool>(() => IsSyncing);
+		}
+
+		public override void RefreshCommands()
+		{
+			modCheckAll.RaiseCanExecuteChanged();
+			modDownloadFiles.RaiseCanExecuteChanged();
+			modCancelProcess.RaiseCanExecuteChanged();
+			modSyncClick.RaiseCanExecuteChanged();
+			modCloseTabCommand.RaiseCanExecuteChanged();
+			base.RefreshCommands();
+		}
+
+		public override void Cleanup()
+		{
+			base.Cleanup();
+		}
+
+		#endregion
 		#region IDataState Members
 
 		public bool IsNeedFill

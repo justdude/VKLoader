@@ -21,5 +21,13 @@ namespace VKMusicSync.Constants
 		public const string tbAudiosGroupingHeader = "Аудиозаписи";
 		public const string MP3 = "*.mp3";
 		#endregion
+
+		#region Vk
+
+		public const string Mp3Extenstion = ".mp3";
+		public const string NoName = "no name";
+		public const string NoNameTrack = "track";
+
+		#endregion
 	}
 }

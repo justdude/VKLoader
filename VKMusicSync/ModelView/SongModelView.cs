@@ -14,6 +14,8 @@ using VkDay.Delegates;
 using System.Reflection;
 using System.IO;
 using VCSKicks;
+using VKMusicSync.Handlers.CachedData;
+using VKMusicSync.Handlers;
 namespace VKMusicSync.ModelView
 {
 	public class SoundModelView : AdwancedViewModelBase, IDownnloadedData, IStateChanged
@@ -200,25 +202,15 @@ namespace VKMusicSync.ModelView
 			{
 				if (mvImage == null)
 				{
-						if (string.IsNullOrWhiteSpace(Sound.authorPhotoPath)==false)
-						{
-							try
-							{
+					if (string.IsNullOrWhiteSpace(Sound.authorPhotoPath) == false)
+					{
+						LoadImage();
+					}
+					else
+					{
+						mvImage = InstancesData.Instance.SoundAuthor;
+					}
 
-								CurrentDispatcher.BeginInvoke(new Action(() =>
-									mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath))), null);
-							}
-							catch (Exception)
-							{
-								CurrentDispatcher.BeginInvoke(new Action(() =>
-									mvImage = new BitmapImage(new Uri(VkDay.Constants.ImageDefaultURI))), null);
-							} 
-						}
-						else
-						{
-							var bm = new BitmapImage(new Uri(Constants.Const.UnjnownAuthorPath));
-							return bm;
-						}
 				}
 				return mvImage;
 			}
@@ -230,6 +222,28 @@ namespace VKMusicSync.ModelView
 				mvImage = value;
 
 				OnPropertyChanged("Photo");
+			}
+		}
+
+		private void LoadImage()
+		{
+			BitmapImage img = Cache.Get(Sound.artist) as BitmapImage;
+
+			if (img != null)
+			{
+				mvImage = img;
+			}
+
+			try
+			{
+				CurrentDispatcher.BeginInvoke(new Action(() =>
+					mvImage = new BitmapImage(new Uri(Sound.authorPhotoPath))), null);
+				Cache.AddIfNotExist(Sound.artist, mvImage);
+
+			}
+			catch (Exception)
+			{
+				mvImage = InstancesData.Instance.SoundAuthor;
 			}
 		}
 
