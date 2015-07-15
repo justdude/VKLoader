@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using VKMusicSync.MVVM.Collections;
 using System.Windows;
 using VkDay;
+using VKMusicSync.Messages;
 
 namespace VKMusicSync.ModelView
 {
@@ -274,7 +275,10 @@ namespace VKMusicSync.ModelView
 			LoadProfileInfo();
 
 			Status = string.Empty;
-			Execute(() => { IsFirstLoadDone = true; });
+			Execute(() =>
+			{
+				IsFirstLoadDone = true;
+			});
 		}
 
 		#endregion
@@ -340,9 +344,15 @@ namespace VKMusicSync.ModelView
 
 			BackgroundWorker worker = new BackgroundWorker();
 			worker.DoWork += worker_DoWork;
+			worker.RunWorkerCompleted += worker_RunWorkerCompleted;
 			worker.RunWorkerAsync();
 
 			base.OnTokenChanged();
+		}
+
+		void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			MessengerInstance.Send<VkLoaded>(new VkLoaded());
 		}
 
 		protected override void OnCleanup()

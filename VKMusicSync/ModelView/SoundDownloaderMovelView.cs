@@ -24,6 +24,7 @@ using System.Windows;
 using VKMusicSync.Handlers.CachedData;
 using DotLastFm.Models;
 using VkDay.Model;
+using VKMusicSync.Messages;
 
 namespace VKMusicSync.ModelView
 {
@@ -193,9 +194,9 @@ namespace VKMusicSync.ModelView
 			Header = Constants.Const.tbAudiosHeader;
 			SoundsData = new List<Sound>();
 
-			modCheckAll = new DelegateCommand(OnCheckedAllClick, CheckIsLoaded);
-			modDownloadFiles = new DelegateCommand(StartSync, InCanStartSync);
-			modCancelProcess = new DelegateCommand(CancelSync, CheckIsLoaded);
+			modCheckAll = new DelegateCommand(OnCheckedAllClick, CanCheckAll);
+			modDownloadFiles = new DelegateCommand(DownloadFiles, InCanStartSync);
+			modCancelProcess = new DelegateCommand(CancelSync, CanCansel);
 			modSyncClick = new DelegateCommand(OnUploadClick);
 			modCloseTabCommand = new DelegateCommand(OnCloseTab, CanCloseTab);
 		}
@@ -218,7 +219,7 @@ namespace VKMusicSync.ModelView
 			}
 		}
 
-		public ICommand DownloadFiles
+		public ICommand DownloadFilesClick
 		{
 			get
 			{
@@ -247,7 +248,7 @@ namespace VKMusicSync.ModelView
 
 		#region Checkers
 
-		private bool CheckIsLoaded()
+		private bool CanCheckAll()
 		{
 
 			if (this.Items == null)
@@ -261,7 +262,15 @@ namespace VKMusicSync.ModelView
 
 		private bool InCanStartSync()
 		{
-			return IsCanStartyngSync;
+			return IsCanStartyngSync && !IsSyncing;// && !IsLoading;
+		}
+
+		private bool CanCansel()
+		{
+			if (IsSyncing)
+				return true;
+
+			return false;// && IsLoading;
 		}
 
 		private bool CanCloseTab()
@@ -283,7 +292,14 @@ namespace VKMusicSync.ModelView
 			{
 				case (VKApi.ConnectionState.Loaded):
 					if (!IsFirstLoadDone || IsNeedFill)
+					{
+						Execute(() =>
+						{
+							RaisePropertiesChanged();
+							RefreshCommands();
+						});
 						UpdateDataFromProfile(null);
+					}
 					break;
 
 				case (VKApi.ConnectionState.Failed):
@@ -353,11 +369,7 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				bool res = IsFirstLoadDone && IsNeedFill == false;
-
-				res &= IsLoading == false;
-
-				return res;
+				return IsFirstLoadDone && !IsNeedFill;
 			}
 		}
 
@@ -541,7 +553,7 @@ namespace VKMusicSync.ModelView
 		private bool allChecked;
 		private bool mvIsSyncing;
 
-		private void StartSync()
+		private void DownloadFiles()
 		{
 			IsLoading = true;
 			IsSyncing = true;
@@ -622,8 +634,15 @@ namespace VKMusicSync.ModelView
 		protected override void OnTokenChanged()
 		{
 			MainModelView.OnStateChanged += MainModelView_OnStateChanged;
+			MessengerInstance.Register<VkLoaded>(this, OnVkLoaded);
 
 			base.OnTokenChanged();
+		}
+
+		private void OnVkLoaded(VkLoaded obj)
+		{
+			RaisePropertiesChanged();
+			RefreshCommands();
 		}
 
 		protected override void OnCleanup()
@@ -642,6 +661,7 @@ namespace VKMusicSync.ModelView
 
 			base.OnCleanup();
 		}
+
 
 		#region ViewModel overrides
 

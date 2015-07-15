@@ -6,7 +6,8 @@
 				xmlns:local="clr-namespace:VkDay"
 				xmlns:const="clr-namespace:VKMusicSync.Constants"
 				xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+				xmlns:bh ="clr-namespace:Behaviors"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 	<converters:VisibilityToBoolConverter x:Key="visibilityToBoolConverter"/>
 	
@@ -62,12 +63,23 @@ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 						Orientation="Horizontal">
 
 				<Button Margin="5 0 0 0"
-						Content="Select all"
+						Content="{x:Static const:Translates.SelectAll}"
 						Command="{Binding CheckAll}">
 				</Button>
+				
+				
 				<Button
-					Style="{StaticResource ButtonEmtyWith2State}"
+					bh:VisualManager.IsHideOnDisabled="false"
+					Command="{Binding DownloadFilesClick}"
+					Content="{x:Static const:Translates.Sync}"
 					Margin="5 0 0 0"></Button>
+				
+				<Button
+					bh:VisualManager.IsHideOnDisabled="false"
+					Command="{Binding CancelProcess}"
+					Content="{x:Static const:Translates.Cansel}"
+					Margin="5 0 0 0"></Button>
+				
 			</StackPanel>
 
 			<ListBox 
