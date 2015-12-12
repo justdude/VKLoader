@@ -57,24 +57,24 @@ namespace VKMusicSync.ModelView
 
 		public static bool FreezeClick = false;
 
-		private bool ischecked = true;
+		private bool mvIsChecked = true;
 		private bool currentProgressVisibility = false;
 
 		public bool Checked
 		{
 			get
 			{
-				return ischecked;
+				return mvIsChecked;
 			}
 			set
 			{
 				//if (FreezeClick == false)
-				if (ischecked == value)
+				if (mvIsChecked == value)
 					return;
 
-				ischecked = value;
+				mvIsChecked = value;
 
-				OnPropertyChanged("Checked");
+				this.RaisePropertyChanged(() => Checked);
 			}
 		}
 
@@ -202,14 +202,14 @@ namespace VKMusicSync.ModelView
 			{
 				if (mvImage == null)
 				{
-					if (string.IsNullOrWhiteSpace(Sound.authorPhotoPath) == false)
+					if (!string.IsNullOrWhiteSpace(Sound.authorPhotoPath))
 					{
 						LoadImage();
 					}
-					else
-					{
-						mvImage = InstancesData.Instance.SoundAuthor;
-					}
+					//else
+					//{
+					//	mvImage = InstancesData.Instance.SoundAuthor;
+					//}
 
 				}
 				return mvImage;

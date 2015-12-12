@@ -339,12 +339,11 @@ namespace VKMusicSync.ModelView
 
 		private void OnCheckedAllClick()
 		{
-
 			if (allChecked)
 			{
 				allChecked = false;
 				foreach (var value in Items)
-					value.Checked = false;
+					value.Checked = allChecked;
 				//this.CheckedText = "Выбрать все";
 
 			}
@@ -352,10 +351,12 @@ namespace VKMusicSync.ModelView
 			{
 				allChecked = true;
 				foreach (var value in Items)
-					value.Checked = true;
+					value.Checked = allChecked;
 				//this.CheckedText = "Отменить все";
 			}
-			UpdateList();
+			RefreshCommands();
+
+			//UpdateList();
 		}
 
 		public void UpdateList()

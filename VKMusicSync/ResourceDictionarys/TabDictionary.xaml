@@ -88,6 +88,7 @@
                         ItemsSource="{Binding Items}"
                         ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                         ItemTemplate ="{StaticResource ListBoxItemTemplate}"
+						VirtualizingStackPanel.VirtualizationMode="Recycling"
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch" >
 			</ListBox>
