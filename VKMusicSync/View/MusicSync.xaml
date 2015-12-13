@@ -81,6 +81,12 @@
 					ItemContainerStyle="{StaticResource TabItemStyle}"
 										ItemsSource="{Binding Tabs}"
                     SelectedIndex="{Binding TabSelectedIndex}">
+			<!--<TabControl.ItemTemplate>
+				<ItemContainerTemplate>
+					
+				</ItemContainerTemplate>
+			</TabControl.ItemTemplate>-->
+			
 		</TabControl>
 
 		<StatusBar Grid.Row="2">
