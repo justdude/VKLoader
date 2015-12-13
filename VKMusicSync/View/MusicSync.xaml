@@ -1,10 +1,11 @@
-﻿<mvvmView:CWindowExtended
+﻿<cc:WindowExtended
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
         xmlns:metro="http://schemas.codeplex.com/elysium"
         xmlns:params="http://schemas.codeplex.com/elysium/params"
 		xmlns:mvvmView="clr-namespace:MIP.MVVM.View;assembly=MIP"
+		xmlns:cc="clr-namespace:VKMusicSync.CustomControls"
         xmlns:converters ="clr-namespace:VKMusicSync.Converters"
         xmlns:local="clr-namespace:VkDay"
 		xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
@@ -109,4 +110,4 @@
             Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"/>
 		</Grid>
 	</metro:Window.TitleBar>
-</mvvmView:CWindowExtended>
+</cc:WindowExtended>

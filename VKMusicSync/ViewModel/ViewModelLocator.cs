@@ -15,7 +15,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using VKMusicSync.ModelView;
 
 namespace VKMusicSync.ViewModel
 {
@@ -32,7 +31,7 @@ namespace VKMusicSync.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (AdwancedViewModelBase.IsInDesignModeStatic)
+            ////if (ViewModelBase.IsInDesignModeStatic)
             ////{
             ////    // Create design time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
@@ -43,20 +42,20 @@ namespace VKMusicSync.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainModelView>();
+            SimpleIoc.Default.Register<MainViewModel>();
         }
 
-		public MainModelView Main
+        public MainViewModel Main
         {
             get
             {
-				return ServiceLocator.Current.GetInstance<MainModelView>();
+                return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
         
         public static void Cleanup()
         {
-            
+            // TODO Clear the ViewModels
         }
     }
 }
