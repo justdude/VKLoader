@@ -6,6 +6,10 @@
 				xmlns:local="clr-namespace:VKLib"
 				xmlns:const="clr-namespace:VKMusicSync.Constants"
 				xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
+				xmlns:userInfoView="clr-namespace:VKMusicSync.UserInfo.View"
+				xmlns:userInfoViewModel="clr-namespace:VKMusicSync.UserInfo.ViewModel"
+				xmlns:VkSyncView="clr-namespace:VKMusicSync.VKSync.View"
+				xmlns:VkSyncViewModel="clr-namespace:VKMusicSync.VKSync.ViewModel"
 				xmlns:bh ="clr-namespace:Behaviors"
 				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
@@ -51,51 +55,14 @@
 
 	<!--Templates-->
 
-	<DataTemplate DataType="{x:Type viewModel:SoundDownloaderMovelView}">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="10"></RowDefinition>
-				<RowDefinition Height="35"></RowDefinition>
-				<RowDefinition Height="10"></RowDefinition>
-				<RowDefinition Height="60*" ></RowDefinition>
-			</Grid.RowDefinitions>
-
-			<StackPanel Grid.Row="1"
-						Margin="10 0 0 0"
-						Orientation="Horizontal">
-
-				<Button Margin="5 0 0 0"
-						Content="{x:Static const:Translates.SelectAll}"
-						Command="{Binding CheckAll}">
-				</Button>
-				
-				
-				<Button Grid.Row="1"
-					bh:VisualManager.IsHideOnDisabled="false"
-					Command="{Binding DownloadFilesClick}"
-					Content="{x:Static const:Translates.Sync}"
-					Margin="5 0 0 0"></Button>
-				
-				<Button
-					bh:VisualManager.IsHideOnDisabled="false"
-					Command="{Binding CancelProcess}"
-					Content="{x:Static const:Translates.Cansel}"
-					Margin="5 0 0 0"></Button>
-				
-			</StackPanel>
-
-			<ListBox 
-                        Grid.Row="2" 
-                        Margin="5" 
-                        ItemsSource="{Binding Items}"
-                        ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                        ItemTemplate ="{StaticResource ListBoxItemTemplate}"
-						VirtualizingStackPanel.VirtualizationMode="Recycling"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch" >
-			</ListBox>
-		</Grid>
+	<DataTemplate DataType="{x:Type VkSyncViewModel:SoundDownloaderMovelView}">
+		<VkSyncView:ctrVkSync DataContext="{TemplateBinding DataContext}"/>
 	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type userInfoViewModel:UserInfoViewModel}">
+		<userInfoView:ctrUserInfo DataContext="{TemplateBinding DataContext}"></userInfoView:ctrUserInfo>
+	</DataTemplate>
+
 
 
 </ResourceDictionary>

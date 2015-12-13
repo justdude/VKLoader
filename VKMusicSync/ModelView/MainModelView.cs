@@ -22,6 +22,8 @@ using System.Windows;
 using VKMusicSync.Messages;
 using MIP.MVVM;
 using MIP.Commands;
+using VKMusicSync.UserInfo.ViewModel;
+using VKMusicSync.VKSync.ViewModel;
 
 namespace VKMusicSync.ModelView
 {
@@ -200,9 +202,14 @@ namespace VKMusicSync.ModelView
 		public MainModelView()
 		{
 			modSettingsCLickCommand = new DelegateCommand(OnSettingsClick);
-			modShareClickCommand = new DelegateCommand(OnShareClick);
+			modShareClickCommand = new DelegateCommand(OnShareClick, CanShareClick);
 
 			Tabs = new ObservableCollection<TabModelView>();
+		}
+
+		private bool CanShareClick()
+		{
+			return IsEnabled;
 		}
 
 		#endregion
@@ -338,7 +345,10 @@ namespace VKMusicSync.ModelView
 			VKLib.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
 			VKLib.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
 
-			var tab = new SoundDownloaderMovelView() { Token = this.Token };
+			var tab = new SoundDownloaderMovelView() { ParentToken = Token };
+			var tab2 = new UserInfoViewModel() { ParentToken = Token };
+			
+			Tabs.Add(tab2);
 			Tabs.Add(tab);
 
 			BackgroundWorker worker = new BackgroundWorker();

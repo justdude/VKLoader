@@ -175,18 +175,23 @@
     <Compile Include="ModelView\IDataState.cs" />
     <Compile Include="ModelView\MainModelView.cs" />
     <Compile Include="ModelView\SettingsModelView.cs" />
+    <Compile Include="UserInfo\ViewModel\UserInfoViewModel.cs" />
     <Compile Include="Model\IData.cs" />
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\Sound.cs" />
     <Compile Include="MyCategory.cs" />
     <Compile Include="netfx\System\Xml\XmlSerializer.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="UserInfo\View\ctrUserInfo.xaml.cs">
+      <DependentUpon>ctrUserInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TestVectorImages.xaml.cs">
       <DependentUpon>TestVectorImages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VKSync\View\ctrVkSync.xaml.cs">
+      <DependentUpon>ctrVkSync.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowExtended.cs" />
     <Page Include="ResourceDictionarys\TabDictionary.xaml">
@@ -201,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserInfo\View\ctrUserInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -210,7 +219,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ModelView\SongModelView.cs" />
-    <Compile Include="ModelView\SoundDownloaderMovelView.cs" />
+    <Compile Include="VKSync\ViewModel\SoundDownloaderMovelView.cs" />
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="Handlers\Network\Downloader.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
@@ -226,6 +235,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TestVectorImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VKSync\View\ctrVkSync.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,6 +276,7 @@
   <ItemGroup>
     <Folder Include="Handlers\toclean\" />
     <Folder Include="ModelConector\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

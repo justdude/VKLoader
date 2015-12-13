@@ -26,7 +26,7 @@ using VKMusicSync.Messages;
 using MIP.Commands;
 using MVVM;
 
-namespace VKMusicSync.ModelView
+namespace VKMusicSync.VKSync.ViewModel
 {
 	public class SoundDownloaderMovelView : ListTabViewModel<Sound, SoundModelView>, IDataState
 	{
