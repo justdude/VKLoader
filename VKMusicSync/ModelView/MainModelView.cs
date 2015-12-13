@@ -8,7 +8,6 @@ using System.Threading;
 using System.ComponentModel;
 using System.Net;
 
-using MVVM;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VKMusicSync.Handlers.Synchronize;
@@ -19,10 +18,10 @@ using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using VKMusicSync.MVVM.Collections;
 using System.Windows;
-using VkDay;
 using VKMusicSync.Messages;
+using MIP.MVVM;
+using MIP.Commands;
 
 namespace VKMusicSync.ModelView
 {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MVVM;
 using VKMusicSync.Model;
 using DotLastFm;
 using System.Windows.Media.Imaging;
@@ -16,6 +15,7 @@ using System.IO;
 using VCSKicks;
 using VKMusicSync.Handlers.CachedData;
 using VKMusicSync.Handlers;
+using MIP.MVVM;
 namespace VKMusicSync.ModelView
 {
 	public class SoundModelView : AdwancedViewModelBase, IDownnloadedData, IStateChanged
@@ -50,7 +50,8 @@ namespace VKMusicSync.ModelView
 			set
 			{
 				Sound.State = value;
-				OnPropertyChanged("State");
+
+				RaisePropertyChanged(() => State);
 			}
 		}
 		#endregion
@@ -91,7 +92,7 @@ namespace VKMusicSync.ModelView
 
 				currentProgressVisibility = value;
 
-				OnPropertyChanged("CurrentProgressVisibility");
+				RaisePropertyChanged(() => CurrentProgressVisibility);
 			}
 
 		}
@@ -106,7 +107,7 @@ namespace VKMusicSync.ModelView
 					return;
 
 				Sound.artist = value;
-				OnPropertyChanged("Artist");
+				RaisePropertyChanged(() => Artist);
 			}
 		}
 
@@ -119,7 +120,7 @@ namespace VKMusicSync.ModelView
 					return;
 
 				Sound.title = value;
-				OnPropertyChanged("Title");
+				RaisePropertyChanged(() => Title);
 			}
 		}
 
@@ -135,7 +136,7 @@ namespace VKMusicSync.ModelView
 					return;
 
 				Sound.duration = value;
-				OnPropertyChanged("Duration");
+				RaisePropertyChanged(() => Duration);
 			}
 		}
 
@@ -145,7 +146,7 @@ namespace VKMusicSync.ModelView
 			set
 			{
 				//Sound.Quality = value;
-				OnPropertyChanged("Duration");
+				RaisePropertyChanged(() => Quality);
 			}
 		}
 
@@ -158,7 +159,8 @@ namespace VKMusicSync.ModelView
 					return;
 
 				Sound.Size = value;
-				OnPropertyChanged("Size");
+
+				RaisePropertyChanged(() => Size);
 			}
 		}
 
@@ -171,7 +173,8 @@ namespace VKMusicSync.ModelView
 					return;
 
 				Sound.LoadedSize = value;
-				OnPropertyChanged("LoadedSize");
+
+				RaisePropertyChanged(() => LoadedSize);
 			}
 		}
 
@@ -221,7 +224,7 @@ namespace VKMusicSync.ModelView
 
 				mvImage = value;
 
-				OnPropertyChanged("Photo");
+				RaisePropertyChanged(() => LoadedSize);
 			}
 		}
 
@@ -255,7 +258,7 @@ namespace VKMusicSync.ModelView
 				if (Sound.IsLoadedToDisk != value)
 				{
 					Sound.IsLoadedToDisk = value;
-					OnPropertyChanged("IsLoadedToDisk");
+					RaisePropertyChanged(() => IsLoadedToDisk);
 
 					// VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
 				}
@@ -272,7 +275,8 @@ namespace VKMusicSync.ModelView
 				if (Sound.similarArtists != value)
 				{
 					Sound.similarArtists = value;
-					OnPropertyChanged("SimilarArtist");
+
+					RaisePropertyChanged(() => SimilarArtist);
 				}
 			}
 		}

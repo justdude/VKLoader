@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MVVM;
 using VKMusicSync.Model;
 using System.Windows.Input;
 using System.Net;
 using System.Collections.ObjectModel;
+using MIP.MVVM;
+using MIP.Commands;
 
 namespace VKMusicSync.ModelView
 {
@@ -21,7 +22,7 @@ namespace VKMusicSync.ModelView
             }
             set
             {
-                OnPropertyChanged("UserFullName");
+                RaisePropertyChanged("UserFullName");
             }
         }
 
@@ -45,7 +46,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.ThreadCountToUse = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("ThreadCountToUse");
+                RaisePropertyChanged("ThreadCountToUse");
             }
         }
 
@@ -61,7 +62,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.DownloadFolderPath = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("DownloadFolderPath");
+                RaisePropertyChanged("DownloadFolderPath");
             }
         }
 
@@ -75,7 +76,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.BackgroundPath = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("BackgroundPath");
+                RaisePropertyChanged("BackgroundPath");
             }
         }
 
@@ -93,14 +94,14 @@ namespace VKMusicSync.ModelView
                     {
                         proxy.Credentials = Credential;
                     }
-                    OnPropertyChanged("Proxy");
+                    RaisePropertyChanged("Proxy");
                 }
                 return proxy;
             }
             set
             {
                 proxy = value;
-                OnPropertyChanged("Proxy");
+                RaisePropertyChanged("Proxy");
             }
         }
 
@@ -114,7 +115,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.UseProxyCredintial = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("UseCredintial");
+                RaisePropertyChanged("UseCredintial");
             }
         }
 
@@ -128,7 +129,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.UseProxy = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("UseProxy");
+                RaisePropertyChanged("UseProxy");
             }
         }
 
@@ -141,14 +142,14 @@ namespace VKMusicSync.ModelView
                 {
                     credential = new NetworkCredential(Properties.Settings.Default.ProxyName, 
                                                        Properties.Settings.Default.ProxyPassword);
-                    OnPropertyChanged("Credential");
+                    RaisePropertyChanged("Credential");
                 }
                 return credential;
             }
             set
             {
                 credential = value;
-                OnPropertyChanged("Credential");
+                RaisePropertyChanged("Credential");
             }
         }
 
@@ -163,7 +164,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.ProxyAdress = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("Adress");
+                RaisePropertyChanged("Adress");
             }
         }
 
@@ -177,7 +178,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.ProxyPort = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("Port");
+                RaisePropertyChanged("Port");
             }
         }
 
@@ -191,7 +192,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.ProxyName = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("Login");
+                RaisePropertyChanged("Login");
             }
         }
 
@@ -206,7 +207,7 @@ namespace VKMusicSync.ModelView
             {
                 Properties.Settings.Default.ProxyPassword = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("Password");
+                RaisePropertyChanged("Password");
             }
         }
         #endregion

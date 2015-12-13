@@ -8,7 +8,6 @@ using System.Threading;
 using System.ComponentModel;
 using System.Net;
 
-using MVVM;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VKMusicSync.Handlers.Synchronize;
@@ -19,12 +18,13 @@ using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using VKMusicSync.MVVM.Collections;
 using System.Windows;
 using VKMusicSync.Handlers.CachedData;
 using DotLastFm.Models;
 using VkDay.Model;
 using VKMusicSync.Messages;
+using MIP.Commands;
+using MVVM;
 
 namespace VKMusicSync.ModelView
 {
@@ -109,7 +109,7 @@ namespace VKMusicSync.ModelView
 
 				status = value;
 
-				OnPropertyChanged("Status");
+				base.RaisePropertyChanged(() => this.Status);
 			}
 		}
 
@@ -361,7 +361,7 @@ namespace VKMusicSync.ModelView
 
 		public void UpdateList()
 		{
-			OnPropertyChanged("Items");
+			base.RaisePropertyChanged(() => Items);
 		}
 
 		#endregion

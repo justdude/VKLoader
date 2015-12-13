@@ -15,14 +15,14 @@ using VKMusicSync;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VkDay;
-using VKMusicSync.MVVM.View;
+using MIP.MVVM.View;
 
 namespace VKMusicSync
 {
     /// <summary>
     /// Логика взаимодействия для MusicSync.xaml
     /// </summary>
-    public partial class MusicSync : WindowExtended
+    public partial class MusicSync : CWindowExtended
     {
         public MusicSync():base()
         {
