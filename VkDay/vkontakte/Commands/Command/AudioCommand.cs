@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VkDay.Model;
+using VKLib.Model;
 
-namespace VkDay
+namespace VKLib
 {
     public class AudiosCommand : BaseCommand<SoundBase>
     {

@@ -11,7 +11,7 @@ using System.Net;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VKMusicSync.Handlers.Synchronize;
-using VkDay;
+using VKLib;
 using VKMusicSync.Handlers;
 using System.Collections.Specialized;
 using System.IO;
@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using VKMusicSync.Handlers.CachedData;
 using DotLastFm.Models;
-using VkDay.Model;
+using VKLib.Model;
 using VKMusicSync.Messages;
 using MIP.Commands;
 using MVVM;
@@ -324,10 +324,10 @@ namespace VKMusicSync.ModelView
 		{
 			//OnUploadClick();
 			//return;
-			VkDay.CommandsGenerator.WallCommands.Post(
-				+VkDay.APIManager.Instance.AccessData.UserId,
+			VKLib.CommandsGenerator.WallCommands.Post(
+				+VKLib.APIManager.Instance.AccessData.UserId,
 				"VK Loader API test...my name :"
-				+ VkDay.APIManager.Instance.Profile.FullName,
+				+ VKLib.APIManager.Instance.Profile.FullName,
 				@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
 				"",
 				"");
@@ -522,7 +522,7 @@ namespace VKMusicSync.ModelView
 		public void ShareInfo()
 		{
 			//OnUploadClick();
-			AudiosCommand profCommand = VkDay.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.Instance.AccessData.UserId, 230);
+			AudiosCommand profCommand = VKLib.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.Instance.AccessData.UserId, 230);
 			profCommand.ExecuteCommand();
 		}
 

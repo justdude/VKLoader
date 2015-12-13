@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VkDay.Delegates;
+using VKLib.Delegates;
 using VKMusicSync.Delegates;
 
 namespace VKMusicSync

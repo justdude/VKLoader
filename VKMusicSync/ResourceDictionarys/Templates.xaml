@@ -6,10 +6,10 @@
     xmlns:params="http://schemas.codeplex.com/elysium/params"
     xmlns:converters ="clr-namespace:VKMusicSync.Converters"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:local="clr-namespace:VkDay"
+    xmlns:local="clr-namespace:VKLib"
     xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
         
-    xmlns:windows="clr-namespace:VkDay">
+    xmlns:windows="clr-namespace:VKLib">
 
 
 	<x:Array Type="{x:Type sys:Object}" x:Key="extensions">

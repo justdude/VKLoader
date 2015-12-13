@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VkDay;
+using VKLib;
 
-namespace VkDay
+namespace VKLib
 {
 	class Program
 	{

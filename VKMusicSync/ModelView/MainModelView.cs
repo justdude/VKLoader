@@ -11,7 +11,7 @@ using System.Net;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
 using VKMusicSync.Handlers.Synchronize;
-using VkDay;
+using VKLib;
 using VKMusicSync.Handlers;
 using System.Collections.Specialized;
 using System.IO;
@@ -215,9 +215,9 @@ namespace VKMusicSync.ModelView
 			Execute(APIManager.Instance.Connect);
 		}
 
-		void API_OnConnectionStateChanged(VkDay.VKApi.ConnectionState obj)
+		void API_OnConnectionStateChanged(VKLib.VKApi.ConnectionState obj)
 		{
-			if (obj != VkDay.VKApi.ConnectionState.Loaded)
+			if (obj != VKLib.VKApi.ConnectionState.Loaded)
 				return;
 
 			ThreadPool.QueueUserWorkItem((p) =>
@@ -228,11 +228,11 @@ namespace VKMusicSync.ModelView
 			});
 		}
 
-		void vk_OnStateChanged(VkDay.VKApi.ConnectionState obj)
+		void vk_OnStateChanged(VKLib.VKApi.ConnectionState obj)
 		{
 			ChangeConnectionState(obj);
 
-			if (obj != VkDay.VKApi.ConnectionState.Loaded)
+			if (obj != VKLib.VKApi.ConnectionState.Loaded)
 				return;
 
 			UpdateDataFromProfile();
@@ -244,10 +244,10 @@ namespace VKMusicSync.ModelView
 
 		private void OnShareClick()
 		{
-			VkDay.CommandsGenerator.WallCommands.Post(
-					+VkDay.APIManager.Instance.AccessData.UserId,
+			VKLib.CommandsGenerator.WallCommands.Post(
+					+VKLib.APIManager.Instance.AccessData.UserId,
 					"VK Loader API test...my name :"
-					+ VkDay.APIManager.Instance.Profile.FullName,
+					+ VKLib.APIManager.Instance.Profile.FullName,
 					@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
 					"",
 					"");
@@ -299,7 +299,7 @@ namespace VKMusicSync.ModelView
 
 		public void ShareInfo()
 		{
-			/*AudiosCommand profCommand = VkDay.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
+			/*AudiosCommand profCommand = VKLib.CommandsGenerator.SendAudioToUserWall(APIManager.AccessData.UserId, 230);
 			profCommand.ExecuteNonQuery();*/
 		}
 
@@ -335,8 +335,8 @@ namespace VKMusicSync.ModelView
 
 		protected override void OnTokenChanged()
 		{
-			VkDay.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
-			VkDay.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
+			VKLib.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
+			VKLib.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
 
 			var tab = new SoundDownloaderMovelView() { Token = this.Token };
 			Tabs.Add(tab);
@@ -362,8 +362,8 @@ namespace VKMusicSync.ModelView
 			}
 			Tabs.Clear();
 
-			VkDay.APIManager.Instance.OnUserLoaded -= vk_OnStateChanged;
-			VkDay.APIManager.Instance.API.OnConnectionStateChanged -= API_OnConnectionStateChanged;
+			VKLib.APIManager.Instance.OnUserLoaded -= vk_OnStateChanged;
+			VKLib.APIManager.Instance.API.OnConnectionStateChanged -= API_OnConnectionStateChanged;
 
 			base.OnCleanup();
 		}

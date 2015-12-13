@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Net;
-using VkDay.Model;
-using VkDay.Handlers.Commands;
+using VKLib.Model;
+using VKLib.Handlers.Commands;
 //using UrlDecode;
 
-namespace VkDay
+namespace VKLib
 {
     public class WallCommands
     {

@@ -3,7 +3,7 @@
 				xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
 				xmlns:params="http://schemas.codeplex.com/elysium/params"
 				xmlns:converters ="clr-namespace:VKMusicSync.Converters"
-				xmlns:local="clr-namespace:VkDay"
+				xmlns:local="clr-namespace:VKLib"
 				xmlns:const="clr-namespace:VKMusicSync.Constants"
 				xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
 				xmlns:bh ="clr-namespace:Behaviors"

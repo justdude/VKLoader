@@ -7,7 +7,7 @@
 		xmlns:mvvmView="clr-namespace:MIP.MVVM.View;assembly=MIP"
 		xmlns:cc="clr-namespace:VKMusicSync.CustomControls"
         xmlns:converters ="clr-namespace:VKMusicSync.Converters"
-        xmlns:local="clr-namespace:VkDay"
+        xmlns:local="clr-namespace:VKLib"
 		xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
         xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
         

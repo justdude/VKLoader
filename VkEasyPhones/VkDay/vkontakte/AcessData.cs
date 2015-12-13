@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace VkDay
+namespace VKLib
 {
     public class AccessData
     {

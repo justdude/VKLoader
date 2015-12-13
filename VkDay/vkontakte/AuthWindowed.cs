@@ -7,11 +7,11 @@ using System.Globalization;
 using System.Web;
 using System.Windows.Forms;
 
-using VkDay.Model;
-using VkDay.Handlers;
-using VkDay.vkontakte;
+using VKLib.Model;
+using VKLib.Handlers;
+using VKLib.vkontakte;
 
-namespace VkDay
+namespace VKLib
 {
     public class AuthWindowed
     {

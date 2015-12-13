@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
-namespace VkDay.Handlers.Commands
+namespace VKLib.Handlers.Commands
 {
     public class CommandHelper
     {

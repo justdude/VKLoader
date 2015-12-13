@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using VkDay.Model;
-using VkEasyPhones.VkDay.Model;
-using VkEasyPhones.VkDay.vkontakte.Commands.Command;
+using VKLib.Model;
+using VkEasyPhones.VKLib.Model;
+using VkEasyPhones.VKLib.vkontakte.Commands.Command;
 
-namespace VkDay
+namespace VKLib
 {
 	public class GeolocationCommands
 	{

@@ -48,7 +48,7 @@ namespace VKMusicSync.Handlers.CachedData
 			{
 				try
 				{
-					return new BitmapImage(new Uri(VkDay.Constants.ImageDefaultURI));
+					return new BitmapImage(new Uri(VKLib.Constants.ImageDefaultURI));
 				}
 				catch(Exception)
 				{

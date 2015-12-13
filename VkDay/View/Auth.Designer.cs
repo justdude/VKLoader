@@ -1,4 +1,4 @@
-﻿namespace VkDay
+﻿namespace VKLib
 {
     partial class Auth
     {

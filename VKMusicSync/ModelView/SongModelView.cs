@@ -9,7 +9,7 @@ using VKMusicSync.Handlers.Synchronize;
 using VKMusicSync.Delegates;
 using System.Threading;
 using DotLastFm.Models;
-using VkDay.Delegates;
+using VKLib.Delegates;
 using System.Reflection;
 using System.IO;
 using VCSKicks;

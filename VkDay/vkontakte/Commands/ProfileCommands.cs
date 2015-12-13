@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Net;
-using VkDay.Model;
+using VKLib.Model;
 
-namespace VkDay
+namespace VKLib
 {
     public class ProfileCommands
     {

@@ -4,11 +4,11 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VkDay.Handlers;
-using VkDay.Model;
+using VKLib.Handlers;
+using VKLib.Model;
 using System.Web;
 
-namespace VkDay
+namespace VKLib
 {
     public class AudioUploadComman : BaseCommand<SoundBase>
     {
@@ -54,7 +54,7 @@ namespace VkDay
             string server = parsed[1].Substring(9);
             string audio = parsed[2].Substring(9, (parsed[2].Length-1 - 9));
             string hash = parsed[3].Substring(8, parsed[3].Length - 2 - 8);
-           // var tempanswer = VkDay.ModelView.SoundDownloaderMovelView.DecodeUrlString(audio);
+           // var tempanswer = VKLib.ModelView.SoundDownloaderMovelView.DecodeUrlString(audio);
             //var decoded = UrlDecode.HttpUtility.UrlDecode(audio);
             return new AudioUploadedInfo(server, audio, hash);
         }

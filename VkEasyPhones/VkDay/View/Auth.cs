@@ -5,9 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using VkDay;
+using VKLib;
 
-namespace VkDay
+namespace VKLib
 {
     public partial class Auth : Form
     {

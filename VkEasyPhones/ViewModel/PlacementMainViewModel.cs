@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using VkDay;
-using VkEasyPhones.VkDay.Model;
+using VKLib;
+using VkEasyPhones.VKLib.Model;
 
 namespace VkEasyPhones.ViewModel
 {

@@ -9,10 +9,10 @@ using System.Collections;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
-using VkDay.Model;
-using VkDay;
+using VKLib.Model;
+using VKLib;
 
-namespace VkDay
+namespace VKLib
 {
 
 	public class VKApi
@@ -126,7 +126,7 @@ namespace VkDay
 
 		private string MakeQueryString(string name, string accessToken, NameValueCollection param)
 		{
-			return String.Format("https://api.VkDay.ru/method/{0}.xml?access_token={1}&{2}",
+			return String.Format("https://api.VKLib.ru/method/{0}.xml?access_token={1}&{2}",
 									name,
 									accessToken,
 									String.Join("&", SelectItem(param)));
@@ -136,7 +136,7 @@ namespace VkDay
 		//{
 		//		XmlDocument result = new XmlDocument();
 
-		//		result.Load(String.Format("https://api.VkDay.ru/method/{0}.xml?access_token={1}&{2}",
+		//		result.Load(String.Format("https://api.VKLib.ru/method/{0}.xml?access_token={1}&{2}",
 		//								name,
 		//								AccessToken));
 

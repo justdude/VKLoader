@@ -14,7 +14,7 @@ using Elysium;
 using VKMusicSync;
 using VKMusicSync.Model;
 using VKMusicSync.ModelView;
-using VkDay;
+using VKLib;
 using MIP.MVVM.View;
 using VKMusicSync.CustomControls;
 

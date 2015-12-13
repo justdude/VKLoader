@@ -4,8 +4,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VkDay.Model;
-namespace VkDay
+using VKLib.Model;
+namespace VKLib
 {
     public class ProfileCommand : BaseCommand<Profile>
     {

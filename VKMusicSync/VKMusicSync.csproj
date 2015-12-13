@@ -296,9 +296,9 @@
       <Project>{cff8caae-3cd4-41d9-8e96-a512d095c46a}</Project>
       <Name>MIP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VkDay\VkDay.csproj">
+    <ProjectReference Include="..\VkDay\VKLib.csproj">
       <Project>{3f2e72de-b2f1-4777-97cc-f503cbe7c034}</Project>
-      <Name>VkDay</Name>
+      <Name>VKLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

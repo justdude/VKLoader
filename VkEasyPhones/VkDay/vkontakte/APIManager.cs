@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VkDay;
-using VkDay.Model;
+using VKLib;
+using VKLib.Model;
 
-namespace VkDay
+namespace VKLib
 {
 	public class APIManager
 	{

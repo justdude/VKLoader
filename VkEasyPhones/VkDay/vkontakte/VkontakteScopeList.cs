@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VkDay.vkontakte
+namespace VKLib.vkontakte
 {
 	public enum VkontakteScopeList
 	{

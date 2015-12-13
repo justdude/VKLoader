@@ -6,7 +6,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Security.Cryptography;
-namespace VkDay.Handlers
+namespace VKLib.Handlers
 {
     public class Reqeust
     {

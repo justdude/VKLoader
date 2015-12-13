@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Xml;
 
-namespace VkDay
+namespace VKLib
 {
     public abstract class BaseCommand<T> where T: class
     {
