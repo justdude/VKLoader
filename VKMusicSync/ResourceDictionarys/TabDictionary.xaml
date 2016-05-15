@@ -1,17 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				xmlns:metro="http://schemas.codeplex.com/elysium"
-				xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
-				xmlns:params="http://schemas.codeplex.com/elysium/params"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				xmlns:converters ="clr-namespace:VKMusicSync.Converters"
-				xmlns:local="clr-namespace:VKLib"
-				xmlns:const="clr-namespace:VKMusicSync.Constants"
-				xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
-				xmlns:userInfoView="clr-namespace:VKMusicSync.UserInfo.View"
+                    xmlns:userInfoView="clr-namespace:VKMusicSync.UserInfo.View"
 				xmlns:userInfoViewModel="clr-namespace:VKMusicSync.UserInfo.ViewModel"
 				xmlns:VkSyncView="clr-namespace:VKMusicSync.VKSync.View"
-				xmlns:VkSyncViewModel="clr-namespace:VKMusicSync.VKSync.ViewModel"
-				xmlns:bh ="clr-namespace:Behaviors"
-				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+				xmlns:VkSyncViewModel="clr-namespace:VKMusicSync.VKSync.ViewModel">
 
 	<converters:VisibilityToBoolConverter x:Key="visibilityToBoolConverter"/>
 	
