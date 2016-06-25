@@ -3,8 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace VKLib
 {
-	public class AccessDataInfo
+	public sealed class AccessDataInfo
 	{
+		public readonly static AccessDataInfo DummyInfo = new AccessDataInfo();
+
 		#region Properties
 
 		public int UserId { get; private set; }
@@ -17,9 +19,14 @@ namespace VKLib
 
 		#region  Ctr.
 
+		private AccessDataInfo()
+		{
+			Reset(this);
+		}
+
 		public AccessDataInfo(int userId, string accessToken)
 		{
-			Reset();
+			Reset(this);
 
 			this.UserId = userId;
 			this.AccessToken = accessToken;
@@ -27,7 +34,7 @@ namespace VKLib
 
 		public AccessDataInfo(string url)
 		{
-			Reset();
+			Reset(this);
 
 			int userId = int.MinValue;
 			string accessToken = null;
@@ -42,10 +49,10 @@ namespace VKLib
 
 		#region Methods
 
-		private void Reset()
+		public static void Reset(AccessDataInfo accessDataInfo)
 		{
-			UserId = int.MinValue;
-			AccessToken = null;
+			accessDataInfo.UserId = int.MinValue;
+			accessDataInfo.AccessToken = null;
 		}
 
 		public static void Parse(string url, out string AccessToken, out int UserId)
@@ -83,5 +90,6 @@ namespace VKLib
 		}
 
 		#endregion Methods
+
 	}
 }

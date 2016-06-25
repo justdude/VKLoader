@@ -173,7 +173,6 @@
     <Compile Include="Handlers\TagsHandler.cs" />
     <Compile Include="Handlers\TestLastFmConfig.cs" />
     <Compile Include="Handlers\IoC\Unity.cs" />
-    <Compile Include="Handlers\Wrapers\VkWrapper.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="IDownnloadedData.cs" />
@@ -282,6 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Handlers\toclean\" />
+    <Folder Include="Handlers\Wrapers\" />
     <Folder Include="ModelConector\" />
   </ItemGroup>
   <ItemGroup>

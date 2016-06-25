@@ -9,7 +9,7 @@ using VkDay.vkontakte;
 using VKLib;
 using VKLib.Model;
 
-namespace VKMusicSync.Handlers.Wrapers
+namespace VKLib.vkontakte
 {
 	public class VkWrapper : IVkWrapper
 	{
@@ -49,6 +49,8 @@ namespace VKMusicSync.Handlers.Wrapers
 
 		public event Action<object, VKApi.ConnectionState> AutorizedAction;
 
+		public event Action<object, VKApi.ConnectionState> UserLoadedAction;
+
 		//vkWrapper.VKLib.APIManager.VkInstance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
 		//public event Action<VKLib.VKApi.ConnectionState> ConnectionStateChanged;
 
@@ -79,6 +81,8 @@ namespace VKMusicSync.Handlers.Wrapers
 		public void InitUser()
 		{
 			UserProfile = CommandsGenerator.ProfileCommands.GetUser(AccessInfo.UserId);
+
+			OnUserLoadedAction(this, VKApi.ConnectionState.Loaded);
 		}
 
 		public void Clear()
@@ -97,6 +101,13 @@ namespace VKMusicSync.Handlers.Wrapers
 
 			AutorizedAction(this, obj);
 		}
+		protected virtual void OnUserLoadedAction(object arg1, VKApi.ConnectionState arg2)
+		{
+			if (UserLoadedAction == null)
+				return;
+
+			UserLoadedAction(arg1, arg2);
+		}
 
 		#region IWkWrapper
 
@@ -107,7 +118,7 @@ namespace VKMusicSync.Handlers.Wrapers
 
 		public bool IsUserLoaded
 		{
-			get { return UserProfile !=null && UserProfile.uid != int.MinValue && UserProfile.uid > -1; }
+			get { return UserProfile != null && UserProfile.uid != int.MinValue && UserProfile.uid > -1; }
 		}
 
 		#endregion IWkWrapper

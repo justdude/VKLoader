@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VkDay.vkontakte;
 using VKLib;
+using VKLib.vkontakte;
 
 namespace VKLib
 {
@@ -16,10 +18,17 @@ namespace VKLib
 
 		private static void Test()
 		{
-			APIManager.Instance.Connect();
-			APIManager.Instance.InitUser();
+			VkWrapper wrapper = new VkWrapper();
 
-			var iam = CommandsGenerator.ProfileCommands.GetUser(APIManager.Instance.Profile.uid);
+			wrapper.ShowAutorizationWindow();
+			wrapper.AutorizedAction += (s, e) => wrapper.InitUser();
+
+			while (!wrapper.IsUserLoaded)
+			{
+				
+			}
+
+			var iam = CommandsGenerator.ProfileCommands.GetUser(wrapper.UserProfile.uid);
 			Console.WriteLine(iam.ToString());
 			Console.Read();
 		}

@@ -88,6 +88,7 @@
     <Compile Include="vkontakte\IVkWrapper.cs" />
     <Compile Include="vkontakte\VKApi.cs" />
     <Compile Include="vkontakte\VkontakteScopeList.cs" />
+    <Compile Include="vkontakte\VkWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

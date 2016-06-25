@@ -25,6 +25,10 @@ using VKLib.Model;
 using VKMusicSync.Messages;
 using MIP.Commands;
 using MVVM;
+using VkDay.vkontakte;
+using VKMusicSync.Handlers.IoC;
+using Microsoft.Practices.Unity;
+
 
 namespace VKMusicSync.VKSync.ViewModel
 {
@@ -325,9 +329,8 @@ namespace VKMusicSync.VKSync.ViewModel
 			//OnUploadClick();
 			//return;
 			VKLib.CommandsGenerator.WallCommands.Post(
-				+VKLib.APIManager.Instance.AccessDataInfo.UserId,
-				"VK Loader API test...my name :"
-				+ VKLib.APIManager.Instance.Profile.FullName,
+				+vkWrapper.UserProfile.uid,
+				string.Format("VK Loader API test...my name :{0}", vkWrapper.UserProfile.FullName),
 				@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
 				"",
 				"");
@@ -497,19 +500,19 @@ namespace VKMusicSync.VKSync.ViewModel
 
 		private List<Sound> DownloadProcces()
 		{
-			int count_ = CommandsGenerator.AudioCommands.GetAudioCount(APIManager.Instance.API.UserId, false);
+			int count_ = CommandsGenerator.AudioCommands.GetAudioCount(vkWrapper.UserProfile.uid, false);
 
 			if (count_ > 0)
 			{
 				CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
 
-				List<SoundBase> sounds = CommandsGenerator.AudioCommands.GetAudioFromUser(APIManager.Instance.API.UserId, false, 0, count_);
+				List<SoundBase> sounds = CommandsGenerator.AudioCommands.GetAudioFromUser(vkWrapper.UserProfile.uid, false, 0, count_);
 
 				if (sounds == null)
 					return new List<Sound>();
 
 
-				return sounds.Select(p => { return new Sound(p); }).ToList();
+				return sounds.Select(p => new Sound(p)).ToList();
 
 			};
 			return new List<Sound>();
@@ -522,7 +525,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		public void ShareInfo()
 		{
 			//OnUploadClick();
-			AudiosCommand profCommand = VKLib.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.Instance.AccessDataInfo.UserId, 230);
+			AudiosCommand profCommand = VKLib.CommandsGenerator.AudioCommands.SendAudioToUserWall(vkWrapper.UserProfile.uid, 230);
 			profCommand.ExecuteCommand();
 		}
 
@@ -553,6 +556,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		BackgroundWorker backgroundWorker;
 		private bool allChecked;
 		private bool mvIsSyncing;
+		private IVkWrapper vkWrapper;
 
 		private void DownloadFiles()
 		{
@@ -636,6 +640,8 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			MainModelView.OnStateChanged += MainModelView_OnStateChanged;
 			MessengerInstance.Register<VkLoaded>(this, OnVkLoaded);
+
+			vkWrapper = Unity.Instance.Resolve<IVkWrapper>();
 
 			base.OnTokenChanged();
 		}

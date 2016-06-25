@@ -35,7 +35,7 @@ namespace VKLib
 
 		public BaseCommand(string CommandName, NameValueCollection Params)
 		{
-			this.AccessData = APIManager.Instance.AccessDataInfo;
+			this.AccessData = AccessDataInfo.DummyInfo;//APIManager.Instance.AccessDataInfo;
 			this.CommandName = CommandName;
 			this.Params = Params;
 		}
@@ -50,7 +50,7 @@ namespace VKLib
 		private string MakeQueryString(string name, string accessToken, NameValueCollection param)
 		{
 			const string fullQueryStr = @"https://api.vk.com/method/{0}.xml?{1}&access_token={2}";
-			const string queryWitoutTokenStr = @"https://api.vk.com/method/{0}.xml";
+			const string queryWitoutTokenStr = @"https://api.vk.com/method/{0}.xml?{1}";
 
 			var cachedStr = string.Empty;
 

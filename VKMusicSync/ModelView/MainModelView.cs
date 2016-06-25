@@ -19,9 +19,13 @@ using System.Xml;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Practices.Unity;
 using VKMusicSync.Messages;
 using MIP.MVVM;
 using MIP.Commands;
+using VkDay.vkontakte;
+using VKLib.vkontakte;
+using VKMusicSync.Handlers.IoC;
 using VKMusicSync.UserInfo.ViewModel;
 using VKMusicSync.VKSync.ViewModel;
 
@@ -147,9 +151,9 @@ namespace VKMusicSync.ModelView
 		{
 			get
 			{
-				if (APIManager.Instance.Profile == null)
-					return "";
-				return APIManager.Instance.Profile.ToString();
+				return vkWrapper.IsUserLoaded
+					? vkWrapper.UserProfile.ToString()
+					: string.Empty;
 			}
 		}
 
@@ -177,6 +181,7 @@ namespace VKMusicSync.ModelView
 
 		private readonly DelegateCommand modSettingsCLickCommand;
 		private readonly DelegateCommand modShareClickCommand;
+		private IVkWrapper vkWrapper;
 
 		public ICommand SettingsClick
 		{
@@ -197,7 +202,7 @@ namespace VKMusicSync.ModelView
 		}
 		#endregion
 
-		#region Constructor
+		#region Ctr.
 
 		public MainModelView()
 		{
@@ -205,41 +210,49 @@ namespace VKMusicSync.ModelView
 			modShareClickCommand = new DelegateCommand(OnShareClick, CanShareClick);
 
 			Tabs = new ObservableCollection<TabModelView>();
+
+			Unity.Instance.RegisterType<IVkWrapper, VkWrapper>();
+
+			vkWrapper = Unity.Instance.Resolve<IVkWrapper>();
 		}
+
+		#endregion
 
 		private bool CanShareClick()
 		{
 			return IsEnabled;
 		}
 
-		#endregion
+
 
 		#region Events listen
 
 		void worker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			Thread.Sleep(1000 * 1);
-			Execute(APIManager.Instance.Connect);
+			Execute(vkWrapper.ShowAutorizationWindow);
 		}
 
-		void API_OnConnectionStateChanged(VKLib.VKApi.ConnectionState obj)
+		void API_OnConnectionStateChanged(object sender, VKLib.VKApi.ConnectionState e)
 		{
-			if (obj != VKLib.VKApi.ConnectionState.Loaded)
+			if (e != VKLib.VKApi.ConnectionState.Loaded)
 				return;
 
 			ThreadPool.QueueUserWorkItem((p) =>
 			{
 				BeginExecute(() => IsLoading = true);
-				APIManager.Instance.InitUser();
+
+				vkWrapper.InitUser();
+
 				BeginExecute(() => IsLoading = false);
 			});
 		}
 
-		void vk_OnStateChanged(VKLib.VKApi.ConnectionState obj)
+		void vk_OnStateChanged(object sender, VKLib.VKApi.ConnectionState e)
 		{
-			ChangeConnectionState(obj);
+			ChangeConnectionState(e);
 
-			if (obj != VKLib.VKApi.ConnectionState.Loaded)
+			if (e != VKLib.VKApi.ConnectionState.Loaded)
 				return;
 
 			UpdateDataFromProfile();
@@ -251,13 +264,14 @@ namespace VKMusicSync.ModelView
 
 		private void OnShareClick()
 		{
+			if (!vkWrapper.IsUserLoaded)
+				return;
+
 			VKLib.CommandsGenerator.WallCommands.Post(
-					+VKLib.APIManager.Instance.AccessDataInfo.UserId,
-					"VK Loader API test...my name :"
-					+ VKLib.APIManager.Instance.Profile.FullName,
+					+vkWrapper.UserProfile.uid,
+					string.Format("VK Loader API test...my name :{0}", vkWrapper.UserProfile.FullName),
 					@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
-					"",
-					"");
+					string.Empty, string.Empty);
 			/*var t = Sounds;
 			var info = LastFmHandler.Api.Track.GetInfo("Moby", "Porcelain");
 			var res = LastFmHandler.Api.Artist.GetInfo("Moby");*/
@@ -293,7 +307,10 @@ namespace VKMusicSync.ModelView
 
 		public void LoadProfileInfo()
 		{
-			string path = APIManager.Instance.Profile.GetMaxPhotoSize();
+			if (!vkWrapper.IsUserLoaded)
+				return;
+
+			string path = vkWrapper.UserProfile.GetMaxPhotoSize();
 
 			if (path != string.Empty)
 				Execute(() => Avatar = path);
@@ -342,12 +359,12 @@ namespace VKMusicSync.ModelView
 
 		protected override void OnTokenChanged()
 		{
-			VKLib.APIManager.Instance.OnUserLoaded += vk_OnStateChanged;
-			VKLib.APIManager.Instance.API.OnConnectionStateChanged += API_OnConnectionStateChanged;
+			vkWrapper.UserLoadedAction += vk_OnStateChanged;
+			vkWrapper.AutorizedAction += API_OnConnectionStateChanged;
 
 			var tab = new SoundDownloaderMovelView() { ParentToken = Token };
 			var tab2 = new UserInfoViewModel() { ParentToken = Token };
-			
+
 			Tabs.Add(tab2);
 			Tabs.Add(tab);
 
@@ -372,8 +389,8 @@ namespace VKMusicSync.ModelView
 			}
 			Tabs.Clear();
 
-			VKLib.APIManager.Instance.OnUserLoaded -= vk_OnStateChanged;
-			VKLib.APIManager.Instance.API.OnConnectionStateChanged -= API_OnConnectionStateChanged;
+			vkWrapper.AutorizedAction -= vk_OnStateChanged;
+			vkWrapper.UserLoadedAction -= API_OnConnectionStateChanged;
 
 			base.OnCleanup();
 		}
