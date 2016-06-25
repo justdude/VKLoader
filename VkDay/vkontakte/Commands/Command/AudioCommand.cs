@@ -18,7 +18,7 @@ namespace VKLib
         {
         }
 
-        public AudiosCommand(AccessData AccessData,string CommandName, NameValueCollection Params):base(AccessData,
+        public AudiosCommand(AccessDataInfo accessData,string CommandName, NameValueCollection Params):base(accessData,
                                                                                                         CommandName,
                                                                                                         Params)
         {

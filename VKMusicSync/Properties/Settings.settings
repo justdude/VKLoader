@@ -1,36 +1,36 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="VKMusicSync.Properties" GeneratedClassName="Settings">
-  <Profiles />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentUserProfile="(Default)" GeneratedClassNamespace="VKMusicSync.Properties" GeneratedClassName="Settings">
+  <UserProfiles />
   <Settings>
     <Setting Name="BackgroundPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value UserProfile="(Default)" />
     </Setting>
     <Setting Name="DownloadFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">\Audio</Value>
+      <Value UserProfile="(Default)">\Audio</Value>
     </Setting>
     <Setting Name="ProxyAdress" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value UserProfile="(Default)" />
     </Setting>
     <Setting Name="ProxyPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value UserProfile="(Default)" />
     </Setting>
     <Setting Name="ProxyName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value UserProfile="(Default)" />
     </Setting>
     <Setting Name="ProxyPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value UserProfile="(Default)" />
     </Setting>
     <Setting Name="UseProxy" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value UserProfile="(Default)">False</Value>
     </Setting>
     <Setting Name="ThreadCountToUse" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value UserProfile="(Default)">2</Value>
     </Setting>
     <Setting Name="LoadInfoFromLastFm" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value UserProfile="(Default)">False</Value>
     </Setting>
     <Setting Name="UseProxyCredintial" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value UserProfile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

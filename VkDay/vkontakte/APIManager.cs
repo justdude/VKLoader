@@ -25,13 +25,13 @@ namespace VKLib
 		private object modSync = new object();
 
 		public VKApi API { get; private set; }
-		public AccessData AccessData { get; private set; }
+		public AccessDataInfo AccessDataInfo { get; private set; }
 		public Profile Profile { get; private set; }
 		public bool IsCanLogin
 		{
 			get
 			{
-				return AccessData == null;
+				return AccessDataInfo == null;
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace VKLib
 			{
 				try
 				{
-					Profile = CommandsGenerator.ProfileCommands.GetUser(AccessData.UserId);
+					Profile = CommandsGenerator.ProfileCommands.GetUser(AccessDataInfo.UserId);
 					RaiseOnUserLoaded(VKApi.ConnectionState.Loaded);
 				}
 				catch (Exception ex)
@@ -70,16 +70,16 @@ namespace VKLib
 		public void TryExit()
 		{
 			//http://api.API.com/oauth/logout
-			AccessData = null;
+			AccessDataInfo = null;
 			Profile = null;
 		}
 
 		private void OnAccessTokenLoaded(string url)
 		{
-			AccessData = new AccessData(url);
+			AccessDataInfo = new AccessDataInfo(url);
 			if (API == null)
 				API = new VKApi();
-			API.Init(AccessData);
+			API.Init(AccessDataInfo);
 		}
 
 		private void RaiseOnUserLoaded(VKApi.ConnectionState state)

@@ -325,7 +325,7 @@ namespace VKMusicSync.VKSync.ViewModel
 			//OnUploadClick();
 			//return;
 			VKLib.CommandsGenerator.WallCommands.Post(
-				+VKLib.APIManager.Instance.AccessData.UserId,
+				+VKLib.APIManager.Instance.AccessDataInfo.UserId,
 				"VK Loader API test...my name :"
 				+ VKLib.APIManager.Instance.Profile.FullName,
 				@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
@@ -522,7 +522,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		public void ShareInfo()
 		{
 			//OnUploadClick();
-			AudiosCommand profCommand = VKLib.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.Instance.AccessData.UserId, 230);
+			AudiosCommand profCommand = VKLib.CommandsGenerator.AudioCommands.SendAudioToUserWall(APIManager.Instance.AccessDataInfo.UserId, 230);
 			profCommand.ExecuteCommand();
 		}
 

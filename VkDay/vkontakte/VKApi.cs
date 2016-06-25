@@ -24,27 +24,32 @@ namespace VKLib
 			Failed
 		}
 
-		public event Action<VKApi.ConnectionState> OnConnectionStateChanged;
-		private DownloadProgressChangedEventHandler modDownloadFileProgressChanged;
 
-		public int UserId = 0;
-		public string AccessToken = "";
+		private DownloadProgressChangedEventHandler modDownloadFileProgressChanged;
+		public event Action<VKApi.ConnectionState> OnConnectionStateChanged;
+		private AccessDataInfo acessInfo;
+
+		public int UserId { get { return AcessInfo.UserId; } }
+		public string AccessToken { get { return AcessInfo.AccessToken; } }
 		public ConnectionState State { get; private set; }
 
-
-		public void Init(AccessData data)
+		private AccessDataInfo AcessInfo
 		{
-			this.UserId = data.UserId;
-			this.AccessToken = data.AccessToken;
-			ChangeConnectionState(ConnectionState.Loaded);
+			get
+			{
+				if (acessInfo == null)
+					acessInfo = new AccessDataInfo(int.MinValue, null);
+
+				return acessInfo;
+			}
 		}
 
-		public void Init(string url)
+		public void Init(AccessDataInfo acessInfo)
 		{
-			Parse(url, out this.UserId, out this.AccessToken);
+			this.acessInfo = acessInfo;
+
 			ChangeConnectionState(ConnectionState.Loaded);
 		}
-
 
 		private void ChangeConnectionState(VKApi.ConnectionState state)
 		{
@@ -55,24 +60,6 @@ namespace VKLib
 
 			OnConnectionStateChanged(state);
 		}
-
-		private void Parse(string url, out int id, out string token)
-		{
-			token = "";
-			id = 0;
-
-			Regex reg = new Regex(@"(?<CommandName>[\w\d\x5f]+)=(?<value>[^\x26\item]+)",
-					  RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-			var mathes = reg.Matches(url);
-
-			foreach (Match m in mathes)
-				if (m.Groups["CommandName"].Value == "access_token")
-					token = m.Groups["value"].Value;
-				else if (m.Groups["CommandName"].Value == "user_id")
-					id = int.Parse(m.Groups["value"].Value);
-		}
-
 
 		private XmlDocument ExecuteCommand(string name, NameValueCollection param)
 		{
@@ -270,7 +257,7 @@ namespace VKLib
 	}
 
 	#region Глобальные перечисления
-	
+
 	#endregion
 
 }

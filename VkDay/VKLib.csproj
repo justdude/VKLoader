@@ -85,6 +85,7 @@
     <Compile Include="vkontakte\Commands\WallCommands.cs" />
     <Compile Include="vkontakte\Commands\XMLNodeHelper.cs" />
     <Compile Include="vkontakte\ICommand.cs" />
+    <Compile Include="vkontakte\IVkWrapper.cs" />
     <Compile Include="vkontakte\VKApi.cs" />
     <Compile Include="vkontakte\VkontakteScopeList.cs" />
   </ItemGroup>

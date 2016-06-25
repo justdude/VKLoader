@@ -252,7 +252,7 @@ namespace VKMusicSync.ModelView
 		private void OnShareClick()
 		{
 			VKLib.CommandsGenerator.WallCommands.Post(
-					+VKLib.APIManager.Instance.AccessData.UserId,
+					+VKLib.APIManager.Instance.AccessDataInfo.UserId,
 					"VK Loader API test...my name :"
 					+ VKLib.APIManager.Instance.Profile.FullName,
 					@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
@@ -289,7 +289,7 @@ namespace VKMusicSync.ModelView
 
 		#endregion
 
-		#region Profile
+		#region UserProfile
 
 		public void LoadProfileInfo()
 		{

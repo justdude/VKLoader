@@ -17,8 +17,8 @@ namespace VKLib
         {
         }
 
-        public AudioUploadComman(AccessData AccessData, string CommandName, NameValueCollection Params)
-            : base(AccessData,  CommandName, Params)
+        public AudioUploadComman(AccessDataInfo accessData, string CommandName, NameValueCollection Params)
+            : base(accessData,  CommandName, Params)
         {
         }
 

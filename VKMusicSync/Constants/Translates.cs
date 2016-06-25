@@ -11,5 +11,8 @@ namespace VKMusicSync.Constants
 		public const string Cansel = "Отменить";
 		public const string SelectAll = "Выбрать все";
 		public const string CanselAll = "Отменить все";
+
+		public const string NoName = "Безымяный";
+
 	}
 }

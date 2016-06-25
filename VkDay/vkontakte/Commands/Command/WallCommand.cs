@@ -16,8 +16,8 @@ namespace VKLib
         {
         }
 
-        public WallCommand(AccessData AccessData, string CommandName, NameValueCollection Params)
-            : base(AccessData, CommandName, Params)
+        public WallCommand(AccessDataInfo accessData, string CommandName, NameValueCollection Params)
+            : base(accessData, CommandName, Params)
         {
         }
 

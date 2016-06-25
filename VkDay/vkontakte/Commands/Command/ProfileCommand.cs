@@ -16,8 +16,8 @@ namespace VKLib
 
         }
 
-        public ProfileCommand(AccessData AccessData, string CommandName, NameValueCollection Params)
-            : base(AccessData,
+        public ProfileCommand(AccessDataInfo accessData, string CommandName, NameValueCollection Params)
+            : base(accessData,
                    CommandName,
                    Params)
         {
