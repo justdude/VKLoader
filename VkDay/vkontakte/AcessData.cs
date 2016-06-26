@@ -12,7 +12,7 @@ namespace VKLib
 		public int UserId { get; private set; }
 		public string AccessToken { get; private set; }
 
-		public bool IsHasToken { get { return string.IsNullOrWhiteSpace(AccessToken); } }
+		public bool IsHasToken { get { return !string.IsNullOrWhiteSpace(AccessToken); } }
 		public bool IsHasUserId { get { return UserId >= 0; } }
 
 		#endregion Properties

@@ -60,13 +60,13 @@ namespace VKLib.vkontakte
 
 		public void ShowAutorizationWindow()
 		{
+			Clear();
+
 			var authWindow = new Auth();
 
 			authWindow.auth.OnAccessTokenLoaded += AccessTokenLoaded;
 
 			authWindow.ShowDialog();
-
-			Clear();
 		}
 
 		private void AccessTokenLoaded(string url)

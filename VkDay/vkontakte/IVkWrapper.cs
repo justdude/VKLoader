@@ -6,6 +6,7 @@ namespace VkDay.vkontakte
 {
 	public interface IVkWrapper
 	{
+		AccessDataInfo AccessInfo { get; }
 		VKApi VkInstance { get;  }
 		Profile UserProfile { get; }
 		bool IsConnected { get; }

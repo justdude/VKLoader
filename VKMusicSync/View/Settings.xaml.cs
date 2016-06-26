@@ -25,6 +25,7 @@ namespace VKMusicSync.View
             InitializeComponent();
             var modelview = new SettingsModelView();
             this.DataContext = modelview;
+	        modelview.Token = Uid;
         }
     }
 }

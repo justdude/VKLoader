@@ -1,34 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.ComponentModel;
-using System.Net;
-
-using VKMusicSync.Model;
-using VKMusicSync.ModelView;
-using VKMusicSync.Handlers.Synchronize;
-using VKLib;
-using VKMusicSync.Handlers;
-using System.Collections.Specialized;
 using System.IO;
-using System.Xml;
-using System.Security.Cryptography;
+using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using VKMusicSync.Handlers.CachedData;
+using System.Windows.Forms;
+using System.Windows.Input;
 using DotLastFm.Models;
-using VKLib.Model;
-using VKMusicSync.Messages;
+using Microsoft.Practices.Unity;
 using MIP.Commands;
 using MVVM;
 using VkDay.vkontakte;
+using VKLib;
+using VKLib.Model;
+using VKMusicSync.Constants;
+using VKMusicSync.Handlers;
 using VKMusicSync.Handlers.IoC;
-using Microsoft.Practices.Unity;
-
+using VKMusicSync.Handlers.Synchronize;
+using VKMusicSync.Messages;
+using VKMusicSync.Model;
+using VKMusicSync.ModelView;
+using VKMusicSync.Properties;
 
 namespace VKMusicSync.VKSync.ViewModel
 {
@@ -68,12 +63,12 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			get
 			{
-				return Properties.Settings.Default.LoadInfoFromLastFm;
+				return Settings.Default.LoadInfoFromLastFm;
 			}
 			set
 			{
-				Properties.Settings.Default.LoadInfoFromLastFm = value;
-				Properties.Settings.Default.Save();
+				Settings.Default.LoadInfoFromLastFm = value;
+				Settings.Default.Save();
 			}
 		}
 
@@ -82,7 +77,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			get
 			{
-				return Properties.Settings.Default.BackgroundPath;
+				return Settings.Default.BackgroundPath;
 			}
 		}
 
@@ -195,7 +190,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		public SoundDownloaderMovelView()
 			: base()
 		{
-			Header = Constants.Const.tbAudiosHeader;
+			Header = Const.tbAudiosHeader;
 			SoundsData = new List<Sound>();
 
 			modCheckAll = new DelegateCommand(OnCheckedAllClick, CanCheckAll);
@@ -290,20 +285,12 @@ namespace VKMusicSync.VKSync.ViewModel
 			CleanAndClose();
 		}
 
-		private void MainModelView_OnStateChanged(VKApi.ConnectionState obj)
+		private void MainModelView_OnStateChanged(object sender, VKApi.ConnectionState obj)
 		{
 			switch (obj)
 			{
 				case (VKApi.ConnectionState.Loaded):
-					if (!IsFirstLoadDone || IsNeedFill)
-					{
-						Execute(() =>
-						{
-							RaisePropertiesChanged();
-							RefreshCommands();
-						});
-						UpdateDataFromProfile(null);
-					}
+					Run();
 					break;
 
 				case (VKApi.ConnectionState.Failed):
@@ -313,6 +300,13 @@ namespace VKMusicSync.VKSync.ViewModel
 				default:
 					return;
 			}
+		}
+
+		private void Run()
+		{
+			RaisePropertiesChanged();
+			RefreshCommands();
+			UpdateDataFromProfile(null);
 		}
 
 		#endregion
@@ -328,7 +322,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			//OnUploadClick();
 			//return;
-			VKLib.CommandsGenerator.WallCommands.Post(
+			CommandsGenerator.WallCommands.Post(
 				+vkWrapper.UserProfile.uid,
 				string.Format("VK Loader API test...my name :{0}", vkWrapper.UserProfile.FullName),
 				@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
@@ -383,35 +377,31 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			IsLoading = true;
 			var worker = new BackgroundWorker();
-			//worker.WorkerSupportsCancellation = true;
 
 			worker.DoWork += (p, arg) =>
 			{
-
-				//Thread act2 = new Thread(() =>
-				//{
 				Status = Constants.Status.LoadingTrackInfo;
 				LoadAudioInfo();
 				IsFirstLoadDone = true;
-				//	IsNeedFill = false;
-				//});
-
-
-				//act2.IsBackground = true;
-				//act2.Start();
-				//act2.Join();
-				//InitDone();
 
 			};
 			worker.RunWorkerAsync();
 
 			worker.RunWorkerCompleted += (s, e) =>
 				{
-					var manager = new AsyncTaskManager<Sound>(PreloadDatFromLast);
 					Status = Constants.Status.LoadingTrackInfo;
 
-					manager.ProcessAsync(SoundsData, Properties.Settings.Default.ThreadCountToUse);
-					manager.AllDone.WaitOne();
+					//var manager = new AsyncTaskManager<Sound>(PreloadDatFromLast);
+
+					//manager.ProcessAsync(SoundsData, Properties.Settings.Default.ThreadCountToUse);
+					//manager.AllDone.WaitOne();
+
+					ParallelOptions options = new ParallelOptions();
+					options.CancellationToken = CancellationToken.None;
+					options.MaxDegreeOfParallelism = Settings.Default.ThreadCountToUse;
+
+					//Parallel.ForEach(SoundsData, options, PreloadDatFromLast);
+
 					InitDone();
 				};
 		}
@@ -428,7 +418,7 @@ namespace VKMusicSync.VKSync.ViewModel
 				ArtistWithDetails artist = null;
 
 				if (artist == null)
-					artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
+					artist = LastFmHandler.Api.Artist.GetInfo(sound.artist);
 
 				Execute(() =>
 				{
@@ -464,28 +454,24 @@ namespace VKMusicSync.VKSync.ViewModel
 			SynhronizeAdapter<Sound> soundHandler;
 			List<Sound> soundsData;
 
-			soundHandler = new SynhronizeAdapter<Sound>(Properties.Settings.Default.DownloadFolderPath,
-				Constants.Const.MP3,
-				Properties.Settings.Default.ThreadCountToUse);
+			soundHandler = new SynhronizeAdapter<Sound>(Settings.Default.DownloadFolderPath,
+				Const.MP3,
+				Settings.Default.ThreadCountToUse);
 
-			//SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
+			//SoundHandler.OnDone += AdapterSyncFolderWi5thVKAsyncDone;
 			//SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;
 
 			soundHandler.OnReadDataInfoEvent += FilFromDiskItem;
 
-			Func<Sound> Creator = () => { return new Sound(); };
+			Func<Sound> creator = () => new Sound();
 
-			soundHandler.ComputeModList(Creator, DownloadProcces);
+			soundHandler.ComputeModList(creator, DownloadProcces);
 
-			soundsData = new List<Sound>();
-			foreach (var item in soundHandler.ComputedFileList)
-			{
-				soundsData.Add(item);
-			}
+			soundsData = soundHandler.ComputedFileList.ToList();
 
 			base.ItemsData = soundsData;
 
-			Execute(() => FillFromData(p => { return new SoundModelView(p); }));
+			Execute(() => FillFromData(p => new SoundModelView(p)));
 
 			SoundHandler = soundHandler;
 			SoundsData = soundsData;
@@ -495,22 +481,23 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			var sound = item as Sound;
 			if (sound != null)
-				Handlers.TagReader.Read(item.PathWithFileName, sound);
+				TagReader.Read(item.PathWithFileName, sound);
 		}
 
 		private List<Sound> DownloadProcces()
 		{
-			int count_ = CommandsGenerator.AudioCommands.GetAudioCount(vkWrapper.UserProfile.uid, false);
+			int count = CommandsGenerator.AudioCommands.GetAudioCount(vkWrapper.AccessInfo,
+				vkWrapper.UserProfile.uid, false);
 
-			if (count_ > 0)
+			if (count > 0)
 			{
 				CommandsGenerator.AudioCommands.OnCommandExecuting += OnCommandLoading;
 
-				List<SoundBase> sounds = CommandsGenerator.AudioCommands.GetAudioFromUser(vkWrapper.UserProfile.uid, false, 0, count_);
+				List<SoundBase> sounds = CommandsGenerator.AudioCommands.GetAudioFromUser(vkWrapper.AccessInfo, 
+					vkWrapper.UserProfile.uid, false, 0, count);
 
 				if (sounds == null)
 					return new List<Sound>();
-
 
 				return sounds.Select(p => new Sound(p)).ToList();
 
@@ -525,7 +512,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		public void ShareInfo()
 		{
 			//OnUploadClick();
-			AudiosCommand profCommand = VKLib.CommandsGenerator.AudioCommands.SendAudioToUserWall(vkWrapper.UserProfile.uid, 230);
+			AudiosCommand profCommand = CommandsGenerator.AudioCommands.SendAudioToUserWall(vkWrapper.UserProfile.uid, 230);
 			profCommand.ExecuteCommand();
 		}
 
@@ -535,7 +522,7 @@ namespace VKMusicSync.VKSync.ViewModel
 
 		private void OnUploadClick()
 		{
-			System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.ShowDialog();
 
 			if (dialog.FileName.Count() > 0 && dialog.CheckPathExists)
@@ -563,7 +550,7 @@ namespace VKMusicSync.VKSync.ViewModel
 			IsLoading = true;
 			IsSyncing = true;
 
-			VKMusicSync.ModelView.SoundModelView.FreezeClick = true;
+			SoundModelView.FreezeClick = true;
 			backgroundWorker = new BackgroundWorker();
 			//backgroundWorker.WorkerReportsProgress = true;
 			backgroundWorker.WorkerSupportsCancellation = true;
@@ -599,8 +586,8 @@ namespace VKMusicSync.VKSync.ViewModel
 
 		private void SyncFolderWithVKAsync(object sender, DoWorkEventArgs e)
 		{
-			SoundHandler = new SynhronizeAdapter<Sound>(Properties.Settings.Default.DownloadFolderPath,
-			  "*.mp3", Properties.Settings.Default.ThreadCountToUse);
+			SoundHandler = new SynhronizeAdapter<Sound>(Settings.Default.DownloadFolderPath,
+			  "*.mp3", Settings.Default.ThreadCountToUse);
 
 			SoundHandler.OnDone += AdapterSyncFolderWithVKAsyncDone;
 			SoundHandler.OnProgress += AdapterSyncFolderWithVKAsyncOnProgress;
@@ -623,7 +610,7 @@ namespace VKMusicSync.VKSync.ViewModel
 		{
 			Status = SoundHandler.CountLoadedFiles + "/" + this.Items.Count;
 			//this.ProgressPercentage = 100;
-			IOHandler.OpenPath(Properties.Settings.Default.DownloadFolderPath);
+			IOHandler.OpenPath(Settings.Default.DownloadFolderPath);
 
 			BeginExecute(() =>
 				{
@@ -638,10 +625,13 @@ namespace VKMusicSync.VKSync.ViewModel
 
 		protected override void OnTokenChanged()
 		{
-			MainModelView.OnStateChanged += MainModelView_OnStateChanged;
 			MessengerInstance.Register<VkLoaded>(this, OnVkLoaded);
 
 			vkWrapper = Unity.Instance.Resolve<IVkWrapper>();
+			vkWrapper.UserLoadedAction += MainModelView_OnStateChanged;
+
+			if (vkWrapper.IsUserLoaded)
+				Run();
 
 			base.OnTokenChanged();
 		}
@@ -654,7 +644,8 @@ namespace VKMusicSync.VKSync.ViewModel
 
 		protected override void OnCleanup()
 		{
-			MainModelView.OnStateChanged -= MainModelView_OnStateChanged;
+			if (vkWrapper != null)
+				vkWrapper.AutorizedAction -= MainModelView_OnStateChanged;
 
 			try
 			{

@@ -211,7 +211,7 @@ namespace VKMusicSync.ModelView
 
 			Tabs = new ObservableCollection<TabModelView>();
 
-			Unity.Instance.RegisterType<IVkWrapper, VkWrapper>();
+			Unity.Instance.RegisterInstance<IVkWrapper>(new VkWrapper());
 
 			vkWrapper = Unity.Instance.Resolve<IVkWrapper>();
 		}

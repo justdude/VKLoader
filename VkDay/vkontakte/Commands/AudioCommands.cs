@@ -44,20 +44,20 @@ namespace VKLib
         }
 
         #region Audio
-        public int GetAudioCount(int uid, bool isGroup)
+        public int GetAudioCount(AccessDataInfo accessData, int uid, bool isGroup)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
             Params.Add("owner_id", ((isGroup) ? "-" : "") + uid);
             Params.Add("fields", "uid,aid");
             CommandName = "audio.getCount";
-            var command = new AudiosCommand(CommandName, Params);
+            var command = new AudiosCommand(accessData, CommandName, Params);
             command.ExecuteCommand();
             return command.GetCount();
 
         }
 
-        public List<SoundBase> GetAudioFromUser(int uid, bool isGroup, int offset, int counts)
+		public List<SoundBase> GetAudioFromUser(AccessDataInfo accessData, int uid, bool isGroup, int offset, int counts)
         {
             NameValueCollection Params = new NameValueCollection();
             string CommandName;
@@ -66,7 +66,7 @@ namespace VKLib
             Params.Add("count", counts.ToString());
             Params.Add("fields", "owner_id,offset,count");
             CommandName = "audio.get";
-            var command = new AudiosCommand(CommandName, Params);
+			var command = new AudiosCommand(accessData, CommandName, Params);
             command.ExecuteCommand();
             return command.Fill();
         }

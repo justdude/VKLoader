@@ -20,7 +20,7 @@ namespace VKLib
 		public DownloadProgressChangedEventHandler OnCommandExecuting { get; set; }
 
 		private string queryString;
-		public string QueryString
+		public virtual string QueryString
 		{
 			get
 			{
@@ -110,6 +110,11 @@ namespace VKLib
 			downloader.DownloadProgressChanged -= OnCommandExecuting;
 			downloader.Dispose();
 			fileStream.Dispose();
+		}
+
+		public virtual bool Validate(BaseCommand<T> command)
+		{
+			return true;
 		}
 	}
 }

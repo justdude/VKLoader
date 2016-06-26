@@ -280,8 +280,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Handlers\toclean\" />
-    <Folder Include="Handlers\Wrapers\" />
     <Folder Include="ModelConector\" />
   </ItemGroup>
   <ItemGroup>
