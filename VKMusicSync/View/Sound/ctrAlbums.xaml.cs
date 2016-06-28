@@ -18,9 +18,9 @@ namespace VKMusicSync.View.Sound
 	/// <summary>
 	/// Interaction logic for ctrSimilarArtists.xaml
 	/// </summary>
-	public partial class ctrAlbums : UserControl
+	public partial class ctrSimilarArtists : UserControl
 	{
-		public ctrAlbums()
+		public ctrSimilarArtists()
 		{
 			InitializeComponent();
 		}

@@ -178,5 +178,7 @@ namespace VKMusicSync.Model
 		{
 			throw new NotImplementedException();
 		}
+
+		public static List<string> Albums { get; set; }
 	}
 }

@@ -280,6 +280,21 @@ namespace VKMusicSync.ViewModel
 				}
 			}
 		}
+
+		public List<string> Albums
+		{
+			get { return Sound.Albums; }
+			set
+			{
+				if (Sound.Albums != value)
+				{
+					Sound.Albums = value;
+
+					RaisePropertyChanged(() => Albums);
+				}
+			}
+		}
+
 		#endregion
 
 		public SoundViewModel(Sound sound)
