@@ -8,7 +8,7 @@
 		xmlns:cc="clr-namespace:VKMusicSync.CustomControls"
         xmlns:converters ="clr-namespace:VKMusicSync.Converters"
         xmlns:local="clr-namespace:VKLib"
-		xmlns:viewModel="clr-namespace:VKMusicSync.ModelView"
+		xmlns:viewModel="clr-namespace:VKMusicSync.ViewModel"
         xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
         
         x:Class="VKMusicSync.MusicSync"

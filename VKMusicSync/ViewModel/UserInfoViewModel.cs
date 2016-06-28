@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VKMusicSync.UserInfo.ViewModel
 {
-	public class UserInfoViewModel : MIP.MVVM.TabModelView
+	public class UserInfoViewModel : MIP.MVVM.TabViewModel
 	{
 		private const string UserInfoText = "Информация";
 		

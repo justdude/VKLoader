@@ -7,37 +7,38 @@ using VKMusicSync.Model;
 
 namespace VKMusicSync.Handlers
 {
-    public static class DataHelper<T> where T : IDownnloadedData
-    {
+	public static class DataHelper<TType> where TType : IDownnloadedData
+	{
 
-        public static void ConvertFrom<T>(FileInfo fileInfo, T element) where T : IDownnloadedData
-        {
-            element.Path = fileInfo.DirectoryName;
-            //.FileExtention = fileInfo.Extension;
-            element.FileName = fileInfo.Name.Replace( fileInfo.Extension, "");
-            element.MD5 = fileInfo.GetHashCode().ToString();
-            element.IsLoadedToDisk = false;
-            element.State = Synchronize.SyncStates.Default;
-            element.LoadedSize = (double)fileInfo.Length;
-        }
+		public static void ConvertFrom<T>(FileInfo fileInfo, T element) where T : IDownnloadedData
+		{
+			element.Path = fileInfo.DirectoryName;
+			//.FileExtention = fileInfo.Extension;
+			element.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
+			element.MD5 = fileInfo.GetHashCode().ToString();
+			element.IsLoadedToDisk = false;
+			element.State = Synchronize.SyncStates.Unknown;
+			element.LoadedSize = (double)fileInfo.Length;
+		}
 
-        public static List<T> CastInfoToList(FileInfo[] FilesInfo, Func<T> Creator)
-        {
-            if (FilesInfo == null && Creator != null)
-                return null;
+		public static List<TType> CastInfoToList(FileInfo[] filesInfo, Func<TType> creator)
+		{
+			if (filesInfo == null && creator != null)
+				return null;
 
-            List<T> tempColl = new List<T>();
-            foreach (var folderInfo in FilesInfo)
-            {
-                T el = Creator();
-                if (el != null)
-                {
-                    ConvertFrom<T>(folderInfo, el);
-                    tempColl.Add(el);
-                }
+			List<TType> tempColl = new List<TType>();
+			TType element = creator();
 
-            }
-            return tempColl;
-        }
-    }
+			foreach (var folderInfo in filesInfo)
+			{
+				if (element == null) 
+					continue;
+
+				ConvertFrom<TType>(folderInfo, element);
+
+				tempColl.Add(element);
+			}
+			return tempColl;
+		}
+	}
 }

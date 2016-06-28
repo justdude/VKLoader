@@ -13,9 +13,9 @@ using VKMusicSync.Handlers.IoC;
 using Microsoft.Practices.Unity;
 
 
-namespace VKMusicSync.ModelView
+namespace VKMusicSync.ViewModel
 {
-	class SettingsModelView : AdwancedViewModelBase
+	class SettingsViewModel : AdwancedViewModelBase
 	{
 
 		public string UserFullName

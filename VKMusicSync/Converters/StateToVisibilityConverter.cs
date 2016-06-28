@@ -15,7 +15,7 @@ namespace VKMusicSync.Converters
             var valueConverted = (SyncStates)value;
             var paramConverted = (SyncStates)Enum.Parse(typeof(SyncStates), parameter.ToString() , true); 
 
-            if (valueConverted == SyncStates.Default)
+            if (valueConverted == SyncStates.Unknown)
                 return Visibility.Collapsed;
 
             if (paramConverted == valueConverted)

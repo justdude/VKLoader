@@ -16,9 +16,9 @@ using VCSKicks;
 using VKMusicSync.Handlers.CachedData;
 using VKMusicSync.Handlers;
 using MIP.MVVM;
-namespace VKMusicSync.ModelView
+namespace VKMusicSync.ViewModel
 {
-	public class SoundModelView : AdwancedViewModelBase, IDownnloadedData, IStateChanged
+	public class SoundViewModel : AdwancedViewModelBase, IDownnloadedData, IStateChanged
 	{
 
 		public IStateChanged InstanceWithEvents
@@ -260,7 +260,7 @@ namespace VKMusicSync.ModelView
 					Sound.IsLoadedToDisk = value;
 					RaisePropertyChanged(() => IsLoadedToDisk);
 
-					// VKMusicSync.ModelView.SoundDownloaderMovelView.Instance.UpdateList();
+					// VKMusicSync.ViewModel.SoundDownloaderMovelView.Instance.UpdateList();
 				}
 			}
 		}
@@ -282,7 +282,7 @@ namespace VKMusicSync.ModelView
 		}
 		#endregion
 
-		public SoundModelView(Sound sound)
+		public SoundViewModel(Sound sound)
 		{
 			this.Sound = sound;
 		}
@@ -377,7 +377,7 @@ namespace VKMusicSync.ModelView
 			bool result = (bool)state.result;
 			if (result)
 			{
-				State = SyncStates.IsSynced;
+				State = SyncStates.Synced;
 			}
 
 			this.Checked = !((bool)state.result);
@@ -404,7 +404,9 @@ namespace VKMusicSync.ModelView
 				sound.authorPhotoPath = artist.Images[2].Value; // little spike 
 			}
 			catch (Exception)
-			{ }
+			{
+				// ignored
+			}
 
 			if (artist == null)
 				return;

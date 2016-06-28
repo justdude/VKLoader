@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using Elysium;
 using VKMusicSync;
 using VKMusicSync.Model;
-using VKMusicSync.ModelView;
+using VKMusicSync.ViewModel;
 using VKLib;
 using MIP.MVVM.View;
 using VKMusicSync.CustomControls;
@@ -37,7 +37,7 @@ namespace VKMusicSync
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var modelView = new MainModelView();
+            var modelView = new MainViewModel();
             this.DataContext = modelView;
 			modelView.Token = this.Token;
 			//modelView.CurrentDispatcher = Dispatcher;

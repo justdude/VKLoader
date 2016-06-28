@@ -1,0 +1,104 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:Elysium.Controls;assembly=Elysium"
+    xmlns:metro="http://schemas.codeplex.com/elysium"
+    xmlns:params="http://schemas.codeplex.com/elysium/params"
+    xmlns:converters ="clr-namespace:VKMusicSync.Converters"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace:VKLib"
+    xmlns:Synchronize ="clr-namespace:VKMusicSync.Handlers.Synchronize"
+        
+    xmlns:windows="clr-namespace:VKLib"
+    xmlns:soundView="clr-namespace:VKMusicSync.View.Sound">
+
+
+	<x:Array Type="{x:Type sys:Object}" x:Key="extensions">
+		<Separator />
+		<MenuItem Header="Extension MenuItem 1" />
+		<MenuItem Header="Extension MenuItem 2" />
+		<MenuItem Header="Extension MenuItem 3" />
+	</x:Array>
+
+	<converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>
+	<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
+
+	<DataTemplate x:Key="ListBoxItemTemplate">
+		<Border CornerRadius="2" 
+                                        HorizontalAlignment="Stretch"    
+                                        BorderThickness=".8"  
+                                        Margin="2" 
+                                        Padding="2.5"  
+                                        Background="#66F8F8FF" 
+                                        BorderBrush="Silver" >
+			<Border.ContextMenu>
+				<ContextMenu ItemsSource="{StaticResource extensions}">
+				</ContextMenu>
+			</Border.ContextMenu>
+
+			<Grid  HorizontalAlignment="Stretch" >
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="40"></ColumnDefinition>
+					<ColumnDefinition Width="420"></ColumnDefinition>
+					<ColumnDefinition Width="85"></ColumnDefinition>
+					<ColumnDefinition Width="350"></ColumnDefinition>
+					<ColumnDefinition Width="140"></ColumnDefinition>
+					<ColumnDefinition Width="40"></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<CheckBox Grid.Column="0" 
+                                                  IsChecked="{Binding Checked, Mode=TwoWay}" 
+                                                  HorizontalAlignment="Center"></CheckBox>
+
+				<Grid
+                                            Grid.Column="1" 
+                                            HorizontalAlignment="Stretch">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="100"></ColumnDefinition>
+						<ColumnDefinition Width="320*"></ColumnDefinition>
+					</Grid.ColumnDefinitions>
+					<Image 
+                                                Grid.Column="0"
+                                                Visibility="{Binding LoadInfoFromLast,
+					Converter={StaticResource VisibilityToBoolConverter},ConverterParameter='Collapsed'}"
+                                                Source="{Binding Photo}"
+                                                Stretch="UniformToFill"
+                                                Height="58" 
+                                                Width="75"></Image>
+					<StackPanel
+                                                Grid.Column="1"
+                                                VirtualizingStackPanel.IsVirtualizing="True"
+                                                Orientation="Vertical">
+						<TextBlock Text="{Binding Artist}" MinHeight="25" TextWrapping = "Wrap" FontWeight="Bold" ></TextBlock>
+						<TextBlock Text="{Binding Title}" MinHeight="25" TextWrapping = "Wrap"></TextBlock>
+					</StackPanel>
+				</Grid>
+
+				<StackPanel 
+                                            VirtualizingStackPanel.IsVirtualizing="True"
+                                            Grid.Column="2"  
+                                            Orientation="Vertical" 
+                                            HorizontalAlignment="Stretch" 
+                                            MinWidth="60" 
+                                            Margin="8,0,0,0">
+					<!--<TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"  ></TextBlock>-->
+					<TextBlock Text="{Binding Duration, StringFormat='{}{0} kb/sec'}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+				</StackPanel>
+
+				<soundView:ctrSimilarArtists Grid.Column="3"></soundView:ctrSimilarArtists>
+
+				<Controls:ProgressRing Grid.Column="4" State="Busy" Visibility="{Binding CurrentProgressVisibility, Converter={StaticResource VisibilityToBoolConverter}}" HorizontalAlignment="Stretch" MinWidth="120" MaxWidth="280" Height="auto" />
+
+				<soundView:ctrSoundState Grid.Column="5"></soundView:ctrSoundState>
+
+
+				<!--<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="8,0,0,0">
+                                            <TextBlock Text="{Binding Size}" Foreground="#FF4D4D4D" OpacityMask="Black"></TextBlock>
+                                        </StackPanel>-->
+
+
+			</Grid>
+		</Border>
+	</DataTemplate>
+
+
+</ResourceDictionary>

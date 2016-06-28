@@ -94,7 +94,8 @@ namespace VKMusicSync.Model
 			get;
 			set;
 		}
-		public Sound() : base()
+		public Sound()
+			: base()
 		{
 			this.artist = Const.NoName;
 			this.title = Const.NoNameTrack;
@@ -106,7 +107,8 @@ namespace VKMusicSync.Model
 			this.title = title;
 		}
 
-		public Sound(string url):this()
+		public Sound(string url)
+			: this()
 		{
 			this.url = url;
 		}
@@ -130,11 +132,7 @@ namespace VKMusicSync.Model
 		public override bool Equals(object obj)
 		{
 			Sound sound = obj as Sound;
-			if (sound != null)
-			{
-				return sound.IsEqual(this);
-			}
-			return false;
+			return sound != null && sound.IsEqual(this);
 			/* bool isNamesEquals = x.FileName.ToLower() == y.FileName.ToLower();
 			 return isNamesEquals;*/
 		}
@@ -149,17 +147,17 @@ namespace VKMusicSync.Model
 			var sound = data as Sound;
 			float coeff = 0;
 
-			bool isNamesEquals = FileName.ToLower().Trim() == data.FileName.ToLower().Trim();
+			bool isNamesEquals = string.Equals(FileName, data.FileName, StringComparison.OrdinalIgnoreCase);
 			if (isNamesEquals)
 				coeff = 5;
 
 			if (sound != null)
 			{
-				bool isEqualArtist = artist.ToLower().Trim() == sound.artist.ToLower().Trim();
-				bool isEqualSongName = title.ToLower().Trim() == sound.title.ToLower().Trim();
+				bool isEqualArtist = string.Equals(artist, sound.artist, StringComparison.OrdinalIgnoreCase);
+				bool isEqualSongName = string.Equals(title, sound.title, StringComparison.OrdinalIgnoreCase);
 
 				bool isEqualFileDuration = duration == sound.duration && duration > 0;
-				bool isEqualFileSize = Size == sound.Size && Size > 0;
+				bool isEqualFileSize = Math.Abs(Size - sound.Size) < 0.000000001 && Size > 0;
 
 				if (isEqualArtist)
 					coeff += 1;

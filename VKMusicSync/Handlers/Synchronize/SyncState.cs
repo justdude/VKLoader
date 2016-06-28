@@ -8,11 +8,12 @@ namespace VKMusicSync.Handlers.Synchronize
 {
     public enum SyncStates
     {
-        Default = 0,
-        IsNeedDownload,
-        IsNeedUpload,
-        IsSynced,
-        IsCanntUpdate,
+        Unknown = 0x0,
+        NeedDownloaded = 0x2,
+        NeedUpload = 0x4,
+		NeedCustomUpload = 0x40,
+		Synced = 0x20,
+        SyncFailed = Unknown
     }
 
     public class SyncState
@@ -22,7 +23,7 @@ namespace VKMusicSync.Handlers.Synchronize
             "State",
             typeof(SyncStates), 
             typeof(SyncState), 
-            new PropertyMetadata( SyncStates.Default, StatChanged));
+            new PropertyMetadata( SyncStates.Unknown, StatChanged));
 
         private static void StatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

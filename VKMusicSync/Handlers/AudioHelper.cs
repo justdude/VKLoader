@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VKMusicSync.Model;
-using VKMusicSync.ModelView;
+using VKMusicSync.ViewModel;
 namespace VKMusicSync.Handlers
 {
     public class ItemHelper
@@ -24,7 +24,7 @@ namespace VKMusicSync.Handlers
             }
         }
 
-        /*public static void FillLastInfo(SoundModelView mvSounds, DotLastFm.LastFmApi lastFmApi)
+        /*public static void FillLastInfo(SoundViewModel mvSounds, DotLastFm.LastFmApi lastFmApi)
         {
                 try
                 {

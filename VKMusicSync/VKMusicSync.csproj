@@ -123,6 +123,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -169,50 +170,55 @@
     <Compile Include="Handlers\Synchronize\IOHandler.cs" />
     <Compile Include="Handlers\Synchronize\IOSync.cs" />
     <Compile Include="Handlers\Synchronize\SyncState.cs" />
-    <Compile Include="Handlers\Synchronize\SynhronizeAdapter.cs" />
+    <Compile Include="Handlers\Synchronize\SynhronizingProvider.cs" />
     <Compile Include="Handlers\TagsHandler.cs" />
     <Compile Include="Handlers\TestLastFmConfig.cs" />
     <Compile Include="Handlers\IoC\Unity.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
-    <Compile Include="IDownnloadedData.cs" />
-    <Compile Include="IStateChanged.cs" />
-    <Compile Include="Messages\Commands.cs" />
-    <Compile Include="ModelView\IDataState.cs" />
-    <Compile Include="ModelView\MainModelView.cs" />
-    <Compile Include="ModelView\SettingsModelView.cs" />
-    <Compile Include="UserInfo\ViewModel\UserInfoViewModel.cs" />
+    <Compile Include="Interfaces\IDownnloadedData.cs" />
+    <Compile Include="Interfaces\IStateChanged.cs" />
+    <Compile Include="ViewModel\Messages\Commands.cs" />
+    <Compile Include="ViewModel\IDataState.cs" />
+    <Compile Include="ViewModel\MainModelView.cs" />
+    <Compile Include="ViewModel\SettingsModelView.cs" />
+    <Compile Include="ViewModel\UserInfoViewModel.cs" />
     <Compile Include="Model\IData.cs" />
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\Sound.cs" />
-    <Compile Include="MyCategory.cs" />
-    <Compile Include="netfx\System\Xml\XmlSerializer.cs" />
-    <Compile Include="UserInfo\View\ctrUserInfo.xaml.cs">
+    <Compile Include="Helpers\XmlSerializer.cs" />
+    <Compile Include="View\UserInfo\ctrUserInfo.xaml.cs">
       <DependentUpon>ctrUserInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sound\ctrSimilarArtists.xaml.cs">
+      <DependentUpon>ctrSimilarArtists.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sound\ctrSoundState.xaml.cs">
+      <DependentUpon>ctrSoundState.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TestVectorImages.xaml.cs">
       <DependentUpon>TestVectorImages.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VKSync\View\ctrVkSync.xaml.cs">
+    <Compile Include="View\VKSync\ctrVkSync.xaml.cs">
       <DependentUpon>ctrVkSync.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowExtended.cs" />
-    <Page Include="ResourceDictionarys\TabDictionary.xaml">
+    <Compile Include="View\WindowExtended.cs" />
+    <Page Include="Resources\TabDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourceDictionarys\Templates.xaml">
+    <Page Include="Resources\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourceDictionarys\Styles.xaml">
+    <Page Include="Resources\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserInfo\View\ctrUserInfo.xaml">
+    <Page Include="View\UserInfo\ctrUserInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,8 +230,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ModelView\SongModelView.cs" />
-    <Compile Include="VKSync\ViewModel\SoundDownloaderMovelView.cs" />
+    <Compile Include="ViewModel\SongModelView.cs" />
+    <Compile Include="ViewModel\Sound\SoundDownloaderMovelView.cs" />
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="Handlers\Network\Downloader.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
@@ -240,11 +246,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Sound\ctrSimilarArtists.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sound\ctrSoundState.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TestVectorImages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VKSync\View\ctrVkSync.xaml">
+    <Page Include="View\VKSync\ctrVkSync.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,7 +285,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Graph1.dgml" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -279,9 +292,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ModelConector\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
@@ -305,7 +316,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Images\unknownSong.PNG">
+    <EmbeddedResource Include="Resources\Images\unknownSong.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

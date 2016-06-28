@@ -125,7 +125,7 @@ namespace VKMusicSync.Handlers
         }
 
 
-        public static void Read(string path, ModelView.SoundModelView modelView)
+        public static void Read(string path, ViewModel.SoundViewModel modelView)
         {
             if (!File.Exists(path))
                 return;

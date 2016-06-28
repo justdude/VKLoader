@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Net;
 
 using VKMusicSync.Model;
-using VKMusicSync.ModelView;
+using VKMusicSync.ViewModel;
 using VKMusicSync.Handlers.Synchronize;
 using VKLib;
 using VKMusicSync.Handlers;
@@ -29,9 +29,9 @@ using VKMusicSync.Handlers.IoC;
 using VKMusicSync.UserInfo.ViewModel;
 using VKMusicSync.VKSync.ViewModel;
 
-namespace VKMusicSync.ModelView
+namespace VKMusicSync.ViewModel
 {
-	public class MainModelView : AdwancedViewModelBase, IDataState
+	public class MainViewModel : AdwancedViewModelBase, IDataState
 	{
 
 		#region Fields
@@ -60,7 +60,7 @@ namespace VKMusicSync.ModelView
 
 		#region Properties
 
-		public ObservableCollection<TabModelView> Tabs { get; private set; }
+		public ObservableCollection<TabViewModel> Tabs { get; private set; }
 
 		public bool LoadInfoFromLast
 		{
@@ -204,12 +204,12 @@ namespace VKMusicSync.ModelView
 
 		#region Ctr.
 
-		public MainModelView()
+		public MainViewModel()
 		{
 			modSettingsCLickCommand = new DelegateCommand(OnSettingsClick);
 			modShareClickCommand = new DelegateCommand(OnShareClick, CanShareClick);
 
-			Tabs = new ObservableCollection<TabModelView>();
+			Tabs = new ObservableCollection<TabViewModel>();
 
 			Unity.Instance.RegisterInstance<IVkWrapper>(new VkWrapper());
 

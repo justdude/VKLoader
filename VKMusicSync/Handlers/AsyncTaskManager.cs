@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace VKMusicSync.Handlers
 {
-	public class Pack<T>
+	public sealed class Pack<T>
 	{
 		public ManualResetEvent EndEvent { get; private set; }
 		public Action<T> TargetAction { get; private set; }
@@ -41,6 +41,7 @@ namespace VKMusicSync.Handlers
 		}
 	}
 
+	[Obsolete]
 	public class AsyncTaskManager<T>
 	{
 		#region Fields

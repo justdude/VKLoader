@@ -17,7 +17,7 @@ namespace VKMusicSync.Comparers
 
         public int GetHashCode(T obj)
         {
-            return 0;
+            return obj.GetHashCode();
         }
     }
 }

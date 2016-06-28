@@ -54,7 +54,7 @@ namespace VKLib
             string server = parsed[1].Substring(9);
             string audio = parsed[2].Substring(9, (parsed[2].Length-1 - 9));
             string hash = parsed[3].Substring(8, parsed[3].Length - 2 - 8);
-           // var tempanswer = VKLib.ModelView.SoundDownloaderMovelView.DecodeUrlString(audio);
+           // var tempanswer = VKLib.ViewModel.SoundDownloaderMovelView.DecodeUrlString(audio);
             //var decoded = UrlDecode.HttpUtility.UrlDecode(audio);
             return new AudioUploadedInfo(server, audio, hash);
         }

@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Elysium;
-using VKMusicSync.ModelView;
+using VKMusicSync.ViewModel;
 
 namespace VKMusicSync.View
 {
@@ -23,7 +23,7 @@ namespace VKMusicSync.View
         public Settings()
         {
             InitializeComponent();
-            var modelview = new SettingsModelView();
+            var modelview = new SettingsViewModel();
             this.DataContext = modelview;
 	        modelview.Token = Uid;
         }
