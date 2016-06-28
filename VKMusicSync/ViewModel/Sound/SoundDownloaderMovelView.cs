@@ -296,8 +296,8 @@ namespace VKMusicSync.VKSync.ViewModel
 
 		private void Run()
 		{
-			RaisePropertiesChanged();
-			RefreshCommands();
+			Execute(RaisePropertiesChanged);
+			Execute(RefreshCommands);
 			UpdateDataFromProfile(null);
 		}
 

@@ -365,8 +365,8 @@ namespace VKMusicSync.ViewModel
 			var tab = new SoundDownloaderMovelView() { ParentToken = Token };
 			var tab2 = new UserInfoViewModel() { ParentToken = Token };
 
-			Tabs.Add(tab2);
 			Tabs.Add(tab);
+			Tabs.Add(tab2);
 
 			BackgroundWorker worker = new BackgroundWorker();
 			worker.DoWork += worker_DoWork;

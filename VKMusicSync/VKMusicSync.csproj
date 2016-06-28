@@ -180,7 +180,7 @@
     <Compile Include="Interfaces\IStateChanged.cs" />
     <Compile Include="ViewModel\Messages\Commands.cs" />
     <Compile Include="ViewModel\IDataState.cs" />
-    <Compile Include="ViewModel\MainModelView.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SettingsModelView.cs" />
     <Compile Include="ViewModel\UserInfoViewModel.cs" />
     <Compile Include="Model\IData.cs" />
