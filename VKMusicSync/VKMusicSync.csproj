@@ -187,6 +187,9 @@
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\Sound.cs" />
     <Compile Include="Helpers\XmlSerializer.cs" />
+    <Compile Include="View\Sound\ctrAlbums.xaml.cs">
+      <DependentUpon>ctrAlbums.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserInfo\ctrUserInfo.xaml.cs">
       <DependentUpon>ctrUserInfo.xaml</DependentUpon>
     </Compile>
@@ -215,6 +218,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Sound\ctrAlbums.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
