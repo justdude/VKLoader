@@ -29,5 +29,7 @@ namespace VKMusicSync.Constants
 		public const string NoNameTrack = "track";
 
 		#endregion
+
+		public const double Prec = 0.00000000001;
 	}
 }

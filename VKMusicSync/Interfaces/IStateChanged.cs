@@ -7,6 +7,7 @@ using VKMusicSync.Delegates;
 
 namespace VKMusicSync
 {
+	[Obsolete]
 	public interface IStateChanged
 	{
 		void OnLoadStarted(object sender, Argument state);

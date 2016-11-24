@@ -64,7 +64,7 @@ namespace VKLib
             Params.Add("owner_id", ((isGroup) ? "-" : "") + uid);
             Params.Add("offset", offset.ToString());
             Params.Add("count", counts.ToString());
-            Params.Add("fields", "owner_id,offset,count");
+           // Params.Add("fields", "owner_id,offset,count");
             CommandName = "audio.get";
 			var command = new AudiosCommand(accessData, CommandName, Params);
             command.ExecuteCommand();

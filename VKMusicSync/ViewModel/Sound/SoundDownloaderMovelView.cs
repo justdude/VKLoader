@@ -18,7 +18,9 @@ using VKLib;
 using VKLib.Model;
 using VKMusicSync.Constants;
 using VKMusicSync.Handlers;
+using VKMusicSync.Handlers.Tags;
 using VKMusicSync.Handlers.IoC;
+using VKMusicSync.Handlers.LastFm;
 using VKMusicSync.Handlers.Synchronize;
 using VKMusicSync.Messages;
 using VKMusicSync.Model;
@@ -379,7 +381,7 @@ namespace VKMusicSync.VKSync.ViewModel
 
 				IsFirstLoadDone = true;
 
-				await Task.Run(() => Parallel.ForEach(SoundsData, options, PreloadDatFromLast));
+				//await Task.Run(() => Parallel.ForEach(SoundsData, options, PreloadDatFromLast));
 			}
 			finally
 			{
@@ -583,7 +585,7 @@ namespace VKMusicSync.VKSync.ViewModel
 
 			IEnumerable<SoundViewModel> selected = Items.Where(p => p.Checked);
 
-			SoundHandler.SyncFolderWithListAsync<SoundViewModel>(selected.ToList());
+			SoundHandler.SyncFolderWithListAsync<SoundViewModel>(Settings.Default.DownloadFolderPath, selected.ToList());
 		}
 
 		private void AdapterSyncFolderWithVKAsyncOnProgress(object sender, ProgressArgs e)

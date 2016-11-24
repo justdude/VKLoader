@@ -11,12 +11,9 @@ namespace VKMusicSync.Model
     {
         string PathWithFileName { get; }
         string FileName { get; set; }
-
         string Path { get; set; }
-
         double Size { get; set; }
         string FileExtention { get; }
-
         string MD5 { get; set; }
     }
 

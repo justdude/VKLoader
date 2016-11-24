@@ -8,7 +8,6 @@ namespace VKMusicSync.Handlers
 {
     public class ProgramManager
     {
-
         public static WebProxy Proxy { get; set; }
         public static NetworkCredential ProxyCredintial { get; set; }
     }

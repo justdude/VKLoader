@@ -11,7 +11,7 @@ using DotLastFm.Api;
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace VKMusicSync.Handlers
+namespace VKMusicSync.Handlers.LastFm
 {
 
     /// <summary>

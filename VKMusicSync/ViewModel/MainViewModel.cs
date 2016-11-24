@@ -1,32 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.ComponentModel;
-using System.Net;
-
-using VKMusicSync.Model;
-using VKMusicSync.ViewModel;
-using VKMusicSync.Handlers.Synchronize;
-using VKLib;
-using VKMusicSync.Handlers;
-using System.Collections.Specialized;
-using System.IO;
-using System.Xml;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Threading;
+using System.Windows.Input;
 using Microsoft.Practices.Unity;
-using VKMusicSync.Messages;
-using MIP.MVVM;
 using MIP.Commands;
+using MIP.MVVM;
 using VkDay.vkontakte;
+using VKLib;
 using VKLib.vkontakte;
+using VKMusicSync.Constants;
 using VKMusicSync.Handlers.IoC;
-using VKMusicSync.UserInfo.ViewModel;
+using VKMusicSync.Messages;
+using VKMusicSync.Properties;
 using VKMusicSync.VKSync.ViewModel;
 
 namespace VKMusicSync.ViewModel
@@ -40,7 +26,7 @@ namespace VKMusicSync.ViewModel
 		private bool isSyncing = false;
 		private string status;
 		private int tabSelectedIndex = 0;
-		private string avatar = Constants.Const.DefaultAvatar;
+		private string avatar = Const.DefaultAvatar;
 
 		#endregion
 
@@ -66,15 +52,15 @@ namespace VKMusicSync.ViewModel
 		{
 			get
 			{
-				return Properties.Settings.Default.LoadInfoFromLastFm;
+				return Settings.Default.LoadInfoFromLastFm;
 			}
 			set
 			{
-				if (Properties.Settings.Default.LoadInfoFromLastFm == value)
+				if (Settings.Default.LoadInfoFromLastFm == value)
 					return;
 
-				Properties.Settings.Default.LoadInfoFromLastFm = value;
-				Properties.Settings.Default.Save();
+				Settings.Default.LoadInfoFromLastFm = value;
+				Settings.Default.Save();
 
 				RaisePropertyChanged<bool>(() => LoadInfoFromLast);
 			}
@@ -85,7 +71,7 @@ namespace VKMusicSync.ViewModel
 		{
 			get
 			{
-				return Properties.Settings.Default.BackgroundPath;
+				return Settings.Default.BackgroundPath;
 			}
 		}
 
@@ -233,9 +219,9 @@ namespace VKMusicSync.ViewModel
 			Execute(vkWrapper.ShowAutorizationWindow);
 		}
 
-		void API_OnConnectionStateChanged(object sender, VKLib.VKApi.ConnectionState e)
+		void API_OnConnectionStateChanged(object sender, VKApi.ConnectionState e)
 		{
-			if (e != VKLib.VKApi.ConnectionState.Loaded)
+			if (e != VKApi.ConnectionState.Loaded)
 				return;
 
 			ThreadPool.QueueUserWorkItem((p) =>
@@ -248,11 +234,11 @@ namespace VKMusicSync.ViewModel
 			});
 		}
 
-		void vk_OnStateChanged(object sender, VKLib.VKApi.ConnectionState e)
+		void vk_OnStateChanged(object sender, VKApi.ConnectionState e)
 		{
 			ChangeConnectionState(e);
 
-			if (e != VKLib.VKApi.ConnectionState.Loaded)
+			if (e != VKApi.ConnectionState.Loaded)
 				return;
 
 			UpdateDataFromProfile();
@@ -267,7 +253,7 @@ namespace VKMusicSync.ViewModel
 			if (!vkWrapper.IsUserLoaded)
 				return;
 
-			VKLib.CommandsGenerator.WallCommands.Post(
+			CommandsGenerator.WallCommands.Post(
 					+vkWrapper.UserProfile.uid,
 					string.Format("VK Loader API test...my name :{0}", vkWrapper.UserProfile.FullName),
 					@"http://userserve-ak.last.fm/serve/500/97983211/MicroA.jpg",
@@ -280,7 +266,7 @@ namespace VKMusicSync.ViewModel
 
 		private void OnSettingsClick()
 		{
-			var form = new VKMusicSync.View.Settings();
+			var form = new View.Settings();
 			form.ShowDialog();
 		}
 

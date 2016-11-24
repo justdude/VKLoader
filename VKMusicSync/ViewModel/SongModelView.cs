@@ -1,44 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using VKMusicSync.Model;
-using DotLastFm;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using VKMusicSync.Handlers.Synchronize;
-using VKMusicSync.Delegates;
-using System.Threading;
 using DotLastFm.Models;
-using VKLib.Delegates;
-using System.Reflection;
-using System.IO;
-using VCSKicks;
-using VKMusicSync.Handlers.CachedData;
-using VKMusicSync.Handlers;
 using MIP.MVVM;
+using VKLib.Delegates;
+using VKMusicSync.Constants;
+using VKMusicSync.Handlers.CachedData;
+using VKMusicSync.Handlers.LastFm;
+using VKMusicSync.Handlers.Synchronize;
+using VKMusicSync.Model;
+
 namespace VKMusicSync.ViewModel
 {
 	public class SoundViewModel : AdwancedViewModelBase, IDownnloadedData, IStateChanged
 	{
+		public static bool FreezeClick;
 
-		public IStateChanged InstanceWithEvents
-		{
-			get
-			{
-				return this;
-			}
-		}
+		#region Fields
+
+		private bool mvIsChecked = true;
+		private bool currentProgressVisibility;
+
+		#endregion Fields
 
 		public Sound Sound { get; set; }
-		/*
-		 public string UserId { get; set; }
-		public string artist { get; set; }
-		public string title { get; set; }
-		public string duration { get; set; }
-		public string url { get; set; }
-		public string lyrics_id { get; set; }
-		public string genre_id { get; set; }
-		 */
 
 		#region Sync States
 		public SyncStates State
@@ -56,10 +43,7 @@ namespace VKMusicSync.ViewModel
 		}
 		#endregion
 
-		public static bool FreezeClick = false;
-
-		private bool mvIsChecked = true;
-		private bool currentProgressVisibility = false;
+		#region Logic of view
 
 		public bool Checked
 		{
@@ -69,7 +53,6 @@ namespace VKMusicSync.ViewModel
 			}
 			set
 			{
-				//if (FreezeClick == false)
 				if (mvIsChecked == value)
 					return;
 
@@ -96,6 +79,8 @@ namespace VKMusicSync.ViewModel
 			}
 
 		}
+
+		#endregion Logic of view
 
 		#region Sound
 		public string Artist
@@ -155,7 +140,7 @@ namespace VKMusicSync.ViewModel
 			get { return Sound.Size; }
 			set
 			{
-				if (Sound.Size == value)
+				if (Math.Abs(Sound.Size - value) < Const.Prec)
 					return;
 
 				Sound.Size = value;
@@ -169,7 +154,7 @@ namespace VKMusicSync.ViewModel
 			get { return Sound.LoadedSize; }
 			set
 			{
-				if (Sound.Size == value)
+				if (Math.Abs(Sound.Size - value) < Const.Prec)
 					return;
 
 				Sound.LoadedSize = value;
@@ -219,7 +204,7 @@ namespace VKMusicSync.ViewModel
 			}
 			set
 			{
-				if (value == mvImage)
+				if (Equals(value, mvImage))
 					return;
 
 				mvImage = value;
@@ -272,12 +257,9 @@ namespace VKMusicSync.ViewModel
 			get { return Sound.similarArtists; }
 			set
 			{
-				if (Sound.similarArtists != value)
-				{
-					Sound.similarArtists = value;
+				Sound.similarArtists = value;
 
-					RaisePropertyChanged(() => SimilarArtist);
-				}
+				RaisePropertyChanged(() => SimilarArtist);
 			}
 		}
 
@@ -286,21 +268,27 @@ namespace VKMusicSync.ViewModel
 			get { return Sound.Albums; }
 			set
 			{
-				if (Sound.Albums != value)
-				{
-					Sound.Albums = value;
+				if (Sound.Albums == value)
+					return;
 
-					RaisePropertyChanged(() => Albums);
-				}
+				Sound.Albums = value;
+
+				RaisePropertyChanged(() => Albums);
 			}
 		}
 
 		#endregion
 
+		#region Ctr.
+
 		public SoundViewModel(Sound sound)
 		{
-			this.Sound = sound;
+			Sound = sound;
 		}
+
+		#endregion Ctr.
+
+		#region Path
 
 		/*public string GenerateFileName()
 		{
@@ -317,8 +305,9 @@ namespace VKMusicSync.ViewModel
 			return this.Sound.GetUrl();
 		}*/
 
+		#endregion Path
 
-		#region file fields
+		#region Path2
 
 		public string PathWithFileName
 		{
@@ -371,6 +360,7 @@ namespace VKMusicSync.ViewModel
 
 		#endregion
 
+		#region Events
 
 		public void OnLoadStarted(object sender, Argument state)
 		{
@@ -385,7 +375,7 @@ namespace VKMusicSync.ViewModel
 
 		}
 
-		public void OnLoadEnded(object sender, Argument state)
+		public async void OnLoadEnded(object sender, Argument state)
 		{
 			CurrentProgressVisibility = false;
 
@@ -395,11 +385,10 @@ namespace VKMusicSync.ViewModel
 				State = SyncStates.Synced;
 			}
 
-			this.Checked = !((bool)state.result);
-			this.IsLoadedToDisk = (bool)state.result;
+			Checked = !((bool)state.result);
+			IsLoadedToDisk = (bool)state.result;
 
-			System.Threading.ThreadPool.QueueUserWorkItem(new WaitCallback(LoadTagsFromLast), Sound);
-
+			await Task.Run(() => LoadTagsFromLast(Sound));
 		}
 
 		public void OnRaiseError(object sender, Argument state)
@@ -407,18 +396,20 @@ namespace VKMusicSync.ViewModel
 
 		}
 
-		private void LoadTagsFromLast(object SoundObj)
+		#endregion Events
+
+		private void LoadTagsFromLast(object soundObj)
 		{
-			var sound = SoundObj as Sound;
+			var sound = soundObj as Sound;
 			if (sound == null) return;
 
 			ArtistWithDetails artist = null;
 			try
 			{
-				artist = Handlers.LastFmHandler.Api.Artist.GetInfo(sound.artist);
+				artist = LastFmHandler.Api.Artist.GetInfo(sound.artist);
 				sound.authorPhotoPath = artist.Images[2].Value; // little spike 
 			}
-			catch (Exception)
+			catch
 			{
 				// ignored
 			}
@@ -426,9 +417,8 @@ namespace VKMusicSync.ViewModel
 			if (artist == null)
 				return;
 
-			sound.similarArtists = artist.SimilarArtists.Select(el => el.Name).ToList<string>();
+			sound.similarArtists = artist.SimilarArtists.Select(el => el.Name).ToList();
 		}
-
 
 		public bool IsEqual(IDownnloadedData data)
 		{

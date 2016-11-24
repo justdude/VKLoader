@@ -11,6 +11,7 @@ using MIP.Commands;
 using VkDay.vkontakte;
 using VKMusicSync.Handlers.IoC;
 using Microsoft.Practices.Unity;
+using VKMusicSync.Handlers.Coloring;
 
 
 namespace VKMusicSync.ViewModel
@@ -18,18 +19,18 @@ namespace VKMusicSync.ViewModel
 	class SettingsViewModel : AdwancedViewModelBase
 	{
 
+		#region Properties
+
 		public string UserFullName
 		{
 			get { return wrapper.IsUserLoaded ? wrapper.UserProfile.ToString() : string.Empty; }
 		}
 
-
-
 		public int ThreadMax
 		{
 			get
 			{
-				return System.Environment.ProcessorCount * 3;
+				return Environment.ProcessorCount * 9;
 			}
 		}
 
@@ -214,9 +215,10 @@ namespace VKMusicSync.ViewModel
 		{
 			get
 			{
-				return VKMusicSync.Handlers.ColorJam.AllCollors;
+				return ColorJam.AllCollors;
 			}
 		}
+		#endregion Properties
 
 		#region Commands
 		private DelegateCommand selectDownloadFolderClick;
@@ -287,7 +289,6 @@ namespace VKMusicSync.ViewModel
 		}
 		#endregion
 
-
 		#region Checkers
 		private bool CanLogin()
 		{
@@ -313,7 +314,6 @@ namespace VKMusicSync.ViewModel
 		}
 
 
-
 		private void OnApplySelectedBackground()
 		{
 
@@ -335,13 +335,22 @@ namespace VKMusicSync.ViewModel
 			dialog.ShowDialog();
 			if (System.IO.Directory.Exists(dialog.SelectedPath) == true)
 				this.DownloadFolderPath = dialog.SelectedPath + @"\Audio\";
+
+			Refresh();
 		}
 
-		public override void Refresh()
+		protected override void RefreshPrivate()
 		{
-			base.Refresh();
+			base.RefreshPrivate();
 
-			RaisePropertyChanged("UserFullName");
+			RaisePropertyChanged(() => ColorsScheme);
+			RaisePropertyChanged(() => BackgroundPath);
+			RaisePropertyChanged(() => DownloadFolderPath);
+			RaisePropertyChanged(() => ThreadCountToUse);
+			RaisePropertyChanged(() => ThreadMax);
+			RaisePropertyChanged(() => UserFullName);
+			RaisePropertyChanged(() => UseCredintial);
+			RaisePropertyChanged(() => UseProxy);
 		}
 
 		protected override void OnTokenChanged()

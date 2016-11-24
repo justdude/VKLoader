@@ -14,17 +14,15 @@ using VKMusicSync.Model;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 
-namespace VKMusicSync.Handlers
+namespace VKMusicSync.Handlers.Tags
 {
     public class TagReader
     {
-
         public static void ComputeFromFileName(string path, Sound sound)
         {
             if (!File.Exists(path))
                 return;
 
-           
             string[] separators = { "-", ":", "_" };
 
             path = path.Replace(sound.FileExtention, "");

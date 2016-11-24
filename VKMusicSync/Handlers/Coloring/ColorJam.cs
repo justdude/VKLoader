@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Media;
 
 
-namespace VKMusicSync.Handlers
+namespace VKMusicSync.Handlers.Coloring
 {
     public class ColorJam
     {

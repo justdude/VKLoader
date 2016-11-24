@@ -57,7 +57,7 @@ namespace VKLib
 			if (string.IsNullOrWhiteSpace(accessToken))
 			{
 				cachedStr = String.Format(queryWitoutTokenStr, 
-					name, String.Join("&", SelectItem(param)), accessToken);
+					name, String.Join("&", SelectItem(param)));
 			}
 			else
 			{

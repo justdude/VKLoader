@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace VKMusicSync.Handlers
+namespace VKMusicSync.Handlers.MultiThreading
 {
 	public sealed class Pack<T>
 	{

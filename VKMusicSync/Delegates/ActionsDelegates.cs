@@ -10,7 +10,6 @@ namespace VKMusicSync.Delegates
     {
         public delegate void DataStateChangedDelegate(object sender, Argument state);
 
-
         public static void Execute(DataStateChangedDelegate del, object sender, Argument state)
         {
             if (del != null)

@@ -14,8 +14,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
 	
 	<UserControl.Resources>
-		<!--<converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>-->
-		<!--<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>-->
+		<converters:StateToVisibilityConverter x:Key="stateToVisibilityConverter"></converters:StateToVisibilityConverter>
+		<converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"></converters:VisibilityToBoolConverter>
+
 	</UserControl.Resources>
 	
 	<Grid>

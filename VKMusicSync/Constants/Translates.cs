@@ -14,5 +14,6 @@ namespace VKMusicSync.Constants
 
 		public const string NoName = "Безымяный";
 
+		public const string UserInfoText = "Информация";
 	}
 }

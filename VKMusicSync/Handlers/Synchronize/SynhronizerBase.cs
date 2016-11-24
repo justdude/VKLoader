@@ -20,7 +20,6 @@ namespace VKMusicSync.Handlers.Synchronize
 		public int CountLoadedFiles { get; protected set; }
 		public int FilesCount { get; protected set; }
 		public int CountThreads { get; protected set; }
-		public string Path { get; protected set; }
 		public ParallelOptions MultiThreadingOptions { get; set; }
 
 		#endregion  Properties

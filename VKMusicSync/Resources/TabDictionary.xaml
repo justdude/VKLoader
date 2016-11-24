@@ -2,9 +2,9 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				xmlns:converters ="clr-namespace:VKMusicSync.Converters"
                     xmlns:userInfoView="clr-namespace:VKMusicSync.UserInfo.View"
-				xmlns:userInfoViewModel="clr-namespace:VKMusicSync.UserInfo.ViewModel"
-				xmlns:VkSyncView="clr-namespace:VKMusicSync.VKSync.View"
-				xmlns:VkSyncViewModel="clr-namespace:VKMusicSync.VKSync.ViewModel">
+                    xmlns:VkSyncView="clr-namespace:VKMusicSync.VKSync.View"
+				xmlns:VkSyncViewModel="clr-namespace:VKMusicSync.VKSync.ViewModel"
+				xmlns:userInfoViewModel="clr-namespace:VKMusicSync.ViewModel">
 
 	<converters:VisibilityToBoolConverter x:Key="visibilityToBoolConverter"/>
 	

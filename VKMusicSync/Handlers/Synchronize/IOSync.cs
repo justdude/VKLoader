@@ -10,14 +10,14 @@ namespace VKMusicSync.Handlers.Synchronize
 	public class IoSync<T> where T : IDownnloadedData
 	{
 		private List<T> skippedFiles;
-		private readonly DirectoryInfo dir;
+		private readonly DirectoryInfo Path;
 
 		private FileInfo[] mvFolderFiles;
 		public FileInfo[] FilesInfo
 		{
 			get
 			{
-				return mvFolderFiles ?? dir.GetFiles();
+				return mvFolderFiles ?? Path.GetFiles();
 			}
 			private set
 			{
@@ -31,21 +31,21 @@ namespace VKMusicSync.Handlers.Synchronize
 			private set;
 		}
 
-		public IoSync(string dir, string fileExtension)
+		public IoSync(string path, string fileExtension)
 		{
 			this.ExistData = new List<T>();
-			this.dir = new DirectoryInfo(dir);
+			this.Path = new DirectoryInfo(path);
 			this.skippedFiles = new List<T>();
 			this.modFileException = fileExtension;
 		}
 
 		public void UpdateData()
 		{
-			if (!dir.Exists)
+			if (!Path.Exists)
 			{
-				dir.Create();
+				Path.Create();
 			}
-			mvFolderFiles = dir.GetFiles(modFileException, SearchOption.AllDirectories);
+			mvFolderFiles = Path.GetFiles(modFileException, SearchOption.AllDirectories);
 		}
 
 		public void CompareFolderFiles(List<T> containValues, Func<FileInfo[], T, bool> Check)

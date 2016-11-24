@@ -7,9 +7,9 @@
 			 StartupUri="View/MusicSync.xaml">
   <Application.Resources>
     <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Resources/Styles.xaml" />
-        <ResourceDictionary Source="Resources/Templates.xaml" />
+	 <ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="Resources/Styles.xaml" />
+		<ResourceDictionary Source="Resources/Templates.xaml" />
         <ResourceDictionary Source="Resources/TabDictionary.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <!--<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:VKMusicSync.ViewModel" />-->
